@@ -51,7 +51,6 @@ public class Pessoa{
 		this.estado = estado;
 		this.interesses = interesses;
 		this.partido = partido;
-		this.cargoPolitico = new SemCargo();
 	}
 	
 	/**
@@ -108,7 +107,7 @@ public class Pessoa{
 	}
 	
 	public String getCargoPolitico() {
-		return this.cargoPolitico.getCargo();
+		return (this.cargoPolitico != null) ? this.cargoPolitico.getNomeCargo() : "Sem Cargo";
 	}
 
 	/**
@@ -147,7 +146,7 @@ public class Pessoa{
 		return true;
 	}
 
-	public void setCargoPolicito(String novoCargo) {
+	public void setCargoPolitico(String novoCargo) {
 		if (novoCargo == null)
 			throw new NullPointerException("Cargo nulo!");
 		
@@ -156,7 +155,6 @@ public class Pessoa{
 		
 		if (novoCargo.equals("Deputado"))
 			this.cargoPolitico = new Deputado();
-		
 		else
 			throw new IllegalArgumentException("Cargo inválido!");
 	}

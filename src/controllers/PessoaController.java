@@ -128,9 +128,11 @@ public class PessoaController {
 		if (this.pessoas.get(dni).getPartido().equals(""))
 			throw new IllegalArgumentException("Erro ao cadastrar deputado: pessoa sem partido");
 		
+		
 		if (this.pessoas.get(dni).getCargoPolitico().equals("Deputado"))
 			throw new IllegalArgumentException("Erro ao cadastrar deputado: deputado ja cadastrado");
 		
-		this.pessoas.get(dni).setCargoPolicito("Deputado");
+		this.pessoas.get(dni).setCargoPolitico("Deputado");
+		
 	}
 }

@@ -11,18 +11,14 @@ import interfaces.CargoPolitico;
  * @author Guilherme de Melo Carneiro
  */
 public class Deputado implements CargoPolitico{
-
-	private String cargo;
-	
 	private int leis;
 	
 	public Deputado() {
-		this.cargo = "Deputado";
 		this.leis = 0;
 	}
 	
 	@Override
-	public String getCargo() {
-		return this.cargo;
+	public String getNomeCargo() {
+		return "Deputado";
 	}
 }
