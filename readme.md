@@ -3,7 +3,7 @@
 Projeto desenvolvido para a disciplina Laboratório de Programação 2
 
 
-![In Progress](https://gph.is/1C6ROE5)
+![In Progress](https://media.giphy.com/media/fQZX2aoRC1Tqw/giphy.gif)
 
 
 ### Authors:
