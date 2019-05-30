@@ -1,5 +1,7 @@
 package entities;
 
+import interfaces.CargoPolitico;
+
 /**
  * Essa classe representa uma Pessoa
  * 
@@ -8,7 +10,7 @@ package entities;
  * @author Tulio Araujo Cunha
  * @author Guilherme de Melo Carneiro
  */
-public class Pessoa {
+public class Pessoa{
 	/**
 	 * Armazena o nome da pessoa
 	 */
@@ -29,6 +31,10 @@ public class Pessoa {
 	 * Armazena o partido da pessoa
 	 */
 	private String partido;
+	
+	private CargoPolitico cargoPolitico;
+	
+	
 
 	/**
 	 * Constroi uma pessoa dado seu nome, documento de 
@@ -45,6 +51,7 @@ public class Pessoa {
 		this.estado = estado;
 		this.interesses = interesses;
 		this.partido = partido;
+		this.cargoPolitico = new SemCargo();
 	}
 	
 	/**
@@ -56,7 +63,7 @@ public class Pessoa {
 	 * @param interesses interesses da pessoa
 	 */
 	public Pessoa(String nome, String dni, String estado, String interesses) {
-		this(nome, dni, estado, interesses, null);
+		this(nome, dni, estado, interesses, "");
 	}
 
 	/**
@@ -99,6 +106,10 @@ public class Pessoa {
 	public String getPartido() {
 		return partido;
 	}
+	
+	public String getCargoPolitico() {
+		return this.cargoPolitico.getCargo();
+	}
 
 	/**
 	 * Esse metodo recupera o hash do objeto pessoa
@@ -134,5 +145,19 @@ public class Pessoa {
 		} else if (!dni.equals(other.dni))
 			return false;
 		return true;
+	}
+
+	public void setCargoPolicito(String novoCargo) {
+		if (novoCargo == null)
+			throw new NullPointerException("Cargo nulo!");
+		
+		if (novoCargo.trim().equals(""))
+			throw new IllegalArgumentException("Cargo vazio!");
+		
+		if (novoCargo.equals("Deputado"))
+			this.cargoPolitico = new Deputado();
+		
+		else
+			throw new IllegalArgumentException("Cargo inválido!");
 	}
 }
