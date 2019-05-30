@@ -1,5 +1,6 @@
 package facade;
 
+import controllers.PessoaController;
 import easyaccept.EasyAccept;
 
 public class EcoFacade {

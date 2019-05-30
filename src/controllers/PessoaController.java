@@ -1,11 +1,9 @@
-package facade;
+package controllers;
 
 import entities.Pessoa;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
-
 
 public class PessoaController {
 	
