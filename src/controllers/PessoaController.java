@@ -2,6 +2,7 @@ package controllers;
 
 import entities.Pessoa;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -100,35 +101,36 @@ public class PessoaController {
 	}
 
 	private void validaData(String data, String erroInvalida, String erroFutura) {
+		DateFormat formato = new SimpleDateFormat("ddMMyyyy");
+		formato.setLenient(false); 
 		Date dataFormatada;
+		
 		try {
-			dataFormatada = new SimpleDateFormat("ddMMyyyy").parse(data);
-			if(dataFormatada.after(new Date())){
-				throw new IllegalArgumentException(erroFutura);
-			}
+			dataFormatada = formato.parse(data);
 		} catch (IllegalArgumentException | ParseException erro) {
 			throw new IllegalArgumentException(erroInvalida);
 		}
 		
+		if(dataFormatada.after(new Date()))
+			throw new IllegalArgumentException(erroFutura);
 	}
 
 	public void cadastrarDeputado(String dni, String dataDeInicio) {
 		this.validaString(dni, "Erro ao cadastrar pessoa: dni nao pode ser vazio ou nulo");
 		this.validaDni(dni, "Erro ao cadastrar deputado: dni invalido");
-		this.validaString(dataDeInicio, "Erro ao cadastrar deputado: data nao pode ser vazio ou nulo");
-		this.validaData(dataDeInicio, "Erro ao cadastrar deputado: data invalida", "Erro ao cadastrar deputado: data futura");
 		
-			
 		if (!(this.pessoas.containsKey(dni)))
 			throw new NullPointerException("Erro ao cadastrar deputado: pessoa nao encontrada");
 		
+		this.validaString(dataDeInicio, "Erro ao cadastrar deputado: data nao pode ser vazio ou nulo");
+		this.validaData(dataDeInicio, "Erro ao cadastrar deputado: data invalida", "Erro ao cadastrar deputado: data futura");
+			
 		if (this.pessoas.get(dni).getPartido().equals(""))
 			throw new IllegalArgumentException("Erro ao cadastrar deputado: pessoa sem partido");
 		
 		if (this.pessoas.get(dni).getCargoPolitico().equals("Deputado"))
 			throw new IllegalArgumentException("Erro ao cadastrar deputado: deputado ja cadastrado");
 		
-	
-		this.pessoas.get(dni).alteraCargoPolicito("Deputado");
+		this.pessoas.get(dni).setCargoPolicito("Deputado");
 	}
 }

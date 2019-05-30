@@ -51,6 +51,7 @@ public class Pessoa{
 		this.estado = estado;
 		this.interesses = interesses;
 		this.partido = partido;
+		this.cargoPolitico = new SemCargo();
 	}
 	
 	/**
@@ -146,7 +147,7 @@ public class Pessoa{
 		return true;
 	}
 
-	public void alteraCargoPolicito(String novoCargo) {
+	public void setCargoPolicito(String novoCargo) {
 		if (novoCargo == null)
 			throw new NullPointerException("Cargo nulo!");
 		
