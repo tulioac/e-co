@@ -64,8 +64,12 @@ public class EcoFacade {
 		this.pessoaController.cadastrarPessoa(nome, dni, estado, interesses, partido);
 	}
 	
+	public void cadastrarDeputado(String dni, String dataDeInicio) {
+		this.pessoaController.cadastrarDeputado(dni, dataDeInicio);
+	}
+	
 	public static void main(String[] args) {
-		args = new String[] { "facade.EcoFacade", "acceptance_tests/use_case_1.txt" };
+		args = new String[] { "facade.EcoFacade", "acceptance_tests/use_case_1.txt", "acceptance_tests/use_case_2.txt" };
 		
 		EasyAccept.main(args);
 	}
