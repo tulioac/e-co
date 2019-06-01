@@ -3,47 +3,46 @@ package entities;
 import interfaces.CargoPolitico;
 
 /**
- * Essa classe representa uma Pessoa
+ * Essa classe representa uma Pessoa.
  * 
  * @author Jonathan Tavares da Silva
  * @author Mirella Quintans Lyra
  * @author Tulio Araujo Cunha
  * @author Guilherme de Melo Carneiro
  */
-public class Pessoa{
+public class Pessoa {
 	/**
-	 * Armazena o nome da pessoa
+	 * Armazena o nome da pessoa.
 	 */
 	private String nome;
 	/**
-	 * Armazena o documento de identificacao da pessoa
+	 * Armazena o documento de identificação da pessoa.
 	 */
 	private String dni;
 	/**
-	 * Armazena o estado da pessoa
+	 * Armazena o estado da pessoa.
 	 */
 	private String estado;
 	/**
-	 * Armazena os interesses da pessoa
+	 * Armazena os interesses da pessoa.
 	 */
 	private String interesses;
 	/**
-	 * Armazena o partido da pessoa
+	 * Armazena o partido da pessoa.
 	 */
 	private String partido;
-	
+
 	private CargoPolitico cargoPolitico;
-	
-	
 
 	/**
-	 * Constroi uma pessoa dado seu nome, documento de 
-	 * identificacao, estado, interesses e partido.
-	 * @param nome nome da pessoa
-	 * @param dni documento de identificacao da pessoa
-	 * @param estado estado da pessoa
-	 * @param interesses interesses da pessoa
-	 * @param partido partido da pessoa
+	 * Constrói uma pessoa dado seu nome, documento de identificação, estado,
+	 * interesses e partido.
+	 * 
+	 * @param nome       nome da pessoa.
+	 * @param dni        documento de identificação da pessoa.
+	 * @param estado     estado da pessoa.
+	 * @param interesses interesses da pessoa.
+	 * @param partido    partido da pessoa.
 	 */
 	public Pessoa(String nome, String dni, String estado, String interesses, String partido) {
 		this.nome = nome;
@@ -52,68 +51,74 @@ public class Pessoa{
 		this.interesses = interesses;
 		this.partido = partido;
 	}
-	
+
 	/**
-	 * Constroi uma pessoa dado seu nome, documento de 
-	 * identificacao, estado e interesses.
-	 * @param nome nome da pessoa
-	 * @param dni documento de identificacao da pessoa
-	 * @param estado estado da pessoa
-	 * @param interesses interesses da pessoa
+	 * Constrói uma pessoa dado seu nome, documento de identificação, estado e
+	 * interesses.
+	 * 
+	 * @param nome       nome da pessoa.
+	 * @param dni        documento de identificação da pessoa.
+	 * @param estado     estado da pessoa.
+	 * @param interesses interesses da pessoa.
 	 */
 	public Pessoa(String nome, String dni, String estado, String interesses) {
 		this(nome, dni, estado, interesses, "");
 	}
 
 	/**
-	 * Esse metodo recupera o nome da pessoa
-	 * @return nome da pessoa
+	 * Esse método recupera o nome da pessoa.
+	 * 
+	 * @return nome da pessoa.
 	 */
 	public String getNome() {
 		return nome;
 	}
 
 	/**
-	 * Esse metodo recupera o documento de identificacao 
-	 * da pessoa.
-	 * @return dni da pessoa
+	 * Esse método recupera o documento de identificação da pessoa.
+	 * 
+	 * @return dni da pessoa.
 	 */
 	public String getDni() {
 		return dni;
 	}
 
 	/**
-	 * Esse metodo recupera o estado da pessoa.
-	 * @return estado da pessoa
+	 * Esse método recupera o estado da pessoa.
+	 * 
+	 * @return estado da pessoa.
 	 */
 	public String getEstado() {
 		return estado;
 	}
 
 	/**
-	 * Esse metodo recupera os interesses da pessoa.
-	 * @return interesses da pessoa
+	 * Esse método recupera os interesses da pessoa.
+	 * 
+	 * @return interesses da pessoa.
 	 */
 	public String getInteresses() {
 		return interesses;
 	}
 
 	/**
-	 * Esse metodo recupera o partido da pessoa.
-	 * @return partido da pessoa
+	 * Esse método recupera o partido da pessoa.
+	 * 
+	 * @return partido da pessoa.
 	 */
 	public String getPartido() {
 		return partido;
 	}
-	
+
 	public String getCargoPolitico() {
 		return (this.cargoPolitico != null) ? this.cargoPolitico.getNomeCargo() : "Sem Cargo";
 	}
 
 	/**
-	 * Esse metodo recupera o hash do objeto pessoa
-	 * baseado no seu documento de identificacao
-	 * @return inteiro que representa hash de pessoa
+	 * Esse método recupera o hash do objeto pessoa baseado no seu documento de
+	 * identificação.
+	 * 
+	 * @return inteiro que representa hash de pessoa.
 	 */
 	@Override
 	public int hashCode() {
@@ -124,10 +129,10 @@ public class Pessoa{
 	}
 
 	/**
-	 * Esse metodo compara um objeto pessoa com 
-	 * outro objeto qualquer e verifica se sao 
-	 * iguais.
-	 * @return true se os objetos comparados sao iguais
+	 * Esse método compara um objeto pessoa com outro objeto qualquer e verifica se
+	 * são iguais.
+	 * 
+	 * @return true se os objetos comparados são iguais.
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -146,16 +151,25 @@ public class Pessoa{
 		return true;
 	}
 
+	/**
+	 * Esse método altera o cargo político da pessoa para o novo cargo passado por
+	 * parâmetro. As opções de cargos políticos disponíveis são: Deputado.
+	 * 
+	 * @param novoCargo o novo cargo político da pessoa.
+	 * @throws IllegalArgumentException se o cargo for vazio ou não estiver nas
+	 *                                  opções disponíveis.
+	 * @throws NullPointerException     se o cargo for nulo.
+	 */
 	public void setCargoPolitico(String novoCargo) {
 		if (novoCargo == null)
 			throw new NullPointerException("Cargo nulo!");
-		
+
 		if (novoCargo.trim().equals(""))
 			throw new IllegalArgumentException("Cargo vazio!");
-		
+
 		if (novoCargo.equals("Deputado"))
 			this.cargoPolitico = new Deputado();
 		else
-			throw new IllegalArgumentException("Cargo inv�lido!");
+			throw new IllegalArgumentException("Cargo inválido!");
 	}
 }

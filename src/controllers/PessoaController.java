@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Essa classe usa o padrao Controller contendo metodos que operam sobre a
+ * Essa classe usa o padrão Controller contendo métodos que operam sobre a
  * classe pessoa.
  * 
  * @author Jonathan Tavares da Silva
@@ -20,13 +20,13 @@ import java.util.Map;
  */
 public class PessoaController {
 	/**
-	 * Armazena um mapa de pessoas em que a chave e o documento de identificacao e
+	 * Armazena um mapa de pessoas em que a chave e o documento de identificação e
 	 * aponta para um objeto do tipo Pessoa.
 	 */
 	private Map<String, Pessoa> pessoas;
 
 	/**
-	 * Constroi uma classe controladora de pessoa e inicializa um mapa que armazena
+	 * Constrói uma classe controladora de pessoa e inicializa um mapa que armazena
 	 * as pessoas.
 	 */
 	public PessoaController() {
@@ -34,12 +34,12 @@ public class PessoaController {
 	}
 
 	/**
-	 * Esse metodo valida uma string testando se e nula ou vazia.
+	 * Esse método válida uma string testando se é nula ou vazia.
 	 * 
-	 * @param atributo atribulo a ser verificado
-	 * @param mensagem mensagem de excecao
-	 * @throws NullPointerException     string nula
-	 * @throws IllegalArgumentException string vazia
+	 * @param atributo atribulo a ser verificado.
+	 * @param mensagem mensagem de exceção.
+	 * @throws NullPointerException     string nula.
+	 * @throws IllegalArgumentException string vazia.
 	 */
 	private void validaString(String atributo, String mensagem) {
 		if (atributo == null)
@@ -50,12 +50,12 @@ public class PessoaController {
 	}
 
 	/**
-	 * Esse metodo valida se o documento nacional de identificacao da pessoa esta no
+	 * Esse método válida se o documento nacional de identificação da pessoa está no
 	 * formato correto.
 	 * 
-	 * @param dni      documento de identificacao de pessoa
-	 * @param mensagem mensagem de excecao
-	 * @throws IllegalArgumentException dni com formato invalido
+	 * @param dni      documento de identificação de pessoa.
+	 * @param mensagem mensagem de exceção.
+	 * @throws IllegalArgumentException dni com formato inválido.
 	 */
 	private void validaDni(String dni, String mensagem) {
 		String regraDni = "[0-9]{9}-[0-9]{1}";
@@ -65,74 +65,92 @@ public class PessoaController {
 	}
 
 	/**
-	 * Esse metodo cadastra uma pessoa que possui nome, documento de identificacao,
+	 * Esse método cadastra uma pessoa que possui nome, documento de identificação,
 	 * estado, interesses e partido.
 	 * 
-	 * @param nome       nome da pessoa
-	 * @param dni        documento de identificacao da pessoa
-	 * @param estado     estado da pessoa
-	 * @param interesses interesses da pessoa
-	 * @param partido    partido da pessoa
-	 * @throws IllegalArgumentException dni ja existe
+	 * @param nome       nome da pessoa.
+	 * @param dni        documento de identificação da pessoa.
+	 * @param estado     estado da pessoa.
+	 * @param interesses interesses da pessoa.
+	 * @param partido    partido da pessoa.
+	 * @throws IllegalArgumentException dni já existe.
 	 */
 	public void cadastrarPessoa(String nome, String dni, String estado, String interesses, String partido) {
 		this.validaString(nome, "Erro ao cadastrar pessoa: nome nao pode ser vazio ou nulo");
 		this.validaString(dni, "Erro ao cadastrar pessoa: dni nao pode ser vazio ou nulo");
 		this.validaString(estado, "Erro ao cadastrar pessoa: estado nao pode ser vazio ou nulo");
-		this.validaDni(dni, "Erro ao cadastrar pessoa: dni invalido");
+		this.validaDni(dni, "Erro ao cadastrar pessoa: dni inválido");
 
 		if (this.pessoas.containsKey(dni))
-			throw new IllegalArgumentException("Erro ao cadastrar pessoa: dni ja cadastrado");
+			throw new IllegalArgumentException("Erro ao cadastrar pessoa: dni já cadastrado");
 
 		this.pessoas.put(dni, new Pessoa(nome, dni, estado, interesses, partido));
 	}
 
 	/**
-	 * Esse metodo cadastra uma pessoa que possui nome, documento de identificacao,
+	 * Esse método cadastra uma pessoa que possui nome, documento de identificação,
 	 * estado e interesses.
 	 * 
-	 * @param nome       nome da pessoa
-	 * @param dni        documento de identificacao da pessoa
-	 * @param estado     estado da pessoa
-	 * @param interesses interesses da pessoa
+	 * @param nome       nome da pessoa.
+	 * @param dni        documento de identificação da pessoa.
+	 * @param estado     estado da pessoa.
+	 * @param interesses interesses da pessoa.
 	 */
 	public void cadastrarPessoa(String nome, String dni, String estado, String interesses) {
 		this.cadastrarPessoa(nome, dni, estado, interesses, "");
 	}
 
+	/**
+	 * Esse método válida uma String no formato ddMMyyyy e confere se ela é uma data
+	 * válida e que nao está no futuro.
+	 * 
+	 * @param data         a data a ser válidada.
+	 * @param erroInválida a mensagem de erro caso a data nao esteja no formato
+	 *                     válido ou seja uma data inexistente.
+	 * @param erroFutura   a mensagem de erro caso a data estejá no futuro.
+	 * @throws IllegalArgumentException caso a data seja inválida ou futura.
+	 */
 	private void validaData(String data, String erroInvalida, String erroFutura) {
 		DateFormat formato = new SimpleDateFormat("ddMMyyyy");
-		formato.setLenient(false); 
+		formato.setLenient(false);
 		Date dataFormatada;
-		
+
 		try {
 			dataFormatada = formato.parse(data);
 		} catch (IllegalArgumentException | ParseException erro) {
 			throw new IllegalArgumentException(erroInvalida);
 		}
-		
-		if(dataFormatada.after(new Date()))
+
+		if (dataFormatada.after(new Date()))
 			throw new IllegalArgumentException(erroFutura);
 	}
 
+	/**
+	 * Esse método cadastra um deputado com sua data de início, alterando o cargo
+	 * político de uma pessoa para deputado.
+	 * 
+	 * @param dni		   o dni da pessoa que se deseja cadastrar como deputado.
+	 * @param dataDeInicio a data de início do cargo como deputado.
+	 * @throws NullPointerException 	caso algum parâmetro seja nulo
+	 * @throws IllegalArgumentException caso algum parâmetro seja vazio ou de formato inválido.
+	 */
 	public void cadastrarDeputado(String dni, String dataDeInicio) {
 		this.validaString(dni, "Erro ao cadastrar pessoa: dni nao pode ser vazio ou nulo");
-		this.validaDni(dni, "Erro ao cadastrar deputado: dni invalido");
-		
+		this.validaDni(dni, "Erro ao cadastrar deputado: dni inválido");
+
 		if (!(this.pessoas.containsKey(dni)))
 			throw new NullPointerException("Erro ao cadastrar deputado: pessoa nao encontrada");
-		
+
 		this.validaString(dataDeInicio, "Erro ao cadastrar deputado: data nao pode ser vazio ou nulo");
-		this.validaData(dataDeInicio, "Erro ao cadastrar deputado: data invalida", "Erro ao cadastrar deputado: data futura");
-			
+		this.validaData(dataDeInicio, "Erro ao cadastrar deputado: data inválida",
+				"Erro ao cadastrar deputado: data futura");
+
 		if (this.pessoas.get(dni).getPartido().equals(""))
 			throw new IllegalArgumentException("Erro ao cadastrar deputado: pessoa sem partido");
-		
-		
+
 		if (this.pessoas.get(dni).getCargoPolitico().equals("Deputado"))
-			throw new IllegalArgumentException("Erro ao cadastrar deputado: deputado ja cadastrado");
-		
+			throw new IllegalArgumentException("Erro ao cadastrar deputado: deputado já cadastrado");
+
 		this.pessoas.get(dni).setCargoPolitico("Deputado");
-		
 	}
 }
