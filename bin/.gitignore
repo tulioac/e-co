@@ -1,4 +1,4 @@
-/controllers/
-/facade/
 /entities/
 /interfaces/
+/facade/
+/controllers/
