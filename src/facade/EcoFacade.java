@@ -1,5 +1,6 @@
 package facade;
 
+import controllers.PartidoController;
 import controllers.PessoaController;
 import easyaccept.EasyAccept;
 
@@ -17,6 +18,7 @@ public class EcoFacade {
 	 * Armazena uma instância da classe controladora de pessoa.
 	 */
 	private PessoaController pessoaController;
+	private PartidoController partidoController;
 
 	/**
 	 * Constrói a classe EcoFacade e inicializa uma instância da classe
@@ -24,6 +26,7 @@ public class EcoFacade {
 	 */
 	public EcoFacade() {
 		this.pessoaController = new PessoaController();
+		this.partidoController = new PartidoController();
 	}
 
 	public void limparSistema() {
@@ -74,7 +77,24 @@ public class EcoFacade {
 	public void cadastrarDeputado(String dni, String dataDeInicio) {
 		this.pessoaController.cadastrarDeputado(dni, dataDeInicio);
 	}
-
+	
+	/**
+	 * Cadastra um partido a partir do seu nome.
+	 * 
+	 * @param partido nome do partido a ser cadastrado
+	 */
+	public void cadastrarPartido(String partido){
+		this.partidoController.cadastrarPartido(partido);
+	}
+	
+	/**
+	 * Exibe, em ordem alfabetica A-Z, os partidos cadastrados na base.
+	 * 
+	 * @return String contendo o nome dos partidos cadastrados em ordem alfabetica
+	 */
+	public String exibirBase() {
+		return this.partidoController.exibeBase();
+	}
 	/**
 	 * Método de testes do EasyAccept.
 	 * 
@@ -82,7 +102,7 @@ public class EcoFacade {
 	 */
 	public static void main(String[] args) {
 		args = new String[] { "facade.EcoFacade", "acceptance_tests/use_case_1.txt",
-				"acceptance_tests/use_case_2.txt" };
+				"acceptance_tests/use_case_2.txt", "acceptance_tests/use_case_4.txt" };
 
 		EasyAccept.main(args);
 	}
