@@ -79,6 +79,20 @@ public class EcoFacade {
 	}
 	
 	/**
+	 * Exibe a descriçao de uma pessoa em forma de String através do seu dni.
+	 * Caso a pessoa possua cargo politico, deve haver uma indicaçao de seu 
+	 * carater politico, além do partido ao qual pertence e a quantidade de leis aprovadas.
+	 * Os interesses somente sao exibidos se esse atributo nao for vazio para a pessoa em
+	 * exibiçao.
+	 * 
+	 * @param dni 		   documento de identificação da pessoa.
+	 * @return 			   Nome - dni - estado - Interesses - Partido.
+	 */
+	public String exibirPessoa(String dni) {
+		return this.pessoaController.exibirPessoa(dni);
+	}
+	
+	/**
 	 * Cadastra um partido a partir do seu nome.
 	 * 
 	 * @param partido nome do partido a ser cadastrado
@@ -102,7 +116,8 @@ public class EcoFacade {
 	 */
 	public static void main(String[] args) {
 		args = new String[] { "facade.EcoFacade", "acceptance_tests/use_case_1.txt",
-				"acceptance_tests/use_case_2.txt", "acceptance_tests/use_case_4.txt" };
+				"acceptance_tests/use_case_2.txt", "acceptance_tests/use_case_3.txt",
+				"acceptance_tests/use_case_4.txt" };
 
 		EasyAccept.main(args);
 	}
