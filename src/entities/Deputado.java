@@ -1,5 +1,8 @@
 package entities;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import interfaces.CargoPolitico;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -14,26 +17,26 @@ import java.util.Date;
  * @author Tulio Araujo Cunha
  * @author Guilherme de Melo Carneiro
  */
-public class Deputado implements CargoPolitico{
-	
+public class Deputado implements CargoPolitico {
+
 	/**
 	 * Armazena a quantidade de leis aprovadas.
 	 */
 	private int leis;
-	
+
 	/**
-	 * Armazena a data de inicio do mandato do deputado..
+	 * Armazena a data de inicio do mandato do deputado.
 	 */
-	private String dataDeInicio;
+	private Date dataDeInicio;
+
 	/**
 	 * Constrói um deputado inicializando sua quantidade de leis com 0.
 	 */
-	public Deputado(String dataDeInicio) {
+	public Deputado(Date dataDeInicio) {
 		this.leis = 0;
 		this.dataDeInicio = dataDeInicio;
 	}
-	
-	
+
 	/**
 	 * Esse método retorna o nome do cargo político do deputado.
 	 */
@@ -41,29 +44,23 @@ public class Deputado implements CargoPolitico{
 	public String getNomeCargo() {
 		return "Deputado";
 	}
-	
+
 	/**
-	 * Esse método retorna a data de início do mandato do deputado.
-	 */
-	@Override
-	public String getDataDeInicio(){
-		DateFormat formato = new SimpleDateFormat("ddMMyyyy");
-		formato.setLenient(false);
-		Date dataFormatada;
-		
-		try {
-			dataFormatada = formato.parse(this.dataDeInicio);
-		} catch (IllegalArgumentException | ParseException erro) {
-			throw new IllegalArgumentException("Erro ao cadastrar deputado: data invalida");
-		}
-		return formato.format(dataFormatada);
-	}
-	
-	/**
-	 * Esse método retorna a quantidade de leis de autoria do deputado.
+	 * Esse método retorna a quantidade de leis elaboradas pelo deputado.
 	 */
 	@Override
 	public int getLeis() {
 		return this.leis;
+	}
+
+	/**
+	 * Esse método retorna a data de ínicio do mandato com o formato: dd/mm/yyyy.
+	 */
+	@Override
+	public String getDataDeInicio() {
+		SimpleDateFormat formatado = new SimpleDateFormat("dd/MM/yyyy");
+		String data = formatado.format(this.dataDeInicio);
+
+		return data;
 	}
 }
