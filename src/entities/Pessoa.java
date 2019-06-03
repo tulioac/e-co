@@ -178,22 +178,22 @@ public class Pessoa {
 	private String informacoesBasicas() {
 		return this.nome + " - " + this.dni + " (" + this.estado + ")";
 	}
-	
+
 	private String informacoesCargoPolitico() {
-		return this.cargoPolitico.getDataDeInicio() + " - " + this.cargoPolitico.getLeis()
-		+ " Leis";
+		return this.cargoPolitico.getDataDeInicio() + " - " + this.cargoPolitico.getLeis() + " Leis";
 	}
 
-  /**
+	/**
 	 * Método que exibe a representaçao em String de uma pessoa a partir dos
-	 * atributos que ela possui. Caso o partido e/ou interesses daquela pessoa
-	 * sejam vazios, estes nao devem ser exibidos.
-	 * Quando a pessoa é também um politico, a data de inicip do mantado e a
-	 * quantidade de leis de sua autoria também devem ser exibidas.
+	 * atributos que ela possui. Caso o partido e/ou interesses daquela pessoa sejam
+	 * vazios, estes nao devem ser exibidos. Quando a pessoa é também um politico, a
+	 * data de inicip do mantado e a quantidade de leis de sua autoria também devem
+	 * ser exibidas.
 	 * 
 	 * 
 	 * @return Nome - dni (Estado) - Partido - Interesses;
-	 * @return POL: Nome - dni (Estado) - Partido - Interesses - Data de inicio - quantidade de leis;
+	 * @return POL: Nome - dni (Estado) - Partido - Interesses - Data de inicio -
+	 *         quantidade de leis;
 	 */
 	public String toString() {
 		if (this.getCargoPolitico().equals("Sem Cargo")) {
@@ -205,17 +205,18 @@ public class Pessoa {
 
 			if (this.interesses.equals(""))
 				return this.informacoesBasicas() + " - " + this.getPartido();
-			
+
 			return this.informacoesBasicas() + " - " + this.getPartido() + " - Interesses: " + this.interesses;
 		}
 
 		if (this.getCargoPolitico().equals("Deputado")) {
 			if (this.interesses.equals(""))
 				return "POL: " + this.informacoesBasicas() + " - " + this.getPartido() + " - "
-						+ this.informacoesCargoPolitico();;
+						+ this.informacoesCargoPolitico();
+			;
 
-			return "POL: " + this.informacoesBasicas() + " - " + this.getPartido() + " - Interesses: "
-					+ this.interesses + " - " + this.informacoesCargoPolitico();
+			return "POL: " + this.informacoesBasicas() + " - " + this.getPartido() + " - Interesses: " + this.interesses
+					+ " - " + this.informacoesCargoPolitico();
 		}
 
 		return "Algo deu errado!!";
