@@ -47,7 +47,7 @@ public class Deputado implements CargoPolitico{
 	 */
 	@Override
 	public String getDataDeInicio(){
-		DateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+		DateFormat formato = new SimpleDateFormat("ddMMyyyy");
 		formato.setLenient(false);
 		Date dataFormatada;
 		
