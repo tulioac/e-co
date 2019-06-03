@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.Date;
+
 import interfaces.CargoPolitico;
 
 /**
@@ -30,7 +32,7 @@ public class Pessoa {
 	/**
 	 * Armazena o partido da pessoa.
 	 */
-	private String partido;
+	private Partido partido;
 
 	private CargoPolitico cargoPolitico;
 
@@ -49,7 +51,7 @@ public class Pessoa {
 		this.dni = dni;
 		this.estado = estado;
 		this.interesses = interesses;
-		this.partido = partido;
+		this.partido = new Partido(partido);
 	}
 
 	/**
@@ -107,7 +109,7 @@ public class Pessoa {
 	 * @return partido da pessoa.
 	 */
 	public String getPartido() {
-		return partido;
+		return partido.getNome();
 	}
 
 	public String getCargoPolitico() {
@@ -160,7 +162,7 @@ public class Pessoa {
 	 *                                  opções disponíveis.
 	 * @throws NullPointerException     se o cargo for nulo.
 	 */
-	public void setCargoPolitico(String novoCargo, String dataDeInicio) {
+	public void setCargoPolitico(String novoCargo, Date dataInicialValidada) {
 		if (novoCargo == null)
 			throw new NullPointerException("Cargo nulo!");
 
@@ -168,12 +170,21 @@ public class Pessoa {
 			throw new IllegalArgumentException("Cargo vazio!");
 
 		if (novoCargo.equals("Deputado"))
-			this.cargoPolitico = new Deputado(dataDeInicio);
+			this.cargoPolitico = new Deputado(dataInicialValidada);
 		else
 			throw new IllegalArgumentException("Cargo inválido!");
 	}
+
+	private String informacoesBasicas() {
+		return this.nome + " - " + this.dni + " (" + this.estado + ")";
+	}
 	
-	/**
+	private String informacoesCargoPolitico() {
+		return this.cargoPolitico.getDataDeInicio() + " - " + this.cargoPolitico.getLeis()
+		+ " Leis";
+	}
+
+  /**
 	 * Método que exibe a representaçao em String de uma pessoa a partir dos
 	 * atributos que ela possui. Caso o partido e/ou interesses daquela pessoa
 	 * sejam vazios, estes nao devem ser exibidos.
@@ -185,24 +196,28 @@ public class Pessoa {
 	 * @return POL: Nome - dni (Estado) - Partido - Interesses - Data de inicio - quantidade de leis;
 	 */
 	public String toString() {
-		if (cargoPolitico.getNomeCargo().equals("Deputado")) {
-			if ("".equals(interesses.trim())){
-				return "POL: " + this.nome+ " - " + this.dni + " (" + this.estado + ") - " + this.partido +
-				" - " + this.cargoPolitico.getDataDeInicio() + " " + this.cargoPolitico.getLeis() + " Leis";
-			} else {
-				return "POL: " + this.nome+ " - " + this.dni + " (" + this.estado + ") - " + this.partido + " - Interesses: " 
-				+ this.interesses + " " + this.cargoPolitico.getDataDeInicio() + " " + this.cargoPolitico.getLeis() + " Leis";
-			}
-		} else {
-			if ("".equals(interesses.trim()) && "".equals(partido.trim())) {
-				return this.nome + " - " + this.dni + " (" + this.estado + ")";
-			} else if ("".equals(partido.trim())){
-				return this.nome+ " - " + this.dni + " (" + this.estado + ") - Interesses: " + this.interesses;
-			} else if ("".equals(interesses.trim())){
-				return this.nome+ " - " + this.dni + " (" + this.estado + ") - " + this.partido;
-			} else {
-				return this.nome+ " - " + this.dni + " (" + this.estado + ") - " + this.partido + " - Interesses: " + this.interesses;
-			}
+		if (this.getCargoPolitico().equals("Sem Cargo")) {
+			if (this.interesses.equals("") && this.getPartido().equals(""))
+				return this.informacoesBasicas();
+
+			if (this.partido.getNome().equals(""))
+				return this.informacoesBasicas() + " - Interesses: " + this.interesses;
+
+			if (this.interesses.equals(""))
+				return this.informacoesBasicas() + " - " + this.getPartido();
+			
+			return this.informacoesBasicas() + " - " + this.getPartido() + " - Interesses: " + this.interesses;
 		}
+
+		if (this.getCargoPolitico().equals("Deputado")) {
+			if (this.interesses.equals(""))
+				return "POL: " + this.informacoesBasicas() + " - " + this.getPartido() + " - "
+						+ this.informacoesCargoPolitico();;
+
+			return "POL: " + this.informacoesBasicas() + " - " + this.getPartido() + " - Interesses: "
+					+ this.interesses + " - " + this.informacoesCargoPolitico();
+		}
+
+		return "Algo deu errado!!";
 	}
 }

@@ -1,5 +1,7 @@
 package interfaces;
 
+import java.util.Date;
+
 /**
  * Essa interface representa o cargo político de uma pessoa.
  * 
@@ -15,6 +17,7 @@ public interface CargoPolitico {
 	 * Esse método retorna o nome do cargo político.
 	 */
 	public String getNomeCargo();
+
 	/**
 	 * Esse método retorna a data de início do mandato político.
 	 */
