@@ -11,21 +11,23 @@ package entities;
 public class Partido {
 
 	/**
-	 * String que representa o nome do partido
+	 * String que representa o nome do partido.
 	 */
 	private String nome;
 	
 	/**
-	 * Constroi um partido a partir do seu nome
-	 * @param nome String com o nome do partido
+	 * Constrói um partido a partir do seu nome.
+	 * 
+	 * @param nome String com o nome do partido.
 	 */
 	public Partido(String nome) {
 		this.nome = nome;
 	}
 	
 	/**
-	 * Retorna o nome do partido
-	 * @return String com o nome do partido
+	 * Retorna o nome do partido.
+	 * 
+	 * @return uma string com o nome do partido.
 	 */
 	public String getNome() {
 		return this.nome;

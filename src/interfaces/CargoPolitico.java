@@ -1,7 +1,5 @@
 package interfaces;
 
-import java.util.Date;
-
 /**
  * Essa interface representa o cargo político de uma pessoa.
  * 
@@ -24,7 +22,7 @@ public interface CargoPolitico {
 	public String getDataDeInicio();
 	
 	/**
-	 * Esse método retorna a quantidade de leis elaboradas por um politico;
+	 * Esse método retorna a quantidade de leis elaboradas por um politico.
 	 */
 	public int getLeis();
 }
