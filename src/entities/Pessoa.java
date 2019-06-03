@@ -160,7 +160,7 @@ public class Pessoa {
 	 *                                  opções disponíveis.
 	 * @throws NullPointerException     se o cargo for nulo.
 	 */
-	public void setCargoPolitico(String novoCargo) {
+	public void setCargoPolitico(String novoCargo, String dataDeInicio) {
 		if (novoCargo == null)
 			throw new NullPointerException("Cargo nulo!");
 
@@ -168,8 +168,41 @@ public class Pessoa {
 			throw new IllegalArgumentException("Cargo vazio!");
 
 		if (novoCargo.equals("Deputado"))
-			this.cargoPolitico = new Deputado();
+			this.cargoPolitico = new Deputado(dataDeInicio);
 		else
 			throw new IllegalArgumentException("Cargo inválido!");
+	}
+	
+	/**
+	 * Método que exibe a representaçao em String de uma pessoa a partir dos
+	 * atributos que ela possui. Caso o partido e/ou interesses daquela pessoa
+	 * sejam vazios, estes nao devem ser exibidos.
+	 * Quando a pessoa é também um politico, a data de inicip do mantado e a
+	 * quantidade de leis de sua autoria também devem ser exibidas.
+	 * 
+	 * 
+	 * @return Nome - dni (Estado) - Partido - Interesses;
+	 * @return POL: Nome - dni (Estado) - Partido - Interesses - Data de inicio - quantidade de leis;
+	 */
+	public String toString() {
+		if (cargoPolitico.getNomeCargo().equals("Deputado")) {
+			if ("".equals(interesses.trim())){
+				return "POL: " + this.nome+ " - " + this.dni + " (" + this.estado + ") - " + this.partido +
+				" - " + this.cargoPolitico.getDataDeInicio() + " " + this.cargoPolitico.getLeis() + " Leis";
+			} else {
+				return "POL: " + this.nome+ " - " + this.dni + " (" + this.estado + ") - " + this.partido + " - Interesses: " 
+				+ this.interesses + " " + this.cargoPolitico.getDataDeInicio() + " " + this.cargoPolitico.getLeis() + " Leis";
+			}
+		} else {
+			if ("".equals(interesses.trim()) && "".equals(partido.trim())) {
+				return this.nome + " - " + this.dni + " (" + this.estado + ")";
+			} else if ("".equals(partido.trim())){
+				return this.nome+ " - " + this.dni + " (" + this.estado + ") - Interesses: " + this.interesses;
+			} else if ("".equals(interesses.trim())){
+				return this.nome+ " - " + this.dni + " (" + this.estado + ") - " + this.partido;
+			} else {
+				return this.nome+ " - " + this.dni + " (" + this.estado + ") - " + this.partido + " - Interesses: " + this.interesses;
+			}
+		}
 	}
 }
