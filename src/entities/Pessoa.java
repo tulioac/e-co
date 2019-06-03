@@ -33,7 +33,9 @@ public class Pessoa {
 	 * Armazena o partido da pessoa.
 	 */
 	private Partido partido;
-
+	/**
+	 * Armazena o cargo politico da pessoa.
+	 */
 	private CargoPolitico cargoPolitico;
 
 	/**
@@ -112,6 +114,12 @@ public class Pessoa {
 		return partido.getNome();
 	}
 
+	/**
+	 * Esse método recupera o cargo político da pessoa
+	 * caso ele não seja nulo. Se for nulo, é retornado
+	 * a string "Sem Cargo"
+	 * @return cargo politico da pessoa
+	 */
 	public String getCargoPolitico() {
 		return (this.cargoPolitico != null) ? this.cargoPolitico.getNomeCargo() : "Sem Cargo";
 	}
@@ -175,10 +183,20 @@ public class Pessoa {
 			throw new IllegalArgumentException("Cargo inválido!");
 	}
 
+	/**
+	 * Esse método retorna uma string contendo informações da pessoa
+	 * no formato nome - dni (estado).
+	 * @return string contendo nome - dni (estado) da pessoa
+	 */
 	private String informacoesBasicas() {
 		return this.nome + " - " + this.dni + " (" + this.estado + ")";
 	}
 
+	/**
+	 * Esse método retorna uma string contendo informações do cargo
+	 * político da pessoa no formato datainicio - n Leis
+	 * @return string contendo datainicio e numero de leis do cargo politico
+	 */
 	private String informacoesCargoPolitico() {
 		return this.cargoPolitico.getDataDeInicio() + " - " + this.cargoPolitico.getLeis() + " Leis";
 	}
