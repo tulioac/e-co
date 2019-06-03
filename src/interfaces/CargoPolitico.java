@@ -1,7 +1,5 @@
 package interfaces;
 
-import java.util.Date;
-
 /**
  * Essa interface representa o cargo político de uma pessoa.
  * 
