@@ -79,10 +79,10 @@ public class PessoaController {
 		this.validaString(nome, "Erro ao cadastrar pessoa: nome nao pode ser vazio ou nulo");
 		this.validaString(dni, "Erro ao cadastrar pessoa: dni nao pode ser vazio ou nulo");
 		this.validaString(estado, "Erro ao cadastrar pessoa: estado nao pode ser vazio ou nulo");
-		this.validaDni(dni, "Erro ao cadastrar pessoa: dni inválido");
+		this.validaDni(dni, "Erro ao cadastrar pessoa: dni invalido");
 
 		if (this.pessoas.containsKey(dni))
-			throw new IllegalArgumentException("Erro ao cadastrar pessoa: dni já cadastrado");
+			throw new IllegalArgumentException("Erro ao cadastrar pessoa: dni ja cadastrado");
 
 		this.pessoas.put(dni, new Pessoa(nome, dni, estado, interesses, partido));
 	}
@@ -110,7 +110,7 @@ public class PessoaController {
 	 * @param erroFutura   a mensagem de erro caso a data estejá no futuro.
 	 * @throws IllegalArgumentException caso a data seja inválida ou futura.
 	 */
-	private void validaData(String data, String erroInvalida, String erroFutura) {
+	private Date validaData(String data, String erroInvalida, String erroFutura) {
 		DateFormat formato = new SimpleDateFormat("ddMMyyyy");
 		formato.setLenient(false);
 		Date dataFormatada;
@@ -120,37 +120,50 @@ public class PessoaController {
 		} catch (IllegalArgumentException | ParseException erro) {
 			throw new IllegalArgumentException(erroInvalida);
 		}
-
+		
 		if (dataFormatada.after(new Date()))
 			throw new IllegalArgumentException(erroFutura);
+
+		return dataFormatada;
 	}
 
 	/**
 	 * Esse método cadastra um deputado com sua data de início, alterando o cargo
 	 * político de uma pessoa para deputado.
 	 * 
-	 * @param dni		   o dni da pessoa que se deseja cadastrar como deputado.
+	 * @param dni          o dni da pessoa que se deseja cadastrar como deputado.
 	 * @param dataDeInicio a data de início do cargo como deputado.
-	 * @throws NullPointerException 	caso algum parâmetro seja nulo
-	 * @throws IllegalArgumentException caso algum parâmetro seja vazio ou de formato inválido.
+	 * @throws NullPointerException     caso algum parâmetro seja nulo
+	 * @throws IllegalArgumentException caso algum parâmetro seja vazio ou de
+	 *                                  formato inválido.
 	 */
 	public void cadastrarDeputado(String dni, String dataDeInicio) {
 		this.validaString(dni, "Erro ao cadastrar pessoa: dni nao pode ser vazio ou nulo");
-		this.validaDni(dni, "Erro ao cadastrar deputado: dni inválido");
+		this.validaDni(dni, "Erro ao cadastrar deputado: dni invalido");
 
 		if (!(this.pessoas.containsKey(dni)))
 			throw new NullPointerException("Erro ao cadastrar deputado: pessoa nao encontrada");
 
 		this.validaString(dataDeInicio, "Erro ao cadastrar deputado: data nao pode ser vazio ou nulo");
-		this.validaData(dataDeInicio, "Erro ao cadastrar deputado: data inválida",
+		Date dataInicialValidada = this.validaData(dataDeInicio, "Erro ao cadastrar deputado: data invalida",
 				"Erro ao cadastrar deputado: data futura");
 
 		if (this.pessoas.get(dni).getPartido().equals(""))
 			throw new IllegalArgumentException("Erro ao cadastrar deputado: pessoa sem partido");
 
 		if (this.pessoas.get(dni).getCargoPolitico().equals("Deputado"))
-			throw new IllegalArgumentException("Erro ao cadastrar deputado: deputado já cadastrado");
+			throw new IllegalArgumentException("Erro ao cadastrar deputado: deputado ja cadastrado");
 
-		this.pessoas.get(dni).setCargoPolitico("Deputado");
+		this.pessoas.get(dni).setCargoPolitico("Deputado", dataInicialValidada);
+	}
+
+	public String exibirPessoa(String dni) {
+		this.validaString(dni, "Erro ao exibir pessoa: dni nao pode ser vazio ou nulo");
+		this.validaDni(dni, "Erro ao exibir pessoa: dni invalido");
+
+		if (!(this.pessoas.containsKey(dni)))
+			throw new NullPointerException("Erro ao exibir pessoa: pessoa nao encontrada");
+
+		return this.pessoas.get(dni).toString();
 	}
 }

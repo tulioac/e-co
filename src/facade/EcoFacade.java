@@ -71,22 +71,26 @@ public class EcoFacade {
 	/**
 	 * Cadastra uma pessoa como deputado acessando-a pelo dni.
 	 * 
-	 * @param dni 		   documento de identificação da pessoa.
+	 * @param dni          documento de identificação da pessoa.
 	 * @param dataDeInicio a data de início do cargo da pessoa.
 	 */
 	public void cadastrarDeputado(String dni, String dataDeInicio) {
 		this.pessoaController.cadastrarDeputado(dni, dataDeInicio);
 	}
-	
+
+	public String exibirPessoa(String dni) {
+		return this.pessoaController.exibirPessoa(dni);
+	}
+
 	/**
 	 * Cadastra um partido a partir do seu nome.
 	 * 
 	 * @param partido nome do partido a ser cadastrado
 	 */
-	public void cadastrarPartido(String partido){
+	public void cadastrarPartido(String partido) {
 		this.partidoController.cadastrarPartido(partido);
 	}
-	
+
 	/**
 	 * Exibe, em ordem alfabetica A-Z, os partidos cadastrados na base.
 	 * 
@@ -95,14 +99,15 @@ public class EcoFacade {
 	public String exibirBase() {
 		return this.partidoController.exibeBase();
 	}
+
 	/**
 	 * Método de testes do EasyAccept.
 	 * 
 	 * @param args argumentos para execução do EasyAccept.
 	 */
 	public static void main(String[] args) {
-		args = new String[] { "facade.EcoFacade", "acceptance_tests/use_case_1.txt",
-				"acceptance_tests/use_case_2.txt", "acceptance_tests/use_case_4.txt" };
+		args = new String[] { "facade.EcoFacade", "acceptance_tests/use_case_1.txt", "acceptance_tests/use_case_2.txt",
+				"acceptance_tests/use_case_3.txt", "acceptance_tests/use_case_4.txt" };
 
 		EasyAccept.main(args);
 	}

@@ -1,5 +1,8 @@
 package entities;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import interfaces.CargoPolitico;
 
 /**
@@ -17,13 +20,15 @@ public class Deputado implements CargoPolitico{
 	 */
 	private int leis;
 	
+	private Date dataDeInicio;
+	
 	/**
 	 * Constrói um deputado inicializando sua quantidade de leis com 0.
 	 */
-	public Deputado() {
+	public Deputado(Date dataDeInicio) {
 		this.leis = 0;
+		this.dataDeInicio = dataDeInicio;
 	}
-	
 	
 	/**
 	 * Esse método retorna o nome do cargo político do deputado.
@@ -31,5 +36,16 @@ public class Deputado implements CargoPolitico{
 	@Override
 	public String getNomeCargo() {
 		return "Deputado";
+	}
+
+	public int getLeis() {
+		return this.leis;
+	}
+
+	public String getDataDeInicio() {
+		SimpleDateFormat formatado = new SimpleDateFormat("dd/MM/yyyy");
+		String data = formatado.format(this.dataDeInicio);
+		
+		return data;
 	}
 }
