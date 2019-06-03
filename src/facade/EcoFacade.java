@@ -79,32 +79,32 @@ public class EcoFacade {
 	}
 
 	/**
-	 * Exibe a descriçao de uma pessoa em forma de String através do seu dni.
-	 * Caso a pessoa possua cargo politico, deve haver uma indicaçao de seu 
-	 * carater politico, além do partido ao qual pertence e a quantidade de leis aprovadas.
-	 * Os interesses somente sao exibidos se esse atributo nao for vazio para a pessoa em
-	 * exibiçao.
+	 * Exibe a descrição de uma pessoa em forma de String através do seu dni. Caso a
+	 * pessoa possua cargo político, deve haver uma indicação de seu caráter
+	 * político, além do partido ao qual pertence e a quantidade de leis aprovadas.
+	 * Os interesses somente são exibidos se esse atributo não for vazio para a
+	 * pessoa em exibição.
 	 * 
-	 * @param dni 		   documento de identificação da pessoa.
-	 * @return 			   Nome - dni - estado - Interesses - Partido.
+	 * @param dni documento de identificação da pessoa.
+	 * @return Nome - Dni - Estado - Interesses - Partido.
 	 */
 	public String exibirPessoa(String dni) {
 		return this.pessoaController.exibirPessoa(dni);
 	}
-	
+
 	/**
 	 * Cadastra um partido a partir do seu nome.
 	 * 
-	 * @param partido nome do partido a ser cadastrado
+	 * @param partido nome do partido a ser cadastrado.
 	 */
 	public void cadastrarPartido(String partido) {
 		this.partidoController.cadastrarPartido(partido);
 	}
 
 	/**
-	 * Exibe, em ordem alfabetica A-Z, os partidos cadastrados na base.
+	 * Exibe, em ordem alfabética A-Z, os partidos cadastrados na base.
 	 * 
-	 * @return String contendo o nome dos partidos cadastrados em ordem alfabetica
+	 * @return String contendo o nome dos partidos cadastrados em ordem alfabética.
 	 */
 	public String exibirBase() {
 		return this.partidoController.exibeBase();
