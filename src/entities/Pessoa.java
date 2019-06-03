@@ -184,6 +184,17 @@ public class Pessoa {
 		+ " Leis";
 	}
 
+  /**
+	 * Método que exibe a representaçao em String de uma pessoa a partir dos
+	 * atributos que ela possui. Caso o partido e/ou interesses daquela pessoa
+	 * sejam vazios, estes nao devem ser exibidos.
+	 * Quando a pessoa é também um politico, a data de inicip do mantado e a
+	 * quantidade de leis de sua autoria também devem ser exibidas.
+	 * 
+	 * 
+	 * @return Nome - dni (Estado) - Partido - Interesses;
+	 * @return POL: Nome - dni (Estado) - Partido - Interesses - Data de inicio - quantidade de leis;
+	 */
 	public String toString() {
 		if (this.getCargoPolitico().equals("Sem Cargo")) {
 			if (this.interesses.equals("") && this.getPartido().equals(""))
@@ -209,5 +220,4 @@ public class Pessoa {
 
 		return "Algo deu errado!!";
 	}
-
 }

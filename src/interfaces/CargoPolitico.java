@@ -17,7 +17,7 @@ public interface CargoPolitico {
 	 * Esse método retorna o nome do cargo político.
 	 */
 	public String getNomeCargo();
-	
+
 	/**
 	 * Esse método retorna a data de início do mandato político.
 	 */

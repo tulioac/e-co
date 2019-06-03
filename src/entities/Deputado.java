@@ -4,6 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import interfaces.CargoPolitico;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Essa classe representa um Deputado.
@@ -20,8 +24,16 @@ public class Deputado implements CargoPolitico{
 	 */
 	private int leis;
 	
+  /**
+	 * Armazena a data que o deputado iniciou o cargo.
+	 */
 	private Date dataDeInicio;
-	
+
+	/**
+	 * Armazena a data de inicio do mandato do deputado..
+	 */
+	private String dataDeInicio;
+  
 	/**
 	 * Constrói um deputado inicializando sua quantidade de leis com 0.
 	 */
