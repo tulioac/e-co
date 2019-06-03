@@ -78,10 +78,6 @@ public class EcoFacade {
 		this.pessoaController.cadastrarDeputado(dni, dataDeInicio);
 	}
 
-	public String exibirPessoa(String dni) {
-		return this.pessoaController.exibirPessoa(dni);
-	}
-
 	/**
 	 * Exibe a descriçao de uma pessoa em forma de String através do seu dni.
 	 * Caso a pessoa possua cargo politico, deve haver uma indicaçao de seu 

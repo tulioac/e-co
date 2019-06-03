@@ -24,16 +24,11 @@ public class Deputado implements CargoPolitico{
 	 */
 	private int leis;
 	
-  /**
-	 * Armazena a data que o deputado iniciou o cargo.
+	/**
+	  * Armazena a data de inicio do mandato do deputado.
 	 */
 	private Date dataDeInicio;
 
-	/**
-	 * Armazena a data de inicio do mandato do deputado..
-	 */
-	private String dataDeInicio;
-  
 	/**
 	 * Constrói um deputado inicializando sua quantidade de leis com 0.
 	 */
