@@ -74,6 +74,8 @@ public class PessoaController {
 	 * @param interesses interesses da pessoa.
 	 * @param partido    partido da pessoa.
 	 * @throws IllegalArgumentException dni já existe.
+	 * @throws IllegalArgumentException caso algum parâmetro seja vazio.
+	 * @throws NullPointerException     caso algum parâmetro seja nulo.
 	 */
 	public void cadastrarPessoa(String nome, String dni, String estado, String interesses, String partido) {
 		this.validaString(nome, "Erro ao cadastrar pessoa: nome nao pode ser vazio ou nulo");
@@ -95,6 +97,9 @@ public class PessoaController {
 	 * @param dni        documento de identificação da pessoa.
 	 * @param estado     estado da pessoa.
 	 * @param interesses interesses da pessoa.
+	 * @throws IllegalArgumentException dni já existe.
+	 * @throws IllegalArgumentException caso algum parâmetro seja vazio.
+	 * @throws NullPointerException     caso algum parâmetro seja nulo.
 	 */
 	public void cadastrarPessoa(String nome, String dni, String estado, String interesses) {
 		this.cadastrarPessoa(nome, dni, estado, interesses, "");
