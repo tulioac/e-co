@@ -213,6 +213,9 @@ public class Pessoa {
 	 * @throws NullPointerException     se o cargo for nulo.
 	 */
 	public void setCargoPolitico(String novoCargo, Date dataInicialValidada) {
+		if (dataInicialValidada == null)
+			throw new NullPointerException("Data nula!");
+		
 		if (novoCargo == null)
 			throw new NullPointerException("Cargo nulo!");
 
