@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import comparators.PartidoOrdAlfabAZComparator;
+import comparators.ComparatorOrdemAlfabeticaPartido;
 import entities.Partido;
 
 /**
@@ -61,7 +61,7 @@ public class PartidoController {
 	 */
 	public String exibeBase() {
 		List<Partido> ordenaPartidos = new ArrayList<>(this.partidos.values());
-		Collections.sort(ordenaPartidos, new PartidoOrdAlfabAZComparator());
+		Collections.sort(ordenaPartidos, new ComparatorOrdemAlfabeticaPartido());
 
 		String mensagem = "";
 		for (Partido partido : ordenaPartidos)

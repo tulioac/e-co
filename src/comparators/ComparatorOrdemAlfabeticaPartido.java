@@ -13,7 +13,7 @@ import entities.Partido;
  * @author Tulio Araujo Cunha
  * @author Guilherme de Melo Carneiro
  */
-public class PartidoOrdAlfabAZComparator implements Comparator<Partido> {
+public class ComparatorOrdemAlfabeticaPartido implements Comparator<Partido> {
 
 	/**
 	 * Esse método compara dois partidos pelo seus respectivos nomes.
