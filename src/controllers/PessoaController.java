@@ -1,6 +1,8 @@
 package controllers;
 
 import entities.Pessoa;
+import interfaces.CargoPolitico;
+import util.CargosPoliticos;
 
 import java.text.DateFormat;
 import java.text.ParseException;
