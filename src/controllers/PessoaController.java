@@ -138,7 +138,7 @@ public class PessoaController {
 	 *                                  formato inválido.
 	 */
 	public void cadastrarDeputado(String dni, String dataDeInicio) {
-		this.validaString(dni, "Erro ao cadastrar pessoa: dni nao pode ser vazio ou nulo");
+		this.validaString(dni, "Erro ao cadastrar deputado: dni nao pode ser vazio ou nulo");
 		this.validaDni(dni, "Erro ao cadastrar deputado: dni invalido");
 
 		if (!(this.pessoas.containsKey(dni)))

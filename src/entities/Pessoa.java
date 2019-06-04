@@ -115,9 +115,9 @@ public class Pessoa {
 	}
 
 	/**
-	 * Esse método recupera o cargo político da pessoa
-	 * caso ele não seja nulo. Se for nulo, é retornado
-	 * a string "Sem Cargo"
+	 * Esse método recupera o cargo político da pessoa caso ele não seja nulo. Se
+	 * for nulo, é retornado a string "Sem Cargo"
+	 * 
 	 * @return cargo politico da pessoa
 	 */
 	public String getCargoPolitico() {
@@ -184,33 +184,34 @@ public class Pessoa {
 	}
 
 	/**
-	 * Esse método retorna uma string contendo informações da pessoa
-	 * no formato nome - dni (estado).
-	 * @return string contendo nome - dni (estado) da pessoa
+	 * Esse método retorna uma string contendo informações da pessoa no formato nome
+	 * - dni (estado).
+	 * 
+	 * @return string contendo nome - dni (estado) da pessoa.
 	 */
 	private String informacoesBasicas() {
 		return this.nome + " - " + this.dni + " (" + this.estado + ")";
 	}
 
 	/**
-	 * Esse método retorna uma string contendo informações do cargo
-	 * político da pessoa no formato datainicio - n Leis
-	 * @return string contendo datainicio e numero de leis do cargo politico
+	 * Esse método retorna uma string contendo informações do cargo político da
+	 * pessoa no formato datainicio - n Leis.
+	 * 
+	 * @return string contendo datainicio e número de leis do cargo político.
 	 */
 	private String informacoesCargoPolitico() {
 		return this.cargoPolitico.getDataDeInicio() + " - " + this.cargoPolitico.getLeis() + " Leis";
 	}
 
 	/**
-	 * Método que exibe a representaçao em String de uma pessoa a partir dos
+	 * Método que exibe a representação em String de uma pessoa a partir dos
 	 * atributos que ela possui. Caso o partido e/ou interesses daquela pessoa sejam
-	 * vazios, estes nao devem ser exibidos. Quando a pessoa é também um politico, a
-	 * data de inicip do mantado e a quantidade de leis de sua autoria também devem
+	 * vazios, estes não devem ser exibidos. Quando a pessoa é também um político, a
+	 * data de início do mandato e a quantidade de leis de sua autoria também devem
 	 * ser exibidas.
 	 * 
-	 * 
 	 * @return Nome - dni (Estado) - Partido - Interesses;
-	 * @return POL: Nome - dni (Estado) - Partido - Interesses - Data de inicio -
+	 * @return POL: Nome - dni (Estado) - Partido - Interesses - Data de início -
 	 *         quantidade de leis;
 	 */
 	public String toString() {
