@@ -37,6 +37,37 @@ public class Pessoa {
 	 * Armazena o cargo politico da pessoa.
 	 */
 	private CargoPolitico cargoPolitico;
+	
+	/**
+	 * Esse método válida uma string testando se é nula ou vazia.
+	 * 
+	 * @param atributo atribulo a ser verificado.
+	 * @param mensagem mensagem de exceção.
+	 * @throws NullPointerException     string nula.
+	 * @throws IllegalArgumentException string vazia.
+	 */
+	private void validaString(String atributo, String mensagem) {
+		if (atributo == null)
+			throw new NullPointerException(mensagem);
+
+		if (atributo.trim().equals(""))
+			throw new IllegalArgumentException(mensagem);
+	}
+
+	/**
+	 * Esse método válida se o documento nacional de identificação da pessoa está no
+	 * formato correto.
+	 * 
+	 * @param dni      documento de identificação de pessoa.
+	 * @param mensagem mensagem de exceção.
+	 * @throws IllegalArgumentException dni com formato inválido.
+	 */
+	private void validaDni(String dni, String mensagem) {
+		String regraDni = "[0-9]{9}-[0-9]{1}";
+
+		if (!(dni.matches(regraDni)))
+			throw new IllegalArgumentException(mensagem);
+	}
 
 	/**
 	 * Constrói uma pessoa dado seu nome, documento de identificação, estado,
@@ -47,8 +78,16 @@ public class Pessoa {
 	 * @param estado     estado da pessoa.
 	 * @param interesses interesses da pessoa.
 	 * @param partido    partido da pessoa.
+	 * @throws IllegalArgumentException dni já existe.
+	 * @throws IllegalArgumentException caso algum parâmetro seja vazio.
+	 * @throws NullPointerException     caso algum parâmetro seja nulo.
 	 */
 	public Pessoa(String nome, String dni, String estado, String interesses, String partido) {
+		this.validaString(nome, "Erro ao cadastrar pessoa: nome nao pode ser vazio ou nulo");
+		this.validaString(dni, "Erro ao cadastrar pessoa: dni nao pode ser vazio ou nulo");
+		this.validaString(estado, "Erro ao cadastrar pessoa: estado nao pode ser vazio ou nulo");
+		this.validaDni(dni, "Erro ao cadastrar pessoa: dni invalido");
+		
 		this.nome = nome;
 		this.dni = dni;
 		this.estado = estado;
@@ -64,6 +103,9 @@ public class Pessoa {
 	 * @param dni        documento de identificação da pessoa.
 	 * @param estado     estado da pessoa.
 	 * @param interesses interesses da pessoa.
+	 * @throws IllegalArgumentException dni já existe.
+	 * @throws IllegalArgumentException caso algum parâmetro seja vazio.
+	 * @throws NullPointerException     caso algum parâmetro seja nulo.
 	 */
 	public Pessoa(String nome, String dni, String estado, String interesses) {
 		this(nome, dni, estado, interesses, "");
