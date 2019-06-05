@@ -58,6 +58,8 @@ public class Pessoa {
 		v.validaString(dni, "Erro ao cadastrar pessoa: dni nao pode ser vazio ou nulo");
 		v.validaString(estado, "Erro ao cadastrar pessoa: estado nao pode ser vazio ou nulo");
 		v.validaDni(dni, "Erro ao cadastrar pessoa: dni invalido");
+		v.validaNull(interesses, "Erro ao cadastrar pessoa: interesses nao pode ser nulo");
+		v.validaNull(partido, "Erro ao cadastrar pessoa: interesses nao pode ser nulo");
 		
 		this.nome = nome;
 		this.dni = dni;

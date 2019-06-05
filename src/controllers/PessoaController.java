@@ -55,6 +55,8 @@ public class PessoaController {
 		v.validaString(dni, "Erro ao cadastrar pessoa: dni nao pode ser vazio ou nulo");
 		v.validaString(estado, "Erro ao cadastrar pessoa: estado nao pode ser vazio ou nulo");
 		v.validaDni(dni, "Erro ao cadastrar pessoa: dni invalido");
+		v.validaNull(interesses, "Erro ao cadastrar pessoa: interesses nao pode ser nulo");
+		v.validaNull(partido, "Erro ao cadastrar pessoa: interesses nao pode ser nulo");
 
 		if (this.pessoas.containsKey(dni))
 			throw new IllegalArgumentException("Erro ao cadastrar pessoa: dni ja cadastrado");
