@@ -22,6 +22,19 @@ public class Validador {
 		if (atributo.trim().equals(""))
 			throw new IllegalArgumentException(mensagem);
 	}
+	
+	/**
+	 * Esse método válida uma string testando se é nula.
+	 * 
+	 * @param atributo atribulo a ser verificado.
+	 * @param mensagem mensagem de exceção.
+	 * @throws NullPointerException     string nula.
+	 * @throws IllegalArgumentException string vazia.
+	 */
+	public void validaNull(String atributo, String mensagem) {
+		if (atributo == null)
+			throw new NullPointerException(mensagem);
+	}
 
 	/**
 	 * Esse método válida se o documento nacional de identificação da pessoa está no
@@ -64,4 +77,6 @@ public class Validador {
 
 		return dataFormatada;
 	}
+
+	
 }

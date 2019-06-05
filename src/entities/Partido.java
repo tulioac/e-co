@@ -24,7 +24,8 @@ public class Partido {
 	 */
 	public Partido(String nome) {
 		Validador v = new Validador();
-		v.validaString(nome, "Erro ao cadastrar partido: partido nao pode ser vazio ou nulo");
+		v.validaNull(nome, "Erro ao cadastrar partido: partido nao pode ser vazio ou nulo");
+		
 		this.nome = nome;
 	}
 
