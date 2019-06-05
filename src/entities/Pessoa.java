@@ -3,6 +3,7 @@ package entities;
 import java.util.Date;
 
 import interfaces.CargoPolitico;
+import util.Validador;
 
 /**
  * Essa classe representa uma Pessoa.
@@ -39,37 +40,6 @@ public class Pessoa {
 	private CargoPolitico cargoPolitico;
 	
 	/**
-	 * Esse método válida uma string testando se é nula ou vazia.
-	 * 
-	 * @param atributo atribulo a ser verificado.
-	 * @param mensagem mensagem de exceção.
-	 * @throws NullPointerException     string nula.
-	 * @throws IllegalArgumentException string vazia.
-	 */
-	private void validaString(String atributo, String mensagem) {
-		if (atributo == null)
-			throw new NullPointerException(mensagem);
-
-		if (atributo.trim().equals(""))
-			throw new IllegalArgumentException(mensagem);
-	}
-
-	/**
-	 * Esse método válida se o documento nacional de identificação da pessoa está no
-	 * formato correto.
-	 * 
-	 * @param dni      documento de identificação de pessoa.
-	 * @param mensagem mensagem de exceção.
-	 * @throws IllegalArgumentException dni com formato inválido.
-	 */
-	private void validaDni(String dni, String mensagem) {
-		String regraDni = "[0-9]{9}-[0-9]{1}";
-
-		if (!(dni.matches(regraDni)))
-			throw new IllegalArgumentException(mensagem);
-	}
-
-	/**
 	 * Constrói uma pessoa dado seu nome, documento de identificação, estado,
 	 * interesses e partido.
 	 * 
@@ -83,10 +53,11 @@ public class Pessoa {
 	 * @throws NullPointerException     caso algum parâmetro seja nulo.
 	 */
 	public Pessoa(String nome, String dni, String estado, String interesses, String partido) {
-		this.validaString(nome, "Erro ao cadastrar pessoa: nome nao pode ser vazio ou nulo");
-		this.validaString(dni, "Erro ao cadastrar pessoa: dni nao pode ser vazio ou nulo");
-		this.validaString(estado, "Erro ao cadastrar pessoa: estado nao pode ser vazio ou nulo");
-		this.validaDni(dni, "Erro ao cadastrar pessoa: dni invalido");
+		Validador v = new Validador();
+		v.validaString(nome, "Erro ao cadastrar pessoa: nome nao pode ser vazio ou nulo");
+		v.validaString(dni, "Erro ao cadastrar pessoa: dni nao pode ser vazio ou nulo");
+		v.validaString(estado, "Erro ao cadastrar pessoa: estado nao pode ser vazio ou nulo");
+		v.validaDni(dni, "Erro ao cadastrar pessoa: dni invalido");
 		
 		this.nome = nome;
 		this.dni = dni;
@@ -239,16 +210,6 @@ public class Pessoa {
 	}
 
 	/**
-	 * Esse método retorna uma string contendo informações do cargo político da
-	 * pessoa no formato datainicio - n Leis.
-	 * 
-	 * @return string contendo datainicio e número de leis do cargo político.
-	 */
-	private String informacoesCargoPolitico() {
-		return this.cargoPolitico.getDataDeInicio() + " - " + this.cargoPolitico.getLeis() + " Leis";
-	}
-
-	/**
 	 * Método que exibe a representação em String de uma pessoa a partir dos
 	 * atributos que ela possui. Caso o partido e/ou interesses daquela pessoa sejam
 	 * vazios, estes não devem ser exibidos. Quando a pessoa é também um político, a
@@ -276,11 +237,11 @@ public class Pessoa {
 		if (this.getCargoPolitico().equals("Deputado")) {
 			if (this.interesses.equals(""))
 				return "POL: " + this.informacoesBasicas() + " - " + this.getPartido() + " - "
-						+ this.informacoesCargoPolitico();
+						+ this.cargoPolitico.toString();
 			;
 
 			return "POL: " + this.informacoesBasicas() + " - " + this.getPartido() + " - Interesses: " + this.interesses
-					+ " - " + this.informacoesCargoPolitico();
+					+ " - " + this.cargoPolitico.toString();
 		}
 
 		return "Algo deu errado!!";
