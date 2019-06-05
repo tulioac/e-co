@@ -6,33 +6,33 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Validador {
-	
+
 	/**
 	 * Esse método válida uma string testando se é nula ou vazia.
 	 * 
-	 * @param atributo atribulo a ser verificado.
+	 * @param dado     valor a ser verificado.
 	 * @param mensagem mensagem de exceção.
 	 * @throws NullPointerException     string nula.
 	 * @throws IllegalArgumentException string vazia.
 	 */
-	public void validaString(String atributo, String mensagem) {
-		if (atributo == null)
+	public void validaString(String dado, String mensagem) {
+		if (dado == null)
 			throw new NullPointerException(mensagem);
 
-		if (atributo.trim().equals(""))
+		if (dado.trim().equals(""))
 			throw new IllegalArgumentException(mensagem);
 	}
-	
+
 	/**
 	 * Esse método válida uma string testando se é nula.
 	 * 
-	 * @param atributo atribulo a ser verificado.
+	 * @param dado     valor a ser verificado.
 	 * @param mensagem mensagem de exceção.
 	 * @throws NullPointerException     string nula.
 	 * @throws IllegalArgumentException string vazia.
 	 */
-	public void validaNull(String atributo, String mensagem) {
-		if (atributo == null)
+	public void validaNull(Object dado, String mensagem) {
+		if (dado == null)
 			throw new NullPointerException(mensagem);
 	}
 
@@ -50,7 +50,7 @@ public class Validador {
 		if (!(dni.matches(regraDni)))
 			throw new IllegalArgumentException(mensagem);
 	}
-	
+
 	/**
 	 * Esse método válida uma String no formato ddMMyyyy e confere se ela é uma data
 	 * válida e que nao está no futuro.
@@ -77,6 +77,4 @@ public class Validador {
 
 		return dataFormatada;
 	}
-
-	
 }
