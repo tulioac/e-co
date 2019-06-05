@@ -8,6 +8,7 @@ import java.util.Map;
 
 import comparators.ComparatorOrdemAlfabeticaPartido;
 import entities.Partido;
+import util.Validador;
 
 /**
  * Essa classe usa o padrão Controller contendo métodos que operam sobre a
@@ -41,12 +42,9 @@ public class PartidoController {
 	 * @throws IllegalArgumentException para um nome vazio.
 	 */
 	public void cadastrarPartido(String partido) {
-		if (partido == null) {
-			throw new NullPointerException("Erro ao cadastrar partido: partido nao pode ser vazio ou nulo");
-		}
-		if (partido.trim().isEmpty()) {
-			throw new IllegalArgumentException("Erro ao cadastrar partido: partido nao pode ser vazio ou nulo");
-		}
+		Validador v = new Validador();
+		v.validaString(partido, "Erro ao cadastrar partido: partido nao pode ser vazio ou nulo");
+
 		if (this.partidos.containsKey(partido)) {
 			throw new IllegalArgumentException("Partido já cadastrado");
 		}

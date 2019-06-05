@@ -25,4 +25,10 @@ public interface CargoPolitico {
 	 * Esse método retorna a quantidade de leis elaboradas por um politico.
 	 */
 	public int getLeis();
+	
+	
+	/**
+	 * Esse método retorna a representação textual adicional do cargo político.
+	 */
+	public String toString();
 }
