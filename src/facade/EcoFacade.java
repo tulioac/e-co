@@ -108,7 +108,7 @@ public class EcoFacade {
 	 */
 	public String exibirBase() {
 		return this.partidoController.exibeBase();
-	}
+	}	
 
 	/**
 	 * Método de testes do EasyAccept.

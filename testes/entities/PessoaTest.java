@@ -33,6 +33,8 @@ class PessoaTest {
 		assertThrows(NullPointerException.class, () -> new Pessoa(null, "653245443-6", "PA", "Pescaria", "GLUB"));
 		assertThrows(NullPointerException.class, () -> new Pessoa("Peixonado", null, "PA", "Pescaria", "GLUB"));
 		assertThrows(NullPointerException.class, () -> new Pessoa("Peixonado", "653245443-6", null, "Pescaria", "GLUB"));
+		assertThrows(NullPointerException.class, () -> new Pessoa("Peixonado", "653245443-6", "PA", null, "GLUB"));
+		assertThrows(NullPointerException.class, () -> new Pessoa("Peixonado", "653245443-6", "PA", "Pescaria", null));
 
 		assertThrows(IllegalArgumentException.class, () -> new Pessoa("", "653245443-6", "PA", "Pescaria", "GLUB"));
 		assertThrows(IllegalArgumentException.class, () -> new Pessoa("Peixonado", "", "PA", "Pescaria", "GLUB"));
