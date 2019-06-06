@@ -23,28 +23,65 @@ class PessoaTest {
 	}								   
 
 	@Test
-	void testaConstrutor() {
+	void testaConstrutorValido() {
 		Pessoa p2 = new Pessoa("Alberto", "574396356-6", "MA", "Caça de animais domésticos", "BAT(Bozo Acima de Todos)");
 		Pessoa p3 = new Pessoa("Marininha", "653245443-6", "PA", "Amazônia, abraçar árvores", "AAT(Amazônia Acima de Todos)");
 	}
 	
 	@Test
-	void testaConstrutorInvalido() {
-		assertThrows(NullPointerException.class, () -> new Pessoa(null, "653245443-6", "PA", "Pescaria", "GLUB"));
-		assertThrows(NullPointerException.class, () -> new Pessoa("Peixonado", null, "PA", "Pescaria", "GLUB"));
-		assertThrows(NullPointerException.class, () -> new Pessoa("Peixonado", "653245443-6", null, "Pescaria", "GLUB"));
-		assertThrows(NullPointerException.class, () -> new Pessoa("Peixonado", "653245443-6", "PA", null, "GLUB"));
-		assertThrows(NullPointerException.class, () -> new Pessoa("Peixonado", "653245443-6", "PA", "Pescaria", null));
-
-		assertThrows(IllegalArgumentException.class, () -> new Pessoa("", "653245443-6", "PA", "Pescaria", "GLUB"));
-		assertThrows(IllegalArgumentException.class, () -> new Pessoa("Peixonado", "", "PA", "Pescaria", "GLUB"));
-		assertThrows(IllegalArgumentException.class, () -> new Pessoa("Peixonado", "653245443-6", "", "Pescaria", "GLUB"));
+	void testaConstrutorComNomeNulo() {
+		assertThrows(NullPointerException.class,
+				() -> new Pessoa(null, "653245443-6", "PA", "Pescaria", "GLUB"));
 	}
-	
+
 	@Test
-	void testaConstrutorDniInvalido() {
-		assertThrows(IllegalArgumentException.class, () -> new Pessoa("Jalbertinho", "343242", "PA", "Pescaria", "GLUB"));
-		assertThrows(IllegalArgumentException.class, () -> new Pessoa("Jalbertinho", "65E245AA3-6", "PA", "Pescaria", "GLUB"));
+	void testaConstrutorComDniNulo() {
+		assertThrows(NullPointerException.class,
+				() -> new Pessoa("Peixonado", null, "PA", "Pescaria", "GLUB"));
+	}
+
+	@Test
+	void testaConstrutorComEstadoNulo() {
+		assertThrows(NullPointerException.class,
+				() -> new Pessoa("Peixonado", "653245443-6", null, "Pescaria", "GLUB"));
+	}
+
+	@Test
+	void testaConstrutorComInteressesNulo() {
+		assertThrows(NullPointerException.class,
+				() -> new Pessoa("Peixonado", "653245443-6", "PA", null, "GLUB"));
+	}
+
+	@Test
+	void testaConstrutorComPartidoNulo() {
+		assertThrows(NullPointerException.class,
+				() -> new Pessoa("Peixonado", "653245443-6", "PA", "Pescaria", null));
+	}
+
+	@Test
+	void testaConstrutorComNomeVazio() {
+		assertThrows(IllegalArgumentException.class,
+				() -> new Pessoa("", "653245443-6", "PA", "Pescaria", "GLUB"));
+	}
+
+	@Test
+	void testaConstrutorComDniVazio() {
+		assertThrows(IllegalArgumentException.class,
+				() -> new Pessoa("Peixonado", "", "PA", "Pescaria", "GLUB"));
+	}
+
+	@Test
+	void testaConstrutorComEstadoVazio() {
+		assertThrows(IllegalArgumentException.class,
+				() -> new Pessoa("Peixonado", "653245443-6", "", "Pescaria", "GLUB"));
+	}
+
+	@Test
+	void testaConstrutorComDniInvalido() {
+		assertThrows(IllegalArgumentException.class,
+				() -> new Pessoa("Jalbertinho", "343242", "PA", "Pescaria", "GLUB"));
+		assertThrows(IllegalArgumentException.class,
+				() -> new Pessoa("Jalbertinho", "65E245AA3-6", "PA", "Pescaria", "GLUB"));
 	}
 	
 	@Test
@@ -53,17 +90,42 @@ class PessoaTest {
 	}
 	
 	@Test
-	void testaSetCargoPoliticoInvalido() {
-		assertThrows(NullPointerException.class, () -> this.p1.setCargoPolitico(null, dataInicialValida));
-		assertThrows(NullPointerException.class, () -> this.p1.setCargoPolitico("Deputado", null));		
-		assertThrows(IllegalArgumentException.class, () -> this.p1.setCargoPolitico("", dataInicialValida));
-		assertThrows(IllegalArgumentException.class, () -> this.p1.setCargoPolitico("Secretário de Estado", dataInicialValida));
+	void testaSetCargoPoliticoComCargoNulo() {
+		assertThrows(NullPointerException.class,
+				() -> this.p1.setCargoPolitico(null, dataInicialValida));
 	}
-	
+
+	@Test
+	void testaSetCargoPoliticoComDataInicialNula() {
+		assertThrows(NullPointerException.class,
+				() -> this.p1.setCargoPolitico("Deputado", null));
+	}
+
+	@Test
+	void testaSetCargoPoliticoComCargoInexistente() {
+		assertThrows(IllegalArgumentException.class,
+				() -> this.p1.setCargoPolitico("Secretário de Estado", dataInicialValida));
+	}
+
+	@Test
+	void testaSetCargoPoliticoComCargoVazio() {
+		assertThrows(IllegalArgumentException.class,
+				() -> this.p1.setCargoPolitico("", dataInicialValida));
+	}
+
 	@Test
 	void testaToString() {
-		assertEquals("Jarbas - 234325254-6 (AC) - LAT(Lula Acima de Todos) - Interesses: Gatos, peixes, cachorros e gaivotas", this.p1.toString());
+		assertEquals("Jarbas - 234325254-6 (AC) - " +
+						"LAT(Lula Acima de Todos) - Interesses: " +
+						"Gatos, peixes, cachorros e gaivotas",
+				this.p1.toString());
+
 		this.p1.setCargoPolitico("Deputado", dataInicialValida);
-		assertEquals("POL: Jarbas - 234325254-6 (AC) - LAT(Lula Acima de Todos) - Interesses: Gatos, peixes, cachorros e gaivotas - 25/02/1989 - 0 Leis", this.p1.toString());
+
+		assertEquals("POL: Jarbas - 234325254-6 (AC) - " +
+						"LAT(Lula Acima de Todos) - Interesses: " +
+						"Gatos, peixes, cachorros e gaivotas - " +
+						"25/02/1989 - 0 Leis",
+				this.p1.toString());
 	}
 }
