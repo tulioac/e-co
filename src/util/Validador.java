@@ -56,7 +56,7 @@ public class Validador {
 	 * válida e que nao está no futuro.
 	 * 
 	 * @param data         a data a ser válidada.
-	 * @param erroInválida a mensagem de erro caso a data nao esteja no formato
+	 * @param erroInvalida a mensagem de erro caso a data nao esteja no formato
 	 *                     válido ou seja uma data inexistente.
 	 * @param erroFutura   a mensagem de erro caso a data estejá no futuro.
 	 * @throws IllegalArgumentException caso a data seja inválida ou futura.
