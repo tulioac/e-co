@@ -14,30 +14,48 @@ class PartidoControllerTest {
 		this.pc1 = new PartidoController();
 	}
 
-
 	@Test
-	void testaCadastrarPartido() {
+	void testaCadastrarPartidoValido() {
 		this.pc1.cadastrarPartido("PeteDuBê");
 		this.pc1.cadastrarPartido("PeSól");
+
+		assertEquals("PeSól,PeteDuBê",
+                this.pc1.exibeBase());
 	}
 	
 	@Test
-	void testaCadastrarPartidoInvalido() {
-		assertThrows(NullPointerException.class, () -> this.pc1.cadastrarPartido(null));
-		assertThrows(IllegalArgumentException.class, () -> this.pc1.cadastrarPartido(""));
+	void testaCadastrarPartidoComNomeNulo() {
+        assertThrows(NullPointerException.class,
+                () -> this.pc1.cadastrarPartido(null));
+    }
+
+    @Test
+    void testaCadastrarPartidoComNomeVazio() {
+		assertThrows(IllegalArgumentException.class,
+                () -> this.pc1.cadastrarPartido(""));
 	}
 	
 	@Test
-	void testaCadastrarPartidoJaCadastrado() {
+	void testaCadastrarPartidoExistente() {
 		this.pc1.cadastrarPartido("PeteDuBê");
-		assertThrows(IllegalArgumentException.class, () -> this.pc1.cadastrarPartido("PeteDuBê"));
+
+		assertThrows(IllegalArgumentException.class,
+                () -> this.pc1.cadastrarPartido("PeteDuBê"));
 	}
 
 	@Test
-	void testaExibeBase() {
+	void testaExibeBaseComPartidos() {
 		this.pc1.cadastrarPartido("Pra frente Brasil");
 		this.pc1.cadastrarPartido("Ele Não");
 		this.pc1.cadastrarPartido("Lula acima de todos!");
-		assertEquals("Ele Não,Lula acima de todos!,Pra frente Brasil", this.pc1.exibeBase());
+
+		assertEquals("Ele Não,Lula acima de todos!,Pra frente Brasil",
+                this.pc1.exibeBase());
 	}
+
+	@Test
+    void testaExibeBaseSemPartidos() {
+	    assertEquals("",
+                this.pc1.exibeBase());
+    }
 }

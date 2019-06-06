@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import interfaces.CargoPolitico;
+import util.Validador;
 
 /**
  * Essa classe representa um Deputado.
