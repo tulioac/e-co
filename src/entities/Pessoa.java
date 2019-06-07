@@ -224,29 +224,27 @@ public class Pessoa {
 	 *         quantidade de leis;
 	 */
 	public String toString() {
+		StringBuilder representacaoPessoa = new StringBuilder();
+
 		if (this.getCargoPolitico().equals("Sem Cargo")) {
-			if (this.interesses.equals("") && this.getPartido().equals(""))
-				return this.informacoesBasicas();
+			representacaoPessoa.append(this.informacoesBasicas());
 
-			if (this.partido.getNome().equals(""))
-				return this.informacoesBasicas() + " - Interesses: " + this.interesses;
-
-			if (this.interesses.equals(""))
-				return this.informacoesBasicas() + " - " + this.getPartido();
-
-			return this.informacoesBasicas() + " - " + this.getPartido() + " - Interesses: " + this.interesses;
+			if (!this.getPartido().equals(""))
+				representacaoPessoa.append(" - " + this.getPartido());
+			if (!this.interesses.equals(""))
+				representacaoPessoa.append(" - Interesses: " + this.interesses);
 		}
 
 		if (this.getCargoPolitico().equals("Deputado")) {
-			if (this.interesses.equals(""))
-				return "POL: " + this.informacoesBasicas() + " - " + this.getPartido() + " - "
-						+ this.cargoPolitico.toString();
-			;
+			representacaoPessoa.append("POL: " + this.informacoesBasicas()
+					+ " - " + this.getPartido());
 
-			return "POL: " + this.informacoesBasicas() + " - " + this.getPartido() + " - Interesses: " + this.interesses
-					+ " - " + this.cargoPolitico.toString();
+			if (!this.interesses.equals(""))
+				representacaoPessoa.append(" - Interesses: " + this.getInteresses());
+
+			representacaoPessoa.append(" - " + this.cargoPolitico.toString());
+
 		}
-
-		return "Algo deu errado!!";
+		return representacaoPessoa.toString();
 	}
 }
