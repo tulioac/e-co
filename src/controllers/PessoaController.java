@@ -1,16 +1,13 @@
 package controllers;
 
-import entities.Pessoa;
-import interfaces.CargoPolitico;
-import util.CargosPoliticos;
-import util.Validador;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+
+import entities.Pessoa;
+import util.Validador;
 
 /**
  * Essa classe usa o padrão Controller contendo métodos que operam sobre a
@@ -131,5 +128,9 @@ public class PessoaController {
 			throw new NullPointerException("Erro ao exibir pessoa: pessoa nao encontrada");
 
 		return this.pessoas.get(dni).toString();
+	}
+	
+	public Set<Pessoa> getPessoas(){
+		return new HashSet<Pessoa>(this.pessoas.values());
 	}
 }
