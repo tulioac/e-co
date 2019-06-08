@@ -114,6 +114,12 @@ public class EcoFacade {
 		return this.partidoController.exibeBase();
 	}
 	
+	/**
+	 * Cadastra uma comissão a partir de um tema e dos políticos que a integra.
+	 * 
+	 * @param tema tema que a comissão irá tratar
+	 * @param politicos String contendo os DNIs(separados por vírgula) dos políticos que participarão da comissão
+	 */
 	public void cadastrarComissao(String tema, String politicos) {
 		this.comissaoController.cadastrarComissao(tema, politicos);
 	}
