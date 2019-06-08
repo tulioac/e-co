@@ -1,8 +1,10 @@
 package facade;
 
+import controllers.ComissaoController;
 import controllers.PartidoController;
 import controllers.PessoaController;
 import easyaccept.EasyAccept;
+import services.PessoaService;
 
 /**
  * Essa classe usa o padrão Facade contendo métodos de acesso ao E-Camara
@@ -19,6 +21,7 @@ public class EcoFacade {
 	 */
 	private PessoaController pessoaController;
 	private PartidoController partidoController;
+	private ComissaoController comissaoController;
 
 	/**
 	 * Constrói a classe EcoFacade e inicializa uma instância da classe
@@ -27,6 +30,7 @@ public class EcoFacade {
 	public EcoFacade() {
 		this.pessoaController = new PessoaController();
 		this.partidoController = new PartidoController();
+		this.comissaoController = new ComissaoController(new PessoaService(pessoaController));
 	}
 
 	public void limparSistema() {
@@ -108,7 +112,11 @@ public class EcoFacade {
 	 */
 	public String exibirBase() {
 		return this.partidoController.exibeBase();
-	}	
+	}
+	
+	public void cadastrarComissao(String tema, String politicos) {
+		this.comissaoController.cadastrarComissao(tema, politicos);
+	}
 
 	/**
 	 * Método de testes do EasyAccept.
@@ -118,7 +126,7 @@ public class EcoFacade {
 	public static void main(String[] args) {
 
 		args = new String[] { "facade.EcoFacade", "acceptance_tests/use_case_1.txt", "acceptance_tests/use_case_2.txt",
-				"acceptance_tests/use_case_3.txt", "acceptance_tests/use_case_4.txt" };
+				"acceptance_tests/use_case_3.txt", "acceptance_tests/use_case_4.txt", "acceptance_tests/use_case_5.txt" };
 		EasyAccept.main(args);
 	}
 }
