@@ -19,25 +19,22 @@ class PartidoTest {
 		new Partido("ABC");
 		new Partido("CDF");
 	}
-
-	@Test
+	
 	void testaConstrutorComNomeNulo() {
 		assertThrows(NullPointerException.class,
 				() -> new Partido(null));
 	}
-
-	@Test
+	
 	void testaConstrutorComNomeVazio() {
 		assertThrows(IllegalArgumentException.class,
 				() -> new Partido(""));
 	}
-
-	@Test
+	
 	void testaEquals() {
-		assertEquals(this.partido, new Partido("TST"));
-		assertNotEquals(this.partido, new Partido("ACD"));
-		assertNotEquals("objeto de tipo diferente", this.partido);
-		assertNotEquals(null, this.partido);
+		assertTrue(this.partido.equals(new Partido("TST")), "O equals retornou false para um partido de mesmo nome");
+		assertFalse(this.partido.equals(new Partido("ACD")),"O equals retornou true para um partido de nome diferente");
+		assertFalse(this.partido.equals("objeto de tipo diferente"), "O equals retornou true para um objeto de tipo diferente");
+		assertFalse(this.partido.equals(null), "O equals retornou true para uma comparacao com o valor nulo");
 	}
 
 }
