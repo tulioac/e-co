@@ -1,6 +1,8 @@
 package entities;
 
 import java.util.Set;
+
+import util.Validador;
 /**
  * Essa classe representa uma Comissao Legislativa.
  * 
@@ -28,6 +30,10 @@ public class Comissao {
 	 * @param integrantes conjunto de Pessoas integrantes da comissão
 	 */
 	public Comissao(String tema, Set<Pessoa> integrantes) {
+		Validador v = new Validador();
+		v.validaString(tema, "Erro ao cadastrar comissao: tema nao pode ser vazio ou nulo");
+		v.validaNull(integrantes, "Erro ao cadastrar comissao: lista de politicos nao pode ser vazio ou nulo");
+		
 		this.tema = tema;
 		this.integrantes = integrantes;
 	}
@@ -64,5 +70,4 @@ public class Comissao {
 			return false;
 		return true;
 	}
-	
 }
