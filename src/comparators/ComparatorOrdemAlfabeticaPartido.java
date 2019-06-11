@@ -22,5 +22,4 @@ public class ComparatorOrdemAlfabeticaPartido implements Comparator<Partido> {
 	public int compare(Partido p1, Partido p2) {
 		return p1.getNome().compareTo(p2.getNome());
 	}
-
 }
