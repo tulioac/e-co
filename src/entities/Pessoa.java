@@ -234,7 +234,6 @@ public class Pessoa {
 			if (!this.interesses.equals(""))
 				representacaoPessoa.append(" - Interesses: " + this.interesses);
 		}
-		
 		if (this.getCargoPolitico().equals("Deputado")) {
 			representacaoPessoa.append("POL: " + this.informacoesBasicas()
 					+ " - " + this.getPartido());
@@ -243,7 +242,6 @@ public class Pessoa {
 				representacaoPessoa.append(" - Interesses: " + this.interesses);
 			representacaoPessoa.append(" - " + this.cargoPolitico.toString());
 		}
-		
 		return representacaoPessoa.toString();
 	}
 }
