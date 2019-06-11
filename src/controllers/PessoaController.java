@@ -129,8 +129,8 @@ public class PessoaController {
 
 		return this.pessoas.get(dni).toString();
 	}
-	
-	public Set<Pessoa> getPessoas(){
+
+	public Set<Pessoa> getPessoas() {
 		return new HashSet<Pessoa>(this.pessoas.values());
 	}
 }

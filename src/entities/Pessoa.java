@@ -194,11 +194,11 @@ public class Pessoa {
 		CargosPoliticos cargos = CargosPoliticos.valueOf(novoCargo.toUpperCase());
 
 		switch (cargos) {
-			case DEPUTADO:
-				this.cargoPolitico = new Deputado(dataInicialValidada);
-				break;
-			default:
-				throw new IllegalArgumentException("Cargo inválido!");
+		case DEPUTADO:
+			this.cargoPolitico = new Deputado(dataInicialValidada);
+			break;
+		default:
+			throw new IllegalArgumentException("Cargo inválido!");
 		}
 	}
 
@@ -234,14 +234,15 @@ public class Pessoa {
 			if (!this.interesses.equals(""))
 				representacaoPessoa.append(" - Interesses: " + this.interesses);
 		}
+
 		if (this.getCargoPolitico().equals("Deputado")) {
-			representacaoPessoa.append("POL: " + this.informacoesBasicas()
-					+ " - " + this.getPartido());
+			representacaoPessoa.append("POL: " + this.informacoesBasicas() + " - " + this.getPartido());
 
 			if (!this.interesses.equals(""))
 				representacaoPessoa.append(" - Interesses: " + this.interesses);
 			representacaoPessoa.append(" - " + this.cargoPolitico.toString());
 		}
+
 		return representacaoPessoa.toString();
 	}
 }

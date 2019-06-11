@@ -1,6 +1,9 @@
 package entities;
 
 import java.util.Set;
+
+import util.Validador;
+
 /**
  * Essa classe representa uma Comissao Legislativa.
  * 
@@ -16,22 +19,27 @@ public class Comissao {
 	 * Armazena o tema da comissão.
 	 */
 	private String tema;
-	
+
 	/**
 	 * Armazena o conjunto de integrantes da comissão.
 	 */
 	private Set<Pessoa> integrantes;
-	
+
 	/**
 	 * Constroi uma comissão a partir de um tema e de um conjunto de Pessoas.
-	 * @param tema tema da comissão
+	 * 
+	 * @param tema        tema da comissão
 	 * @param integrantes conjunto de Pessoas integrantes da comissão
 	 */
 	public Comissao(String tema, Set<Pessoa> integrantes) {
+		Validador v = new Validador();
+		v.validaString(tema, "Erro ao cadastrar comissao: tema nao pode ser vazio ou nulo");
+		v.validaNull(integrantes, "Erro ao cadastrar comissao: lista de politicos nao pode ser vazio ou nulo");
+
 		this.tema = tema;
 		this.integrantes = integrantes;
 	}
-	
+
 	/**
 	 * Esse método retorna o hash do objeto calculado a partir do seu tema.
 	 * 
@@ -41,7 +49,7 @@ public class Comissao {
 	public int hashCode() {
 		return this.tema.hashCode();
 	}
-	
+
 	/**
 	 * Esse método compara um objeto pessoa com outro objeto qualquer e verifica se
 	 * são iguais.
@@ -64,5 +72,4 @@ public class Comissao {
 			return false;
 		return true;
 	}
-	
 }

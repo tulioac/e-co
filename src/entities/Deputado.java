@@ -66,7 +66,7 @@ public class Deputado implements CargoPolitico {
 
 		return data;
 	}
-	
+
 	/**
 	 * Esse método retorna uma string contendo informações do cargo político da
 	 * pessoa no formato datainicio - n Leis.
