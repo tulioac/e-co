@@ -194,11 +194,11 @@ public class Pessoa {
 		CargosPoliticos cargos = CargosPoliticos.valueOf(novoCargo.toUpperCase());
 
 		switch (cargos) {
-		case DEPUTADO:
-			this.cargoPolitico = new Deputado(dataInicialValidada);
-			break;
-		default:
-			throw new IllegalArgumentException("Cargo inválido!");
+			case DEPUTADO:
+				this.cargoPolitico = new Deputado(dataInicialValidada);
+				break;
+			default:
+				throw new IllegalArgumentException("Cargo inválido!");
 		}
 	}
 
