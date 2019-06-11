@@ -47,11 +47,10 @@ public class PessoaService {
 	 * @return true para uma pessoa cadastrada, false caso contrário.
 	 */
 	public boolean ehPessoaCadastrada(String dni) {
-		for(Pessoa pessoa: getPessoas()) {
-			if(pessoa.getDni().equals(dni)) {
+		for(Pessoa pessoa: getPessoas()) 
+			if(pessoa.getDni().equals(dni)) 
 				return true;
-			}
-		}
+	
 		return false;
 	}
 	
@@ -62,11 +61,10 @@ public class PessoaService {
 	 * @return Pessoa dona do dni passado como parâmetro caso exista, null caso contrário
 	 */
 	public Pessoa getPessoaByDni(String dni) {
-		for(Pessoa pessoa: getPessoas()) {
-			if(pessoa.getDni().equals(dni)) {
+		for(Pessoa pessoa: getPessoas()) 
+			if(pessoa.getDni().equals(dni)) 
 				return pessoa;
-			}
-		}
+			
 		return null;
 	}
 	
@@ -78,15 +76,12 @@ public class PessoaService {
 	 */
 	public boolean ehDeputado(String dni) {
 		if(ehPessoaCadastrada(dni)) {
-			if("Sem Cargo".equals(getPessoaByDni(dni).getCargoPolitico())) {
+			if("Sem Cargo".equals(getPessoaByDni(dni).getCargoPolitico())) 
 				return false;
-			}
-			if("Deputado".equals(getPessoaByDni(dni).getCargoPolitico())) {
+			
+			if("Deputado".equals(getPessoaByDni(dni).getCargoPolitico())) 
 				return true;
-			}
-			return false;
 		}
 		return false;
 	}
-	
 }
