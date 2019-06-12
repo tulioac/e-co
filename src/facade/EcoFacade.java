@@ -113,12 +113,13 @@ public class EcoFacade {
 	public String exibirBase() {
 		return this.partidoController.exibeBase();
 	}
-	
+
 	/**
 	 * Cadastra uma comissão a partir de um tema e dos políticos que a integra.
 	 * 
-	 * @param tema tema que a comissão irá tratar
-	 * @param politicos String contendo os DNIs(separados por vírgula) dos políticos que participarão da comissão
+	 * @param tema      tema que a comissão irá tratar.
+	 * @param politicos String contendo os DNIs(separados por vírgula) dos políticos
+	 *                  que participarão da comissão.
 	 */
 	public void cadastrarComissao(String tema, String politicos) {
 		this.comissaoController.cadastrarComissao(tema, politicos);
@@ -132,7 +133,8 @@ public class EcoFacade {
 	public static void main(String[] args) {
 
 		args = new String[] { "facade.EcoFacade", "acceptance_tests/use_case_1.txt", "acceptance_tests/use_case_2.txt",
-				"acceptance_tests/use_case_3.txt", "acceptance_tests/use_case_4.txt", "acceptance_tests/use_case_5.txt" };
+				"acceptance_tests/use_case_3.txt", "acceptance_tests/use_case_4.txt",
+				"acceptance_tests/use_case_5.txt" };
 		EasyAccept.main(args);
 	}
 }
