@@ -1,8 +1,8 @@
 package entities;
 
 import interfaces.PropostaLegislativa;
-import util.Projetos;
-import util.SituacaoVotacao;
+import enums.Projetos;
+import enums.SituacaoVotacao;
 
 /**
  * Essa classe representa XXXX.

@@ -129,21 +129,35 @@ public class EcoFacade {
 		this.comissaoController.cadastrarComissao(tema, politicos);
 	}
 
-	public void cadastrarPL(String dni, int ano, String ementa, String interesses, String url, boolean conclusivo) {
-		this.projetoController.cadastraPL(dni, ano, ementa, interesses, url, conclusivo);
+	public String cadastrarPL(String dni, int ano, String ementa, String interesses, String url, boolean conclusivo){
+		return this.projetoController.cadastraPL(dni, ano, ementa, interesses, url, conclusivo);
 	}
 
-	public void cadastrarPLP(String dni, int ano, String ementa, String interesses, String url, String artigos) {
-		this.projetoController.cadastraPLP(dni, ano, ementa, interesses, url, artigos);
+	public String cadastrarPLP(String dni, int ano, String ementa, String interesses, String url, String artigos){
+		return this.projetoController.cadastraPLP(dni, ano, ementa, interesses, url, artigos);
 	}
 
-	public void cadastrarPEC(String dni, int ano, String ementa, String interesses, String url, String artigos) {
-		this.projetoController.cadastraPEC(dni, ano, ementa, interesses, url, artigos);
+	public String cadastrarPEC(String dni, int ano, String ementa, String interesses, String url, String artigos) {
+		return this.projetoController.cadastraPEC(dni, ano, ementa, interesses, url, artigos);
 	}
 
 	public String exibirProjeto(String codigo){
 		return this.projetoController.exibirProjeto(codigo);
 	}
+
+	public boolean votarComissao(String codigo, String statusGovernista, String proximoLocal){
+		return this.projetoController.votarComissao(codigo, statusGovernista, proximoLocal);
+	}
+
+	public boolean votarPlenario(String codigo, String statusGovernista, String presentes){
+		return this.projetoController.votarPlenario(codigo, statusGovernista, presentes);
+	}
+
+	public String exibirTramitacao(String codigo){
+		return this.projetoController.exibirTramitacao(codigo);
+	}
+
+
 
 	/**
 	 * Método de testes do EasyAccept.
@@ -151,14 +165,14 @@ public class EcoFacade {
 	 * @param args argumentos para execução do EasyAccept.
 	 */
 	public static void main(String[] args) {
-
-		args = new String[] { "facade.EcoFacade", 
+		args = new String[] { "facade.EcoFacade",
 				     "acceptance_tests/use_case_1.txt", 
 				     "acceptance_tests/use_case_2.txt",
 				     "acceptance_tests/use_case_3.txt", 
 				     "acceptance_tests/use_case_4.txt",
 				     "acceptance_tests/use_case_5.txt", 
 				     "acceptance_tests/use_case_6.txt" };
+
 		EasyAccept.main(args);
 	}
 }

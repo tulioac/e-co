@@ -1,6 +1,6 @@
 package entities;
 
-import util.Projetos;
+import enums.Projetos;
 
 public class PEC extends Projeto{
 	

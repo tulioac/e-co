@@ -5,7 +5,7 @@ import entities.PL;
 import entities.PLP;
 import interfaces.PropostaLegislativa;
 import services.PessoaService;
-import util.Projetos;
+import enums.Projetos;
 import util.Validador;
 
 import java.util.HashMap;
@@ -48,7 +48,7 @@ public class ProjetoController {
 			throw new IllegalArgumentException("Erro ao cadastrar projeto: pessoa nao eh deputado");
 	}
 
-	public void cadastraPL(String dni, int ano, String ementa, String interesses, String url, boolean conclusivo) {
+	public String cadastraPL(String dni, int ano, String ementa, String interesses, String url, boolean conclusivo) {
 		Validador v = new Validador();
 		v.validaString(dni, "Erro ao cadastrar projeto: autor nao pode ser vazio ou nulo");
 		v.validaDni(dni, "Erro ao cadastrar projeto: dni invalido");
@@ -61,9 +61,11 @@ public class ProjetoController {
 
 		String codigo = criaCodigo(Projetos.PL, ano);
 		this.propostas.put(codigo, new PL(codigo, dni, ano, ementa, interesses, url, conclusivo));
+
+		return codigo;
 	}
 
-	public void cadastraPLP(String dni, int ano, String ementa, String interesses, String url, String artigos) {
+	public String cadastraPLP(String dni, int ano, String ementa, String interesses, String url, String artigos) {
 		Validador v = new Validador();
 		v.validaString(dni, "Erro ao cadastrar projeto: autor nao pode ser vazio ou nulo");
 		v.validaDni(dni, "Erro ao cadastrar projeto: dni invalido");
@@ -76,9 +78,11 @@ public class ProjetoController {
 
 		String codigo = criaCodigo(Projetos.PLP, ano);
 		this.propostas.put(codigo, new PLP(codigo, dni, ano, ementa, interesses, url, artigos));
+
+		return codigo;
 	}
 
-	public void cadastraPEC(String dni, int ano, String ementa, String interesses, String url, String artigos) {
+	public String cadastraPEC(String dni, int ano, String ementa, String interesses, String url, String artigos) {
 		Validador v = new Validador();
 		v.validaString(dni, "Erro ao cadastrar projeto: autor nao pode ser vazio ou nulo");
 		v.validaDni(dni, "Erro ao cadastrar projeto: dni invalido");
@@ -91,6 +95,8 @@ public class ProjetoController {
 
 		String codigo = criaCodigo(Projetos.PEC, ano);
 		this.propostas.put(codigo, new PEC(codigo, dni, ano, ementa, interesses, url, artigos));
+
+		return codigo;
 	}
 
 	public String exibirProjeto(String codigo) {
@@ -98,5 +104,17 @@ public class ProjetoController {
 			throw new NullPointerException("Erro ao exibir projeto: codigo nao cadastrado");
 
 		return this.propostas.get(codigo).toString();
+	}
+
+	public boolean votarComissao(String codigo, String statusGovernista, String proximoLocal) {
+		return false;
+	}
+
+	public boolean votarPlenario(String codigo, String statusGovernista, String presentes) {
+		return false;
+	}
+
+	public String exibirTramitacao(String codigo) {
+		return "";
 	}
 }

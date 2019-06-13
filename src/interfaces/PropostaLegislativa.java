@@ -1,6 +1,6 @@
 package interfaces;
 
-import util.Projetos;
+import enums.Projetos;
 
 /**
  * Essa interface representa as possibilidades de propostas legislativas 
