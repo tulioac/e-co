@@ -1,61 +1,62 @@
 package controllers;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 class PartidoControllerTest {
 
-	private PartidoController pc1;
-	
-	@BeforeEach
-	void setUp(){
-		this.pc1 = new PartidoController();
-	}
+    private PartidoController pc1;
 
-	@Test
-	void testaCadastrarPartidoValido() {
-		this.pc1.cadastrarPartido("PeteDuBê");
-		this.pc1.cadastrarPartido("PeSól");
+    @BeforeEach
+    void setUp() {
+        this.pc1 = new PartidoController();
+    }
 
-		assertEquals("PeSól,PeteDuBê",
+    @Test
+    void testaCadastrarPartidoValido() {
+        this.pc1.cadastrarPartido("PeteDuBê");
+        this.pc1.cadastrarPartido("PeSól");
+
+        assertEquals("PeSól,PeteDuBê",
                 this.pc1.exibeBase());
-	}
-	
-	@Test
-	void testaCadastrarPartidoComNomeNulo() {
+    }
+
+    @Test
+    void testaCadastrarPartidoComNomeNulo() {
         assertThrows(NullPointerException.class,
                 () -> this.pc1.cadastrarPartido(null));
     }
 
     @Test
     void testaCadastrarPartidoComNomeVazio() {
-		assertThrows(IllegalArgumentException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> this.pc1.cadastrarPartido(""));
-	}
-	
-	@Test
-	void testaCadastrarPartidoExistente() {
-		this.pc1.cadastrarPartido("PeteDuBê");
+    }
 
-		assertThrows(IllegalArgumentException.class,
+    @Test
+    void testaCadastrarPartidoExistente() {
+        this.pc1.cadastrarPartido("PeteDuBê");
+
+        assertThrows(IllegalArgumentException.class,
                 () -> this.pc1.cadastrarPartido("PeteDuBê"));
-	}
+    }
 
-	@Test
-	void testaExibeBaseComPartidos() {
-		this.pc1.cadastrarPartido("Pra frente Brasil");
-		this.pc1.cadastrarPartido("Ele Não");
-		this.pc1.cadastrarPartido("Lula acima de todos!");
+    @Test
+    void testaExibeBaseComPartidos() {
+        this.pc1.cadastrarPartido("Pra frente Brasil");
+        this.pc1.cadastrarPartido("Ele Não");
+        this.pc1.cadastrarPartido("Lula acima de todos!");
 
-		assertEquals("Ele Não,Lula acima de todos!,Pra frente Brasil",
+        assertEquals("Ele Não,Lula acima de todos!,Pra frente Brasil",
                 this.pc1.exibeBase());
-	}
+    }
 
-	@Test
+    @Test
     void testaExibeBaseSemPartidos() {
-	    assertEquals("",
+        assertEquals("",
                 this.pc1.exibeBase());
     }
 }
