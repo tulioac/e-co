@@ -48,7 +48,7 @@ public class ProjetoController {
 		v.validaNull(conclusivo, "Erro ao cadastrar projeto: conclusivo nao pode ser nula");
 
 		String codigo = criaCodigo(Projetos.PL, ano);
-		this.propostas.put(codigo, new PL(dni, ano, ementa, interesses, url, conclusivo));
+		this.propostas.put(codigo, new PL(codigo, dni, ano, ementa, interesses, url, conclusivo));
 	}
 
 	public void cadastraPLP(String dni, int ano, String ementa, String interesses, String url, String artigos) {
@@ -62,7 +62,7 @@ public class ProjetoController {
 		v.validaString(artigos, "Erro ao cadastrar projeto: artigo nao pode ser vazio ou nulo");
 
 		String codigo = criaCodigo(Projetos.PLP, ano);
-		this.propostas.put(codigo, new PLP(dni, ano, ementa, interesses, url, artigos));
+		this.propostas.put(codigo, new PLP(codigo, dni, ano, ementa, interesses, url, artigos));
 	}
 
 	public void cadastraPEC(String dni, int ano, String ementa, String interesses, String url, String artigos) {
@@ -76,7 +76,7 @@ public class ProjetoController {
 		v.validaString(artigos, "Erro ao cadastrar projeto: artigo nao pode ser vazio ou nulo");
 
 		String codigo = criaCodigo(Projetos.PEC, ano);
-		this.propostas.put(codigo, new PEC(dni, ano, ementa, interesses, url, artigos));
+		this.propostas.put(codigo, new PEC(codigo, dni, ano, ementa, interesses, url, artigos));
 	}
 
 	public String exibirProjeto(String codigo) {

@@ -14,8 +14,8 @@ public class PL extends Projeto {
 	
 	private boolean conclusivo;
 	
-	public PL(String dniAutor, int ano, String ementa, String interesses, String endereco, boolean conclusivo) {
-		super(dniAutor, ano, ementa, interesses, endereco);
+	public PL(String codigo, String dniAutor, int ano, String ementa, String interesses, String endereco, boolean conclusivo) {
+		super(codigo, dniAutor, ano, ementa, interesses, endereco);
 		this.conclusivo = conclusivo;
 		this.tipoDoProjeto = Projetos.PL;
 	}
@@ -25,9 +25,9 @@ public class PL extends Projeto {
 		StringBuilder representacaoDeProjeto = new StringBuilder("Projeto de Lei - " + super.toString() + " - ");
 
 		if (conclusivo)
-			representacaoDeProjeto.append("Conclusiva");
+			representacaoDeProjeto.append("Conclusiva - ");
 
-		representacaoDeProjeto.append(" - " + this.exibeSituacaoAtual());
+		representacaoDeProjeto.append(this.exibeSituacaoAtual());
 
 		return representacaoDeProjeto.toString();
 	}

@@ -14,10 +14,10 @@ import util.SituacaoVotacao;
  */
 public abstract class Projeto implements PropostaLegislativa{
 
+    private String codigo;
+
 	private String dniAutor;
 
-    private String codigo;
-	
 	private int ano;
 	
 	private String ementa;
@@ -32,8 +32,9 @@ public abstract class Projeto implements PropostaLegislativa{
 	
 	protected String localDeVotacao;
 
-	public Projeto(String dniAutor, int ano, String ementa, String interesses, String endereco) {
+	public Projeto(String codigo, String dniAutor, int ano, String ementa, String interesses, String endereco) {
 		super();
+		this.codigo = codigo;
 		this.dniAutor = dniAutor;
 		this.ano = ano;
 		this.ementa = ementa;
@@ -48,7 +49,7 @@ public abstract class Projeto implements PropostaLegislativa{
 	}
 	
 	public String exibeSituacaoAtual() {
-		StringBuilder situacaoAtual = new StringBuilder(this.situacaoAtual.toString() + "(" + this.localDeVotacao + ")");
+		StringBuilder situacaoAtual = new StringBuilder(this.situacaoAtual.toString().replace("_", " ") + " (" + this.localDeVotacao + ")");
 		return situacaoAtual.toString();
 	}
 	
@@ -58,7 +59,7 @@ public abstract class Projeto implements PropostaLegislativa{
 
     @Override
     public String toString() {
-        return this.codigo + this.dniAutor + this.ementa;
+        return this.codigo + " - " + this.dniAutor + " - " + this.ementa;
     }
 
 	@Override
