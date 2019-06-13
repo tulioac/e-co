@@ -52,6 +52,7 @@ public class ProjetoController {
 		Validador v = new Validador();
 		v.validaString(dni, "Erro ao cadastrar projeto: autor nao pode ser vazio ou nulo");
 		v.validaDni(dni, "Erro ao cadastrar projeto: dni invalido");
+		this.verificaDni(dni);
 		v.validaAno(ano);
 		v.validaString(ementa, "Erro ao cadastrar projeto: ementa nao pode ser vazia ou nula");
 		v.validaString(interesses, "Erro ao cadastrar projeto: interesse nao pode ser vazio ou nulo");
@@ -66,6 +67,7 @@ public class ProjetoController {
 		Validador v = new Validador();
 		v.validaString(dni, "Erro ao cadastrar projeto: autor nao pode ser vazio ou nulo");
 		v.validaDni(dni, "Erro ao cadastrar projeto: dni invalido");
+		this.verificaDni(dni);
 		v.validaAno(ano);
 		v.validaString(ementa, "Erro ao cadastrar projeto: ementa nao pode ser vazia ou nula");
 		v.validaString(interesses, "Erro ao cadastrar projeto: interesse nao pode ser vazio ou nulo");
@@ -80,6 +82,7 @@ public class ProjetoController {
 		Validador v = new Validador();
 		v.validaString(dni, "Erro ao cadastrar projeto: autor nao pode ser vazio ou nulo");
 		v.validaDni(dni, "Erro ao cadastrar projeto: dni invalido");
+		this.verificaDni(dni);
 		v.validaAno(ano);
 		v.validaString(ementa, "Erro ao cadastrar projeto: ementa nao pode ser vazia ou nula");
 		v.validaString(interesses, "Erro ao cadastrar projeto: interesse nao pode ser vazio ou nulo");
