@@ -60,10 +60,10 @@ public class ComissaoController {
 		for (String dniPolitico : dnis) {
 			v.validaDni(dniPolitico, "Erro ao cadastrar comissao: dni invalido");
 
-			if (!pessoaService.ehPessoaCadastrada(dniPolitico))
+			if (!(this.pessoaService.ehPessoaCadastrada(dniPolitico)))
 				throw new NullPointerException("Erro ao cadastrar comissao: pessoa inexistente");
 
-			if (!pessoaService.ehDeputado(dniPolitico))
+			if (!(this.pessoaService.ehDeputado(dniPolitico)))
 				throw new IllegalArgumentException("Erro ao cadastrar comissao: pessoa nao eh deputado");
 		}
 
