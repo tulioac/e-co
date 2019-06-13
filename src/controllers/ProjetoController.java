@@ -33,7 +33,7 @@ public class ProjetoController {
 
 		qntProjetosNoAno++;
 
-		StringBuilder codigo = new StringBuilder(tipoProjeto.toString() + " - " + qntProjetosNoAno + "/" + ano);
+		StringBuilder codigo = new StringBuilder(tipoProjeto.toString() + " " + qntProjetosNoAno + "/" + ano);
 		return codigo.toString();
 	}
 
