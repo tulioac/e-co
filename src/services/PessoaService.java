@@ -65,7 +65,7 @@ public class PessoaService {
 	 * @return Pessoa dona do dni passado como parâmetro caso exista, null caso
 	 *         contrário
 	 */
-	public Pessoa getPessoaByDni(String dni) {
+	public Pessoa getPessoaPeloDni(String dni) {
 		for (Pessoa pessoa : getPessoas()) {
 			if (pessoa.getDni().equals(dni)) {
 				return pessoa;
@@ -84,10 +84,10 @@ public class PessoaService {
 	 */
 	public boolean ehDeputado(String dni) {
 		if (ehPessoaCadastrada(dni)) {
-			if ("Sem Cargo".equals(getPessoaByDni(dni).getCargoPolitico()))
+			if ("Sem Cargo".equals(getPessoaPeloDni(dni).getCargoPolitico()))
 				return false;
 
-			if ("Deputado".equals(getPessoaByDni(dni).getCargoPolitico()))
+			if ("Deputado".equals(getPessoaPeloDni(dni).getCargoPolitico()))
 				return true;
 		}
 		return false;

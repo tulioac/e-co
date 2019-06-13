@@ -1,14 +1,14 @@
 package controllers;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import entities.Comissao;
 import entities.Pessoa;
 import services.PessoaService;
 import util.Validador;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Essa classe usa o padrão Controller contendo métodos que operam sobre a
@@ -60,10 +60,10 @@ public class ComissaoController {
 		for (String dniPolitico : dnis) {
 			v.validaDni(dniPolitico, "Erro ao cadastrar comissao: dni invalido");
 
-			if (!pessoaService.ehPessoaCadastrada(dniPolitico))
+			if (!(this.pessoaService.ehPessoaCadastrada(dniPolitico)))
 				throw new NullPointerException("Erro ao cadastrar comissao: pessoa inexistente");
 
-			if (!pessoaService.ehDeputado(dniPolitico))
+			if (!(this.pessoaService.ehDeputado(dniPolitico)))
 				throw new IllegalArgumentException("Erro ao cadastrar comissao: pessoa nao eh deputado");
 		}
 
@@ -94,7 +94,7 @@ public class ComissaoController {
 
 		Set<Pessoa> integrantesComissao = new HashSet<>();
 		for (String dniValida : dnisValidadas) {
-			integrantesComissao.add(this.pessoaService.getPessoaByDni(dniValida));
+			integrantesComissao.add(this.pessoaService.getPessoaPeloDni(dniValida));
 		}
 		this.comissoes.put(tema, new Comissao(tema, integrantesComissao));
 	}
