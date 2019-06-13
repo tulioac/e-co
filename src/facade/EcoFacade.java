@@ -34,7 +34,7 @@ public class EcoFacade {
 		this.pessoaController = new PessoaController();
 		this.partidoController = new PartidoController();
 		this.comissaoController = new ComissaoController(new PessoaService(pessoaController));
-		this.projetoController = new ProjetoController();
+		this.projetoController = new ProjetoController(new PessoaService(pessoaController));
 	}
 
 	public void limparSistema() {

@@ -4,6 +4,7 @@ import entities.PEC;
 import entities.PL;
 import entities.PLP;
 import interfaces.PropostaLegislativa;
+import services.PessoaService;
 import util.Projetos;
 import util.Validador;
 
@@ -12,9 +13,11 @@ import java.util.Map;
 
 public class ProjetoController {
 
+	private PessoaService pessoaService;
 	private Map<String, PropostaLegislativa> propostas;
 
-	public ProjetoController() {
+	public ProjetoController(PessoaService pessoaService) {
+		this.pessoaService = pessoaService;
 		this.propostas = new HashMap<>();
 	}
 
@@ -35,6 +38,14 @@ public class ProjetoController {
 
 		StringBuilder codigo = new StringBuilder(tipoProjeto.toString() + " " + qntProjetosNoAno + "/" + ano);
 		return codigo.toString();
+	}
+
+	private void verificaDni(String dni){
+		if (!(this.pessoaService.ehPessoaCadastrada(dni)))
+			throw new NullPointerException("Erro ao cadastrar projeto: pessoa inexistente");
+
+		if (!(this.pessoaService.ehDeputado(dni)))
+			throw new IllegalArgumentException("Erro ao cadastrar projeto: pessoa nao eh deputado");
 	}
 
 	public void cadastraPL(String dni, int ano, String ementa, String interesses, String url, boolean conclusivo) {
