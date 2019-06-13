@@ -8,11 +8,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PartidoControllerTest {
 
-    private PartidoController pc1;
+    private PartidoBaseController pc1;
 
     @BeforeEach
     void setUp() {
-        this.pc1 = new PartidoController();
+        this.pc1 = new PartidoBaseController();
     }
 
     @Test

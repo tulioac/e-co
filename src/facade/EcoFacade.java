@@ -2,7 +2,7 @@ package facade;
 
 
 import controllers.ComissaoController;
-import controllers.PartidoController;
+import controllers.PartidoBaseController;
 import controllers.PessoaController;
 import controllers.ProjetoController;
 import easyaccept.EasyAccept;
@@ -22,7 +22,7 @@ public class EcoFacade {
      * Armazena uma instância da classe controladora de pessoa.
      */
     private PessoaController pessoaController;
-    private PartidoController partidoController;
+    private PartidoBaseController partidoController;
     private ComissaoController comissaoController;
     private ProjetoController projetoController;
 
@@ -32,7 +32,7 @@ public class EcoFacade {
      */
     public EcoFacade() {
         this.pessoaController = new PessoaController();
-        this.partidoController = new PartidoController();
+        this.partidoController = new PartidoBaseController();
         this.comissaoController = new ComissaoController(new PessoaService(pessoaController));
         this.projetoController = new ProjetoController(new PessoaService(pessoaController));
     }
