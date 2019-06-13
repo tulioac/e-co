@@ -1,13 +1,14 @@
 package controllers;
 
+import entities.PEC;
+import entities.PL;
+import entities.PLP;
 import interfaces.PropostaLegislativa;
 import util.Projetos;
 import util.Validador;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import entities.PL;
 
 public class ProjetoController {
 
@@ -45,9 +46,8 @@ public class ProjetoController {
 		v.validaString(interesses, "Erro ao cadastrar projeto: interesse nao pode ser vazio ou nulo");
 		v.validaString(url, "Erro ao cadastrar projeto: url nao pode ser vazio ou nulo");
 		v.validaNull(conclusivo, "Erro ao cadastrar projeto: conclusivo nao pode ser nula");
-		
+
 		String codigo = criaCodigo(Projetos.PL, ano);
-		
 		this.propostas.put(codigo, new PL(dni, ano, ementa, interesses, url, conclusivo));
 	}
 
@@ -60,6 +60,9 @@ public class ProjetoController {
 		v.validaString(interesses, "Erro ao cadastrar projeto: interesse nao pode ser vazio ou nulo");
 		v.validaString(url, "Erro ao cadastrar projeto: url nao pode ser vazio ou nulo");
 		v.validaString(artigos, "Erro ao cadastrar projeto: artigo nao pode ser vazio ou nulo");
+
+		String codigo = criaCodigo(Projetos.PLP, ano);
+		this.propostas.put(codigo, new PLP(dni, ano, ementa, interesses, url, artigos));
 	}
 
 	public void cadastraPEC(String dni, int ano, String ementa, String interesses, String url, String artigos) {
@@ -71,6 +74,9 @@ public class ProjetoController {
 		v.validaString(interesses, "Erro ao cadastrar projeto: interesse nao pode ser vazio ou nulo");
 		v.validaString(url, "Erro ao cadastrar projeto: url nao pode ser vazio ou nulo");
 		v.validaString(artigos, "Erro ao cadastrar projeto: artigo nao pode ser vazio ou nulo");
+
+		String codigo = criaCodigo(Projetos.PEC, ano);
+		this.propostas.put(codigo, new PEC(dni, ano, ementa, interesses, url, artigos));
 	}
 
 	public String exibirProjeto(String codigo) {
