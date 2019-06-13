@@ -9,7 +9,7 @@ public class PLP extends Projeto{
 	
 	private String artigos;
 	
-	public PLP(String dniAutor, int ano, String ementa, Set<String> interesses, String endereco, String artigos) {
+	public PLP(String dniAutor, String ano, String ementa, Set<String> interesses, String endereco, String artigos) {
 		super(dniAutor, ano, ementa, interesses, endereco);
 		this.artigos = artigos;
 		this.tipoDoProjeto = Projetos.PLP;

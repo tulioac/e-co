@@ -1,5 +1,6 @@
 package interfaces;
 
+import util.Projetos;
 import util.SituacaoVotacao;
 
 import java.util.Set;
@@ -23,9 +24,12 @@ public interface PropostaLegislativa {
 	 */
 	public SituacaoVotacao getSituacaoAtual();
 
-
 	/**
 	 * Esse método retorna a representaçao em String de um projeto de lei
 	 */
 	public String toString();
+	
+	public String getAno();
+	
+	public Projetos getTipoDoProjeto();
 }

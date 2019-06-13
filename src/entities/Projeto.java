@@ -19,7 +19,7 @@ public abstract class Projeto implements PropostaLegislativa{
 
     private String codigo;
 	
-	private int ano;
+	private String ano;
 	
 	private String ementa;
 	
@@ -31,7 +31,7 @@ public abstract class Projeto implements PropostaLegislativa{
 
 	protected Projetos tipoDoProjeto;
 
-	public Projeto(String dniAutor, int ano, String ementa, Set<String> interesses, String endereco) {
+	public Projeto(String dniAutor, String ano, String ementa, Set<String> interesses, String endereco) {
 		super();
 		this.dniAutor = dniAutor;
 		this.ano = ano;
@@ -40,17 +40,19 @@ public abstract class Projeto implements PropostaLegislativa{
 		this.endereco = endereco;
 		this.situacaoAtual = SituacaoVotacao.EM_VOTACAO;
 	}
+	
+	public Projetos getTipoDoProjeto() {
+		return this.tipoDoProjeto;
+	}
+	
+	public String getAno() {
+		return this.ano;
+	}
 
     @Override
     public String toString() {
         return this.codigo + this.dniAutor + this.ementa;
     }
-
-    /**
-	@Override
-	public SituacaoVotacao getSituacaoAtual() {
-		this.situacaoAtual;
-		*/
 
 	@Override
 	public int hashCode() {
@@ -76,5 +78,4 @@ public abstract class Projeto implements PropostaLegislativa{
 			return false;
 		return true;
 	}
-
 }
