@@ -1,5 +1,6 @@
 package facade;
 
+
 import controllers.ComissaoController;
 import controllers.PartidoController;
 import controllers.PessoaController;
@@ -33,6 +34,7 @@ public class EcoFacade {
 		this.pessoaController = new PessoaController();
 		this.partidoController = new PartidoController();
 		this.comissaoController = new ComissaoController(new PessoaService(pessoaController));
+		this.projetoController = new ProjetoController();
 	}
 
 	public void limparSistema() {
@@ -152,7 +154,7 @@ public class EcoFacade {
 
 		args = new String[] { "facade.EcoFacade", "acceptance_tests/use_case_1.txt", "acceptance_tests/use_case_2.txt",
 				"acceptance_tests/use_case_3.txt", "acceptance_tests/use_case_4.txt",
-				"acceptance_tests/use_case_5.txt" };
+				"acceptance_tests/use_case_5.txt", "acceptance_tests/use_case_6.txt" };
 		EasyAccept.main(args);
 	}
 }
