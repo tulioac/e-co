@@ -1,5 +1,5 @@
-package util;
+package enums;
 
 public enum CargosPoliticos {
-	DEPUTADO;
+    DEPUTADO;
 }
