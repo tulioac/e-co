@@ -2,7 +2,7 @@ package entities;
 
 import enums.Projetos;
 
-public class PLP extends Projeto{
+public class PLP extends Projeto {
 	
 	private String artigos;
 	
