@@ -17,19 +17,12 @@ public abstract class Projeto implements PropostaLegislativa {
     private String codigo;
 
 	private String dniAutor;
-
 	private int ano;
-	
 	private String ementa;
-	
 	private String interesses;
-	
 	private SituacaoVotacao situacaoAtual;
-	
 	private String endereco;
-
 	protected Projetos tipoDoProjeto;
-	
 	protected String localDeVotacao;
 
 	public Projeto(String codigo, String dniAutor, int ano, String ementa, String interesses, String endereco) {
