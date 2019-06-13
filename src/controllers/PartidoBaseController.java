@@ -15,7 +15,7 @@ import java.util.*;
  * @author Tulio Araujo Cunha
  * @author Guilherme de Melo Carneiro
  */
-public class PartidoController {
+public class PartidoBaseController {
 
     /**
      * Armazena objetos do tipo Partido e utiliza como chave o nome do partido
@@ -26,7 +26,7 @@ public class PartidoController {
     /**
      * Constrói o controller e inicializa o mapa que armazena Partidos.
      */
-    public PartidoController() {
+    public PartidoBaseController() {
         this.partidos = new HashMap<>();
     }
 

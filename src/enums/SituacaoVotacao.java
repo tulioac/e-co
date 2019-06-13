@@ -1,5 +1,5 @@
 package enums;
 
 public enum SituacaoVotacao {
-    EM_VOTACAO, REJEITADA, APROVADA, ALTERACOES;
+    EM_VOTACAO, REJEITADA, APROVADA;
 }
