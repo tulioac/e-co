@@ -129,20 +129,24 @@ public class EcoFacade {
 		this.comissaoController.cadastrarComissao(tema, politicos);
 	}
 
-	public void cadastrarPL(String dni, int ano, String ementa, String interesses, String url, boolean conclusivo){
-		this.projetoController.cadastraPL(dni, ano, ementa, interesses, url, conclusivo);
+	public String cadastrarPL(String dni, int ano, String ementa, String interesses, String url, boolean conclusivo){
+		return this.projetoController.cadastraPL(dni, ano, ementa, interesses, url, conclusivo);
 	}
 
-	public void cadastrarPLP(String dni, int ano, String ementa, String interesses, String url, String artigos){
-		this.projetoController.cadastraPLP(dni, ano, ementa, interesses, url, artigos);
+	public String cadastrarPLP(String dni, int ano, String ementa, String interesses, String url, String artigos){
+		return this.projetoController.cadastraPLP(dni, ano, ementa, interesses, url, artigos);
 	}
 
-	public void cadastrarPEC(String dni, int ano, String ementa, String interesses, String url, String artigos){
-		this.projetoController.cadastraPEC(dni, ano, ementa, interesses, url, artigos);
+	public String cadastrarPEC(String dni, int ano, String ementa, String interesses, String url, String artigos){
+		return this.projetoController.cadastraPEC(dni, ano, ementa, interesses, url, artigos);
 	}
 
 	public String exibirProjeto(String codigo){
 		return this.projetoController.exibirProjeto(codigo);
+	}
+
+	public boolean votarComissao(String codigo, String statusGovernista){
+		return this.votarComissao(codigo, statusGovernista);
 	}
 
 	/**
