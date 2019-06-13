@@ -1,9 +1,6 @@
 package entities;
 
-import java.util.Set;
-
 import util.Projetos;
-import util.SituacaoVotacao;
 
 /**
  * Essa classe representa um projeto de lei.
@@ -17,7 +14,7 @@ public class PL extends Projeto {
 	
 	private boolean conclusivo;
 	
-	public PL(String dniAutor, String ano, String ementa, Set<String> interesses, String endereco, boolean conclusivo) {
+	public PL(String dniAutor, int ano, String ementa, String interesses, String endereco, boolean conclusivo) {
 		super(dniAutor, ano, ementa, interesses, endereco);
 		this.conclusivo = conclusivo;
 		this.tipoDoProjeto = Projetos.PL;
@@ -30,19 +27,8 @@ public class PL extends Projeto {
 		if (conclusivo)
 			representacaoDeProjeto.append("Conclusiva");
 
-		representacaoDeProjeto.append(" - " + this.getSituacaoAtual());
+		representacaoDeProjeto.append(" - " + this.exibeSituacaoAtual());
 
 		return representacaoDeProjeto.toString();
 	}
-
-	@Override
-	public void setSituacaoAtual(SituacaoVotacao situacaoAtual) {
-
-	}
-
-	@Override
-	public SituacaoVotacao getSituacaoAtual() {
-        // TODO: Colocar local
-        return null;
-    }
 }

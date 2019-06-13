@@ -129,15 +129,15 @@ public class EcoFacade {
 		this.comissaoController.cadastrarComissao(tema, politicos);
 	}
 
-	public void cadastrarPL(String dni, String ano, String ementa, String interesses, String url, boolean conclusivo){
+	public void cadastrarPL(String dni, int ano, String ementa, String interesses, String url, boolean conclusivo){
 		this.projetoController.cadastraPL(dni, ano, ementa, interesses, url, conclusivo);
 	}
 
-	public void cadastrarPLP(String dni, String ano, String ementa, String interesses, String url, String artigos){
+	public void cadastrarPLP(String dni, int ano, String ementa, String interesses, String url, String artigos){
 		this.projetoController.cadastraPLP(dni, ano, ementa, interesses, url, artigos);
 	}
 
-	public void cadastrarPEC(String dni, String ano, String ementa, String interesses, String url, String artigos){
+	public void cadastrarPEC(String dni, int ano, String ementa, String interesses, String url, String artigos){
 		this.projetoController.cadastraPEC(dni, ano, ementa, interesses, url, artigos);
 	}
 

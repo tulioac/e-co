@@ -3,6 +3,7 @@ package util;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Validador {
@@ -78,7 +79,13 @@ public class Validador {
 		return dataFormatada;
 	}
 
-	public void validaAno(String ano, String mensagem) {
-		// TODO: Implementar
+	public void validaAno(int ano) {
+		if (ano < 1988)
+			throw new IllegalArgumentException("Erro ao cadastrar projeto: ano anterior a 1988");
+
+		int anoAtual = Calendar.getInstance().YEAR;
+
+		if (ano > anoAtual)
+			throw new IllegalArgumentException("Erro ao cadastrar projeto: ano posterior ao ano atual");
 	}
 }
