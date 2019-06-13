@@ -12,7 +12,7 @@ import util.SituacaoVotacao;
  * @author Tulio Araujo Cunha
  * @author Guilherme de Melo Carneiro
  */
-public abstract class Projeto implements PropostaLegislativa{
+public abstract class Projeto implements PropostaLegislativa {
 
     private String codigo;
 
