@@ -3,7 +3,7 @@ package entities;
 import java.util.Date;
 
 import interfaces.CargoPolitico;
-import util.CargosPoliticos;
+import enums.CargosPoliticos;
 import util.Validador;
 
 /**

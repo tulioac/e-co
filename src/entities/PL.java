@@ -1,6 +1,6 @@
 package entities;
 
-import util.Projetos;
+import enums.Projetos;
 
 /**
  * Essa classe representa um projeto de lei.

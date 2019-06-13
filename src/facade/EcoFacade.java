@@ -145,9 +145,19 @@ public class EcoFacade {
 		return this.projetoController.exibirProjeto(codigo);
 	}
 
-	public boolean votarComissao(String codigo, String statusGovernista){
-		return this.votarComissao(codigo, statusGovernista);
+	public boolean votarComissao(String codigo, String statusGovernista, String proximoLocal){
+		return this.projetoController.votarComissao(codigo, statusGovernista, proximoLocal);
 	}
+
+	public boolean votarPlenario(String codigo, String statusGovernista, String presentes){
+		return this.projetoController.votarPlenario(codigo, statusGovernista, presentes);
+	}
+
+	public String exibirTramitacao(String codigo){
+		return this.projetoController.exibirTramitacao(codigo);
+	}
+
+
 
 	/**
 	 * Método de testes do EasyAccept.
