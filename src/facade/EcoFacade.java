@@ -3,6 +3,7 @@ package facade;
 import controllers.ComissaoController;
 import controllers.PartidoController;
 import controllers.PessoaController;
+import controllers.ProjetoController;
 import easyaccept.EasyAccept;
 import services.PessoaService;
 
@@ -22,6 +23,7 @@ public class EcoFacade {
 	private PessoaController pessoaController;
 	private PartidoController partidoController;
 	private ComissaoController comissaoController;
+	private ProjetoController projetoController;
 
 	/**
 	 * Constrói a classe EcoFacade e inicializa uma instância da classe
@@ -107,7 +109,7 @@ public class EcoFacade {
 
 	/**
 	 * Exibe, em ordem alfabética A-Z, os partidos cadastrados na base.
-	 * 
+	 *
 	 * @return String contendo o nome dos partidos cadastrados em ordem alfabética.
 	 */
 	public String exibirBase() {
@@ -116,13 +118,29 @@ public class EcoFacade {
 
 	/**
 	 * Cadastra uma comissão a partir de um tema e dos políticos que a integra.
-	 * 
+	 *
 	 * @param tema      tema que a comissão irá tratar.
 	 * @param politicos String contendo os DNIs(separados por vírgula) dos políticos
 	 *                  que participarão da comissão.
 	 */
 	public void cadastrarComissao(String tema, String politicos) {
 		this.comissaoController.cadastrarComissao(tema, politicos);
+	}
+
+	public void cadastrarPL(String dni, String ano, String ementa, String interesses, String url, boolean conclusivo){
+		this.projetoController.cadastraPL(dni, ano, ementa, interesses, url, conclusivo);
+	}
+
+	public void cadastrarPLP(String dni, String ano, String ementa, String interesses, String url, String artigos){
+		this.projetoController.cadastraPLP(dni, ano, ementa, interesses, url, artigos);
+	}
+
+	public void cadastrarPEC(String dni, String ano, String ementa, String interesses, String url, String artigos){
+		this.projetoController.cadastraPEC(dni, ano, ementa, interesses, url, artigos);
+	}
+
+	public String exibirProjeto(String codigo){
+		return this.projetoController.exibirProjeto(codigo);
 	}
 
 	/**

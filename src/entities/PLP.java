@@ -2,30 +2,38 @@ package entities;
 
 import java.util.Set;
 
+import util.Projetos;
 import util.SituacaoVotacao;
 
 public class PLP extends Projeto{
 	
-	private Set<String> artigos;
+	private String artigos;
 	
-	private String nome;
-
-	public PLP(String dniAutor, int ano, String ementa, Set<String> interesses, String endereco, Set<String> artigos) {
+	public PLP(String dniAutor, int ano, String ementa, Set<String> interesses, String endereco, String artigos) {
 		super(dniAutor, ano, ementa, interesses, endereco);
 		this.artigos = artigos;
-		this.nome = "Projeto de Lei Complementar";
+		this.tipoDoProjeto = Projetos.PLP;
+	}
+
+	@Override
+	public void setSituacaoAtual(SituacaoVotacao situacaoAtual) {
+
 	}
 
 	@Override
 	public SituacaoVotacao getSituacaoAtual() {
+		// TODO: Colocar local
 		return null;
 	}
-	
+
 	@Override
 	public String toString() {
-		return this.nome + " - " + this.codigo + " - " + this.dniAutor + " - " + this.ementa + " - " + this.artigos + " - ";
+		StringBuilder representacaoDeProjeto = new StringBuilder("Projeto de Lei Complementar - " + super.toString() + " - " + this.getArtigos() + " - " + this.getSituacaoAtual());
+
+		return representacaoDeProjeto.toString();
 	}
-	
-	
-	
+
+	private String getArtigos() {
+		return this.artigos.replace(",", ", ");
+	}
 }

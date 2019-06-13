@@ -3,6 +3,7 @@ package entities;
 import java.util.Set;
 
 import interfaces.PropostaLegislativa;
+import util.Projetos;
 import util.SituacaoVotacao;
 /**
  * Essa classe representa XXXX.
@@ -13,19 +14,22 @@ import util.SituacaoVotacao;
  * @author Guilherme de Melo Carneiro
  */
 public abstract class Projeto implements PropostaLegislativa{
-	protected String dniAutor;
+
+	private String dniAutor;
+
+    private String codigo;
 	
-	protected String codigo;
+	private int ano;
 	
-	protected int ano;
+	private String ementa;
 	
-	protected String ementa;
+	private Set <String> interesses;
 	
-	protected Set <String> interesses;
+	private SituacaoVotacao situacaoAtual;
 	
-	protected SituacaoVotacao situacaoAtual;
-	
-	protected String endereco;
+	private String endereco;
+
+	protected Projetos tipoDoProjeto;
 
 	public Projeto(String dniAutor, int ano, String ementa, Set<String> interesses, String endereco) {
 		super();
@@ -36,8 +40,13 @@ public abstract class Projeto implements PropostaLegislativa{
 		this.endereco = endereco;
 		this.situacaoAtual = SituacaoVotacao.EM_VOTACAO;
 	}
-	
-	/**
+
+    @Override
+    public String toString() {
+        return this.codigo + this.dniAutor + this.ementa;
+    }
+
+    /**
 	@Override
 	public SituacaoVotacao getSituacaoAtual() {
 		this.situacaoAtual;

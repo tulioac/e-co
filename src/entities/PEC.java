@@ -2,29 +2,38 @@ package entities;
 
 import java.util.Set;
 
+import util.Projetos;
 import util.SituacaoVotacao;
 
 public class PEC extends Projeto{
 	
-	private Set <String> artigos;
+	private String artigos;
 	
-	private String nome;
-	
-	public PEC(String dniAutor, int ano, String ementa, Set<String> interesses, String endereco, Set <String> artigo) {
+	public PEC(String dniAutor, int ano, String ementa, Set<String> interesses, String endereco, String artigos) {
 		super(dniAutor, ano, ementa, interesses, endereco);
 		this.artigos = artigos;
-		this.nome = "Projeto de Emenda Constitucional";
+		this.tipoDoProjeto = Projetos.PEC;
+	}
+
+	@Override
+	public void setSituacaoAtual(SituacaoVotacao situacaoAtual) {
+
 	}
 
 	@Override
 	public SituacaoVotacao getSituacaoAtual() {
-		return ;
+		// TODO: Colocar local
+	    return null;
 	}
-	
-	//falta situacao
-	@Override
-	public String toString() {
-		return this.nome + " - " + this.codigo + " - " + this.dniAutor + " - " + this.ementa + " - " + this.artigos + " - ";
-	}
-	
+
+    @Override
+    public String toString() {
+        StringBuilder representacaoDeProjeto = new StringBuilder("Projeto de Emenda Constitucional - " + super.toString() + " - " + this.getArtigos() + " - " + this.getSituacaoAtual());
+
+        return representacaoDeProjeto.toString();
+    }
+
+    private String getArtigos() {
+        return this.artigos.replace(",", ", ");
+    }
 }

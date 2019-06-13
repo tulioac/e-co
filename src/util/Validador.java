@@ -77,4 +77,8 @@ public class Validador {
 
 		return dataFormatada;
 	}
+
+	public void validaAno(String ano, String mensagem) {
+		// TODO: Implementar
+	}
 }

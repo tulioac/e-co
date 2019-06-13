@@ -2,6 +2,7 @@ package entities;
 
 import java.util.Set;
 
+import util.Projetos;
 import util.SituacaoVotacao;
 
 /**
@@ -16,33 +17,32 @@ public class PL extends Projeto {
 	
 	private boolean conclusivo;
 	
-	private String nome;
-
 	public PL(String dniAutor, int ano, String ementa, Set<String> interesses, String endereco, boolean conclusivo) {
 		super(dniAutor, ano, ementa, interesses, endereco);
 		this.conclusivo = conclusivo;
-		this.nome = "Projeto de Lei";
+		this.tipoDoProjeto = Projetos.PL;
 	}
-	
-	public String ehConclusivo() {
-		if (this.conclusivo) 
-			return "Conclusivo";
-		return "";
-	}
-	
-	//falta add o codigo - criar o método para geracao do codigo
+
 	@Override
 	public String toString() {
-		return this.nome + " - "  + " - " + this.dniAutor +
-				" - " + this.ementa + " - " + this.ehConclusivo();
+		StringBuilder representacaoDeProjeto = new StringBuilder("Projeto de Lei - " + super.toString() + " - ");
+
+		if (conclusivo)
+			representacaoDeProjeto.append("Conclusiva");
+
+		representacaoDeProjeto.append(" - " + this.getSituacaoAtual());
+
+		return representacaoDeProjeto.toString();
+	}
+
+	@Override
+	public void setSituacaoAtual(SituacaoVotacao situacaoAtual) {
+
 	}
 
 	@Override
 	public SituacaoVotacao getSituacaoAtual() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
-	
+        // TODO: Colocar local
+        return null;
+    }
 }
