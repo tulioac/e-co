@@ -18,7 +18,7 @@ public class PEC extends Projeto{
 
 	@Override
 	public SituacaoVotacao getSituacaoAtual() {
-		return null;
+		return ;
 	}
 	
 	//falta situacao

@@ -34,6 +34,7 @@ public abstract class Projeto implements PropostaLegislativa{
 		this.ementa = ementa;
 		this.interesses = interesses;
 		this.endereco = endereco;
+		this.situacaoAtual = SituacaoVotacao.EM_VOTACAO;
 	}
 	
 	/**
