@@ -149,8 +149,6 @@ public class ProjetoController {
         else {
             int qntPoliticosGovernistas = contaPoliticosGovernistas(comissao);
 
-            System.out.println("qntDePoliticosDaComissao: " + qntDePoliticosDaComissao);
-            System.out.println("qntPoliticosGovernistas: " + qntPoliticosGovernistas);
             if (status == StatusGovernistas.GOVERNISTA) {
                 if (qntPoliticosGovernistas >= qntDePoliticosDaComissao / 2 + 1)
                     resultado = true;
@@ -158,7 +156,6 @@ public class ProjetoController {
                 if (qntPoliticosGovernistas < qntDePoliticosDaComissao / 2 + 1)
                     resultado = true;
         }
-        System.out.println(resultado);
         return resultado;
     }
 
