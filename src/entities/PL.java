@@ -16,7 +16,7 @@ public class PL extends Projeto {
 
     public PL(String codigo, String dniAutor, int ano, String ementa, String interesses, String endereco, boolean conclusivo) {
         super(codigo, dniAutor, ano, ementa, interesses, endereco);
-        this.conclusivo = true;
+        this.conclusivo = conclusivo;
         this.tipoDoProjeto = Projetos.PL;
     }
 
