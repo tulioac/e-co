@@ -172,7 +172,7 @@ public class ProjetoController {
 
         boolean resultado = this.votacaoDeComissao(status, this.comissaoService.getComissao(proposta.getLocalDeVotacao()), proposta);
 
-        this.propostas.get(codigo).setLocalDeVotacao(proximoLocal);
+        proposta.setLocalDeVotacao(proximoLocal);
         return resultado;
     }
 
