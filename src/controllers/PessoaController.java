@@ -1,6 +1,7 @@
 package controllers;
 
 import entities.Pessoa;
+import enums.CargosPoliticos;
 import util.Validador;
 
 import java.util.*;
@@ -99,7 +100,7 @@ public class PessoaController {
         if (this.pessoas.get(dni).getPartido().equals(""))
             throw new IllegalArgumentException("Erro ao cadastrar deputado: pessoa sem partido");
 
-        if (this.pessoas.get(dni).getCargoPolitico().equals("Deputado"))
+        if (this.pessoas.get(dni).getCargoPolitico().equals(CargosPoliticos.DEPUTADO))
             throw new IllegalArgumentException("Erro ao cadastrar deputado: deputado ja cadastrado");
 
         this.pessoas.get(dni).setCargoPolitico("Deputado", dataInicialValidada);
