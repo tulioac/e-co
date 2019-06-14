@@ -7,6 +7,7 @@ import controllers.PessoaController;
 import controllers.ProjetoController;
 import easyaccept.EasyAccept;
 import services.ComissaoService;
+import services.PartidoBaseService;
 import services.PessoaService;
 
 /**
@@ -35,7 +36,7 @@ public class EcoFacade {
         this.pessoaController = new PessoaController();
         this.partidoController = new PartidoBaseController();
         this.comissaoController = new ComissaoController(new PessoaService(pessoaController));
-        this.projetoController = new ProjetoController(new PessoaService(pessoaController), new ComissaoService(comissaoController));
+        this.projetoController = new ProjetoController(new PessoaService(pessoaController), new ComissaoService(comissaoController), new PartidoBaseService(partidoController));
     }
 
     /**

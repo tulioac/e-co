@@ -1,8 +1,6 @@
 package controllers;
 
-import entities.PEC;
-import entities.PL;
-import entities.PLP;
+import entities.*;
 import enums.Projetos;
 import enums.StatusGovernistas;
 import interfaces.PropostaLegislativa;
@@ -113,6 +111,27 @@ public class ProjetoController {
         return this.propostas.get(codigo).toString();
     }
 
+    private int contaPoliticosGovernistas(Comissao comissao) {
+        int politicosGovernistas = 0;
+
+        for (Pessoa deputado : comissao.getIntegrantes()) {
+            if (deputado.getPartido())
+
+        }
+
+    }
+
+    private boolean votacaoDeComissao(StatusGovernistas status, Comissao comissao) {
+
+        if(status == StatusGovernistas.GOVERNISTA || status == StatusGovernistas.OPOSICAO) {
+            int politicosGovernistas = contaPoliticosGovernistas(comissao);
+        }
+
+        return false;
+    }
+
+
+
     public boolean votarComissao(String codigo, String statusGovernista, String proximoLocal) {
         if (!(this.propostas.containsKey(codigo)))
             throw new NullPointerException("Erro ao votar proposta: codigo nao existe");
@@ -121,13 +140,14 @@ public class ProjetoController {
             throw new NullPointerException("Erro ao votar proposta: " + this.propostas.get(codigo).getLocalDeVotacao() + " nao cadastrada");
 
         StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
-        Projetos tipoDoProjeto = this.propostas.get(codigo).getTipoDoProjeto();
 
-        boolean resultado = this.votacao(tipoDoProjeto, status, this.comissaoService.getComissao(this.propostas.get(codigo).getLocalDeVotacao()));
+        boolean resultado = this.votacaoDeComissao(status, this.comissaoService.getComissao(this.propostas.get(codigo).getLocalDeVotacao()));
 
         this.propostas.get(codigo).setLocalDeVotacao(proximoLocal);
         return resultado;
     }
+
+
 
     public boolean votarPlenario(String codigo, String statusGovernista, String presentes) {
         return false;
