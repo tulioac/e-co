@@ -142,37 +142,38 @@ public class ProjetoController {
         if (status == StatusGovernistas.LIVRE){
             int qntPoliticosInteressados = contaPoliticosInteressados(comissao, projeto);
 
-            if (qntPoliticosInteressados >= qntDePoliticosDaComissao / 2 + 1)
+            if (qntPoliticosInteressados >= (qntDePoliticosDaComissao / 2 + 1))
                 resultado = true;
         }
 
         else {
             int qntPoliticosGovernistas = contaPoliticosGovernistas(comissao);
 
-            if (status == StatusGovernistas.GOVERNISTA)
+            System.out.println("qntDePoliticosDaComissao: " + qntDePoliticosDaComissao);
+            System.out.println("qntPoliticosGovernistas: " + qntPoliticosGovernistas);
+            if (status == StatusGovernistas.GOVERNISTA) {
                 if (qntPoliticosGovernistas >= qntDePoliticosDaComissao / 2 + 1)
                     resultado = true;
-
-            else
+            } else // StatusGovernistas.OPOSICAO
                 if (qntPoliticosGovernistas < qntDePoliticosDaComissao / 2 + 1)
                     resultado = true;
         }
-
+        System.out.println(resultado);
         return resultado;
     }
-
-
 
     public boolean votarComissao(String codigo, String statusGovernista, String proximoLocal) {
         if (!(this.propostas.containsKey(codigo)))
             throw new NullPointerException("Erro ao votar proposta: codigo nao existe");
 
-        if(!(this.comissaoService.containsComissao(this.propostas.get(codigo).getLocalDeVotacao()))) // CCJC
-            throw new NullPointerException("Erro ao votar proposta: " + this.propostas.get(codigo).getLocalDeVotacao() + " nao cadastrada");
+        PropostaLegislativa proposta = this.propostas.get(codigo);
+
+        if(!(this.comissaoService.containsComissao(proposta.getLocalDeVotacao()))) // CCJC
+            throw new NullPointerException("Erro ao votar proposta: " + proposta.getLocalDeVotacao() + " nao cadastrada");
 
         StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
 
-        boolean resultado = this.votacaoDeComissao(status, this.comissaoService.getComissao(this.propostas.get(codigo).getLocalDeVotacao()), this.propostas.get(codigo));
+        boolean resultado = this.votacaoDeComissao(status, this.comissaoService.getComissao(proposta.getLocalDeVotacao()), proposta);
 
         this.propostas.get(codigo).setLocalDeVotacao(proximoLocal);
         return resultado;
@@ -183,6 +184,9 @@ public class ProjetoController {
     }
 
     public String exibirTramitacao(String codigo) {
-        return "";
+        if (!(this.propostas.containsKey(codigo)))
+            throw new NullPointerException("Erro ao exibir projeto: codigo nao cadastrado");
+
+        return "Ainda nao implementado!";
     }
 }
