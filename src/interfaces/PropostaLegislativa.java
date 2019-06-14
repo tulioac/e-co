@@ -32,5 +32,9 @@ public interface PropostaLegislativa {
 
     public String getInteresses();
 
+    public String getSituacaoAtual();
+
     public void alteraSituacaoDoLocalAnterior(SituacaoVotacao situacao);
+
+    public void encerraVotacao();
 }

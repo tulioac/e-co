@@ -169,6 +169,9 @@ public class ProjetoController {
 
         PropostaLegislativa proposta = this.propostas.get(codigo);
 
+        if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()))
+            throw new IllegalArgumentException("Erro ao votar proposta: tramitacao encerrada");
+
         if (!(this.comissaoService.containsComissao(proposta.getLocalDeVotacao()))) // CCJC
             throw new NullPointerException("Erro ao votar proposta: " + proposta.getLocalDeVotacao() + " nao cadastrada");
 
@@ -178,10 +181,11 @@ public class ProjetoController {
 
         proposta.setNovoLocalDeVotacao(proximoLocal);
 
-        if (proposta.getTipoDoProjeto() == Projetos.PL)
-            ;
+        if (proposta.toString().contains("Conclusiva") && resultado == false)
+            proposta.encerraVotacao();
 
-        // TODO: Conferir no toString se contem "Conclusiva"
+        if (proximoLocal.equals("-"))
+            proposta.encerraVotacao();
 
         if (resultado)
             proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.APROVADA);
@@ -196,6 +200,14 @@ public class ProjetoController {
     }
 
     public boolean votarPlenario(String codigo, String statusGovernista, String presentes) {
+        if (!(this.propostas.containsKey(codigo)))
+            throw new NullPointerException("Erro ao votar proposta: codigo nao existe");
+
+        PropostaLegislativa proposta = this.propostas.get(codigo);
+
+        if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()))
+            throw new IllegalArgumentException("Erro ao votar proposta: tramitacao encerrada");
+
         return false;
     }
 
