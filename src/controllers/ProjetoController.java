@@ -68,6 +68,7 @@ public class ProjetoController {
         String codigo = criaCodigo(Projetos.PL, ano);
         this.propostas.put(codigo, new PL(codigo, dni, ano, ementa, interesses, url, conclusivo));
 
+        System.out.println(codigo);
         return codigo;
     }
 
@@ -85,6 +86,7 @@ public class ProjetoController {
         String codigo = criaCodigo(Projetos.PLP, ano);
         this.propostas.put(codigo, new PLP(codigo, dni, ano, ementa, interesses, url, artigos));
 
+        System.out.println(codigo);
         return codigo;
     }
 
@@ -102,6 +104,7 @@ public class ProjetoController {
         String codigo = criaCodigo(Projetos.PEC, ano);
         this.propostas.put(codigo, new PEC(codigo, dni, ano, ementa, interesses, url, artigos));
 
+        System.out.println(codigo);
         return codigo;
     }
 
@@ -175,12 +178,16 @@ public class ProjetoController {
 
         proposta.setNovoLocalDeVotacao(proximoLocal);
 
+        if (proposta.getTipoDoProjeto() == Projetos.PL)
+            ;
+
+        // TODO: Conferir no toString se contem "Conclusiva"
+
         if (resultado)
             proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.APROVADA);
         else
             proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
 
-        // TODO: Usar ArrayList
         // TODO: Conferir se ao votar a tramitação já está encerrada
         // TODO: Ao aprovar um projeto, aumentar a quantidade de leis de um deputado
         // TODO: Verificar se o projeto foi encaminhado ao plenário
