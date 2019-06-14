@@ -97,4 +97,8 @@ public class ComissaoController {
         }
         this.comissoes.put(tema, new Comissao(tema, integrantesComissao));
     }
+
+    public Set<Comissao> getComissoes() {
+        return new HashSet<Comissao>(this.comissoes.values());
+    }
 }
