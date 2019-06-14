@@ -1,22 +1,34 @@
 package controllers;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import services.ComissaoService;
+import services.PartidoBaseService;
 import services.PessoaService;
 
 class ProjetoControllerTest {
 	private ProjetoController pc2;
 	private PessoaService ps;
 	private PessoaController p;
+	private ComissaoService cs;
+	private ComissaoController cc;
+	private PartidoBaseService pas;
+	private PartidoBaseController pbc;
 	
 	@BeforeEach
 	void setUp() throws Exception {
 		p = new PessoaController();
 		ps = new PessoaService(p);
-		pc2 = new ProjetoController(ps);
+		cc = new ComissaoController(ps);
+		cs = new ComissaoService(cc);
+		pbc = new PartidoBaseController();
+		pas = new PartidoBaseService(pbc);
+		pc2 = new ProjetoController(ps, cs, pas);
+		p.cadastrarPessoa("mirella", "123456789-1", "PB", "aaaaa, bbbbb", "PT");
+		p.cadastrarDeputado("123456789-1", "01011988");
 	}
 
 	
