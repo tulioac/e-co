@@ -50,11 +50,10 @@ public class PessoaService {
      * @return true para uma pessoa cadastrada, false caso contrário.
      */
     public boolean ehPessoaCadastrada(String dni) {
-        for (Pessoa pessoa : getPessoas()) {
-            if (pessoa.getDni().equals(dni)) {
+        for (Pessoa pessoa : getPessoas())
+            if (pessoa.getDni().equals(dni))
                 return true;
-            }
-        }
+
         return false;
     }
 
@@ -66,11 +65,10 @@ public class PessoaService {
      * contrário
      */
     public Pessoa getPessoaPeloDni(String dni) {
-        for (Pessoa pessoa : getPessoas()) {
-            if (pessoa.getDni().equals(dni)) {
+        for (Pessoa pessoa : getPessoas())
+            if (pessoa.getDni().equals(dni))
                 return pessoa;
-            }
-        }
+
         return null;
     }
 

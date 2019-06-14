@@ -6,6 +6,7 @@ import controllers.PartidoBaseController;
 import controllers.PessoaController;
 import controllers.ProjetoController;
 import easyaccept.EasyAccept;
+import services.ComissaoService;
 import services.PessoaService;
 
 /**
@@ -34,7 +35,7 @@ public class EcoFacade {
         this.pessoaController = new PessoaController();
         this.partidoController = new PartidoBaseController();
         this.comissaoController = new ComissaoController(new PessoaService(pessoaController));
-        this.projetoController = new ProjetoController(new PessoaService(pessoaController));
+        this.projetoController = new ProjetoController(new PessoaService(pessoaController), new ComissaoService(comissaoController));
     }
 
     /**
@@ -49,7 +50,8 @@ public class EcoFacade {
                 "acceptance_tests/use_case_3.txt",
                 "acceptance_tests/use_case_4.txt",
                 "acceptance_tests/use_case_5.txt",
-                "acceptance_tests/use_case_6.txt"
+                "acceptance_tests/use_case_6.txt",
+                "acceptance_tests/use_case_7.txt"
         };
 
         EasyAccept.main(args);

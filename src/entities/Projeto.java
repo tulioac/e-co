@@ -4,6 +4,9 @@ import enums.Projetos;
 import enums.SituacaoVotacao;
 import interfaces.PropostaLegislativa;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Essa classe representa XXXX.
  *
@@ -23,6 +26,7 @@ public abstract class Projeto implements PropostaLegislativa {
     private String interesses;
     private SituacaoVotacao situacaoAtual;
     private String endereco;
+    private List<String> votacoes;
 
     public Projeto(String codigo, String dniAutor, int ano, String ementa, String interesses, String endereco) {
         super();
@@ -34,6 +38,7 @@ public abstract class Projeto implements PropostaLegislativa {
         this.endereco = endereco;
         this.situacaoAtual = SituacaoVotacao.EM_VOTACAO;
         this.localDeVotacao = "CCJC";
+        this.votacoes = new ArrayList<>();
     }
 
     public Projetos getTipoDoProjeto() {
@@ -47,6 +52,14 @@ public abstract class Projeto implements PropostaLegislativa {
 
     public int getAno() {
         return this.ano;
+    }
+
+    public String getLocalDeVotacao(){
+        return this.localDeVotacao;
+    }
+
+    public void setLocalDeVotacao(String localDeVotacao){
+        this.localDeVotacao = localDeVotacao;
     }
 
     @Override

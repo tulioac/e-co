@@ -24,4 +24,8 @@ public interface PropostaLegislativa {
     public int getAno();
 
     public Projetos getTipoDoProjeto();
+
+    public String getLocalDeVotacao();
+
+    public void setLocalDeVotacao(String localDeVotacao);
 }

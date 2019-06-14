@@ -4,7 +4,10 @@ import entities.PEC;
 import entities.PL;
 import entities.PLP;
 import enums.Projetos;
+import enums.StatusGovernistas;
 import interfaces.PropostaLegislativa;
+import services.ComissaoService;
+import services.PartidoBaseService;
 import services.PessoaService;
 import util.Validador;
 
@@ -14,10 +17,14 @@ import java.util.Map;
 public class ProjetoController {
 
     private PessoaService pessoaService;
+    private ComissaoService comissaoService;
+    private PartidoBaseService partidoService;
     private Map<String, PropostaLegislativa> propostas;
 
-    public ProjetoController(PessoaService pessoaService) {
+    public ProjetoController(PessoaService pessoaService, ComissaoService comissaoService, PartidoBaseService partidoService) {
         this.pessoaService = pessoaService;
+        this.comissaoService = comissaoService;
+        this.partidoService = partidoService;
         this.propostas = new HashMap<>();
     }
 
@@ -107,7 +114,19 @@ public class ProjetoController {
     }
 
     public boolean votarComissao(String codigo, String statusGovernista, String proximoLocal) {
-        return false;
+        if (!(this.propostas.containsKey(codigo)))
+            throw new NullPointerException("Erro ao votar proposta: codigo nao existe");
+
+        if(!(this.comissaoService.containsComissao(this.propostas.get(codigo).getLocalDeVotacao()))) // CCJC
+            throw new NullPointerException("Erro ao votar proposta: " + this.propostas.get(codigo).getLocalDeVotacao() + " nao cadastrada");
+
+        StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
+        Projetos tipoDoProjeto = this.propostas.get(codigo).getTipoDoProjeto();
+
+        boolean resultado = this.votacao(tipoDoProjeto, status, this.comissaoService.getComissao(this.propostas.get(codigo).getLocalDeVotacao()));
+
+        this.propostas.get(codigo).setLocalDeVotacao(proximoLocal);
+        return resultado;
     }
 
     public boolean votarPlenario(String codigo, String statusGovernista, String presentes) {
