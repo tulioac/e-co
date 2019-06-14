@@ -62,6 +62,11 @@ public abstract class Projeto implements PropostaLegislativa {
         this.localDeVotacao = localDeVotacao;
     }
 
+    public String getInteresses() {
+        return this.interesses;
+    }
+
+
     @Override
     public String toString() {
         return this.codigo + " - " + this.dniAutor + " - " + this.ementa;

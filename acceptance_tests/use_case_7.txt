@@ -31,11 +31,11 @@ cadastrarDeputado dni="071000000-0" dataDeInicio="29022016"
 plc=cadastrarPL dni="071222222-0" ano=2016 ementa="Ementa PL conc" interesses="saude,educacao basica" url="http://example.com/semana_saude" conclusivo=true
 plcopo=cadastrarPL dni="071222222-0" ano=2016 ementa="Ementa PL conc" interesses="saude,educacao basica" url="http://example.com/semana_saude" conclusivo=true
 plcgov=cadastrarPL dni="071222222-0" ano=2016 ementa="Ementa PL conc" interesses="saude,educacao basica" url="http://example.com/semana_saude" conclusivo=true
-plcaude=cadastrarPL dni="071222222-0" ano=2016 ementa="Ementa PL conc" interesses="saude" url="http://example.com/semana_saude" conclusivo=true
+plcsaude=cadastrarPL dni="071222222-0" ano=2016 ementa="Ementa PL conc" interesses="saude" url="http://example.com/semana_saude" conclusivo=true
 plcnutri=cadastrarPL dni="071222222-0" ano=2016 ementa="Ementa PL conc" interesses="nutricao" url="http://example.com/semana_saude" conclusivo=true
 
 plp=cadastrarPLP dni="071222222-0" ano=2016 ementa="Ementa PLP" interesses="fiscal,jogos" url="https://example.net/jogos%40aposta" artigos="153"
-pec=cadastrarPEC dni="071222222-0" ano=2016 ementa="Ementa PEC" interesses="" url="https://example.com/sindicato/algo.html" artigos="7,8"
+pec=cadastrarPEC dni="071222222-0" ano=2016 ementa="Ementa PEC" interesses="educacao" url="https://example.com/sindicato/algo.html" artigos="7,8"
 
 expectError "Erro ao votar proposta: CCJC nao cadastrada" votarComissao codigo=${plc} statusGovernista="OPOSICAO" proximoLocal="CTF"
 expectError "Erro ao votar proposta: CCJC nao cadastrada" votarComissao codigo=${plp} statusGovernista="OPOSICAO" proximoLocal="CTF"

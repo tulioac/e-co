@@ -28,4 +28,6 @@ public interface PropostaLegislativa {
     public String getLocalDeVotacao();
 
     public void setLocalDeVotacao(String localDeVotacao);
+
+    public String getInteresses();
 }
