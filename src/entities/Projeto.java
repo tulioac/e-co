@@ -18,15 +18,13 @@ import java.util.List;
 public abstract class Projeto implements PropostaLegislativa {
 
     protected Projetos tipoDoProjeto;
-    protected String localDeVotacao;
     private String codigo;
     private String dniAutor;
     private int ano;
     private String ementa;
     private String interesses;
-    private SituacaoVotacao situacaoAtual;
     private String endereco;
-    private List<String> votacoes;
+    private List<String[]> votacoes; // Local e Situação
 
     public Projeto(String codigo, String dniAutor, int ano, String ementa, String interesses, String endereco) {
         super();
@@ -36,9 +34,8 @@ public abstract class Projeto implements PropostaLegislativa {
         this.ementa = ementa;
         this.interesses = interesses;
         this.endereco = endereco;
-        this.situacaoAtual = SituacaoVotacao.EM_VOTACAO;
-        this.localDeVotacao = "CCJC";
         this.votacoes = new ArrayList<>();
+        this.votacoes.add(new String[] {"CCJC", SituacaoVotacao.EM_VOTACAO.toString()});
     }
 
     public Projetos getTipoDoProjeto() {
@@ -46,7 +43,7 @@ public abstract class Projeto implements PropostaLegislativa {
     }
 
     public String exibeSituacaoAtual() {
-        StringBuilder situacaoAtual = new StringBuilder(this.situacaoAtual.toString().replace("_", " ") + " (" + this.localDeVotacao + ")");
+        StringBuilder situacaoAtual = new StringBuilder(this.getSituacaoAtual() + " (" + this.getLocalDeVotacao() + ")");
         return situacaoAtual.toString();
     }
 
@@ -55,17 +52,24 @@ public abstract class Projeto implements PropostaLegislativa {
     }
 
     public String getLocalDeVotacao(){
-        return this.localDeVotacao;
+        return this.votacoes.get(this.votacoes.size() - 1)[0];
     }
 
-    public void setLocalDeVotacao(String localDeVotacao){
-        this.localDeVotacao = localDeVotacao;
+    public void setNovoLocalDeVotacao(String novoLocalDeVotacao){
+        this.votacoes.add(new String[] {novoLocalDeVotacao, SituacaoVotacao.EM_VOTACAO.toString()});
+    }
+
+    public String getSituacaoAtual(){
+        return this.votacoes.get(this.votacoes.size() - 1)[1].replace("_", " ");
+    }
+
+    public void alteraSituacaoDoLocalAnterior(SituacaoVotacao situacao) {
+        this.votacoes.get(this.votacoes.size() - 2)[1] = situacao.toString();
     }
 
     public String getInteresses() {
         return this.interesses;
     }
-
 
     @Override
     public String toString() {

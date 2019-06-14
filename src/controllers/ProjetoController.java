@@ -2,6 +2,7 @@ package controllers;
 
 import entities.*;
 import enums.Projetos;
+import enums.SituacaoVotacao;
 import enums.StatusGovernistas;
 import interfaces.PropostaLegislativa;
 import services.ComissaoService;
@@ -139,19 +140,19 @@ public class ProjetoController {
 
         int qntDePoliticosDaComissao = comissao.getIntegrantes().size();
 
-        if (status == StatusGovernistas.LIVRE){
+        if (status == StatusGovernistas.LIVRE) {
             int qntPoliticosInteressados = contaPoliticosInteressados(comissao, projeto);
 
             if (qntPoliticosInteressados >= (qntDePoliticosDaComissao / 2 + 1))
                 resultado = true;
-        }
 
-        else {
+        } else {
             int qntPoliticosGovernistas = contaPoliticosGovernistas(comissao);
 
             if (status == StatusGovernistas.GOVERNISTA) {
                 if (qntPoliticosGovernistas >= qntDePoliticosDaComissao / 2 + 1)
                     resultado = true;
+
             } else // StatusGovernistas.OPOSICAO
                 if (qntPoliticosGovernistas < qntDePoliticosDaComissao / 2 + 1)
                     resultado = true;
@@ -165,14 +166,25 @@ public class ProjetoController {
 
         PropostaLegislativa proposta = this.propostas.get(codigo);
 
-        if(!(this.comissaoService.containsComissao(proposta.getLocalDeVotacao()))) // CCJC
+        if (!(this.comissaoService.containsComissao(proposta.getLocalDeVotacao()))) // CCJC
             throw new NullPointerException("Erro ao votar proposta: " + proposta.getLocalDeVotacao() + " nao cadastrada");
 
         StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
 
         boolean resultado = this.votacaoDeComissao(status, this.comissaoService.getComissao(proposta.getLocalDeVotacao()), proposta);
 
-        proposta.setLocalDeVotacao(proximoLocal);
+        proposta.setNovoLocalDeVotacao(proximoLocal);
+
+        if (resultado)
+            proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.APROVADA);
+        else
+            proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
+
+        // TODO: Usar ArrayList
+        // TODO: Conferir se ao votar a tramitação já está encerrada
+        // TODO: Ao aprovar um projeto, aumentar a quantidade de leis de um deputado
+        // TODO: Verificar se o projeto foi encaminhado ao plenário
+
         return resultado;
     }
 

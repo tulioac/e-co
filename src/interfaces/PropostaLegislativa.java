@@ -1,6 +1,7 @@
 package interfaces;
 
 import enums.Projetos;
+import enums.SituacaoVotacao;
 
 /**
  * Essa interface representa as possibilidades de propostas legislativas
@@ -27,7 +28,9 @@ public interface PropostaLegislativa {
 
     public String getLocalDeVotacao();
 
-    public void setLocalDeVotacao(String localDeVotacao);
+    public void setNovoLocalDeVotacao(String localDeVotacao);
 
     public String getInteresses();
+
+    public void alteraSituacaoDoLocalAnterior(SituacaoVotacao situacao);
 }
