@@ -1,6 +1,6 @@
 package entities;
 
-import enums.Projetos;
+import enums.TipoDeProjetos;
 
 public class PLP extends Projeto {
 
@@ -9,7 +9,7 @@ public class PLP extends Projeto {
     public PLP(String codigo, String dniAutor, int ano, String ementa, String interesses, String endereco, String artigos) {
         super(codigo, dniAutor, ano, ementa, interesses, endereco);
         this.artigos = artigos;
-        this.tipoDoProjeto = Projetos.PLP;
+        this.tipoDoProjeto = TipoDeProjetos.PLP;
     }
 
     @Override

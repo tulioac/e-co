@@ -1,5 +1,7 @@
 package util;
 
+import enums.StatusGovernistas;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -87,5 +89,13 @@ public class Validador {
 
         if (ano > anoAtual)
             throw new IllegalArgumentException("Erro ao cadastrar projeto: ano posterior ao ano atual");
+    }
+
+    public void validaStatus(String statusGovernista, String mensagem) {
+        try{
+            StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
+        } catch (IllegalArgumentException iae) {
+            throw new IllegalArgumentException(mensagem);
+        }
     }
 }

@@ -1,5 +1,5 @@
 package enums;
 
-public enum Projetos {
+public enum TipoDeProjetos {
     PL, PLP, PEC;
 }
