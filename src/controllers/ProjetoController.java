@@ -309,7 +309,13 @@ public class ProjetoController {
 
         int qntPoliticosPresentes = listaDePresentes.length;
 
-        if (status == StatusGovernistas.GOVERNISTA) {
+        if (status == StatusGovernistas.LIVRE) {
+            int qntPoliticosInteressados = contaPoliticosInteressados(listaDePresentes, proposta);
+
+            if (qntPoliticosInteressados >= 3 * qntPoliticosPresentes / 5 + 1)
+                resultado = true;
+
+        } else if (status == StatusGovernistas.GOVERNISTA) {
             if (qntPoliticosGovernistas >= 3 * qntPoliticosPresentes / 5 + 1)
                 resultado = true;
         } else {// StatusGovernistas.OPOSICAO
