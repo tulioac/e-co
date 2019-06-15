@@ -103,7 +103,7 @@ public class ProjetoController {
     }
 
     private void avaliaResultado(String proximoLocal, PropostaLegislativa proposta, boolean resultado) {
-        if (proposta.toString().contains("Conclusiva") && resultado == false)
+        if (proposta.toString().contains("Conclusiva") && !resultado)
             proposta.encerraVotacao();
 
         if (proximoLocal.equals("-")) {
