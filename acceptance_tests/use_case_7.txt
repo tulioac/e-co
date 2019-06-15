@@ -1,6 +1,7 @@
 # WORK IN PROGRESS....
 
 # limpa qualquer arquivo ou dado persistido anteriormente
+# implemente esse metodo ou execute apenas a US7 para testá-la
 limparSistema
 
 # carrega o sistema
@@ -35,7 +36,7 @@ plcsaude=cadastrarPL dni="071222222-0" ano=2016 ementa="Ementa PL conc" interess
 plcnutri=cadastrarPL dni="071222222-0" ano=2016 ementa="Ementa PL conc" interesses="nutricao" url="http://example.com/semana_saude" conclusivo=true
 
 plp=cadastrarPLP dni="071222222-0" ano=2016 ementa="Ementa PLP" interesses="fiscal,jogos" url="https://example.net/jogos%40aposta" artigos="153"
-pec=cadastrarPEC dni="071222222-0" ano=2016 ementa="Ementa PEC" interesses="educacao" url="https://example.com/sindicato/algo.html" artigos="7,8"
+pec=cadastrarPEC dni="071222222-0" ano=2016 ementa="Ementa PEC" interesses="saude" url="https://example.com/sindicato/algo.html" artigos="7,8"
 
 expectError "Erro ao votar proposta: CCJC nao cadastrada" votarComissao codigo=${plc} statusGovernista="OPOSICAO" proximoLocal="CTF"
 expectError "Erro ao votar proposta: CCJC nao cadastrada" votarComissao codigo=${plp} statusGovernista="OPOSICAO" proximoLocal="CTF"
@@ -56,6 +57,13 @@ cadastrarComissao tema="CGOV" politicos="071111111-0,071222222-0,071333333-0,071
 
 # 5 da oposicao
 cadastrarComissao tema="COPO" politicos="071666666-0,071777777-0,071888888-0,071999999-0,071000000-0"
+
+# Teste de Erros
+
+expectError "Erro ao votar proposta: projeto inexistente" votarComissao codigo="PP 4/30" statusGovernista="GOVERNISTA" proximoLocal="CTF"
+expectError "Erro ao votar proposta: status invalido" votarComissao codigo="PP 4/30" statusGovernista="ILLUMINATI" proximoLocal="CTF"
+expectError "Erro ao votar proposta: proximo local vazio" votarComissao codigo="PP 4/30" statusGovernista="ILLUMINATI" proximoLocal=""
+expectError "Erro ao votar proposta: tramitacao em comissao" votarPlenario codigo=${plc} statusGovernista="GOVERNISTA" presentes="071111111-0,071222222-0,071333333-0,071444444-0,071555555-0,071666666-0,071777777-0,071888888-0,071999999-0,071000000-0"
 
 ########## PL conclusivas
 
@@ -94,6 +102,10 @@ plnc=cadastrarPL dni="071333333-0" ano=2016 ementa="Ementa PLnconc" interesses="
 expect true votarComissao codigo=${plnc} statusGovernista="GOVERNISTA" proximoLocal="CGOV"
 expect false votarComissao codigo=${plnc} statusGovernista="OPOSICAO" proximoLocal="plenario"
 expectError "Erro ao votar proposta: proposta encaminhada ao plenario" votarComissao codigo=${plnc} statusGovernista="GOVERNISTA" proximoLocal="plenario"
+
+# erro de quorum
+expectError "Erro ao votar proposta: quorum invalido" votarPlenario codigo=${plc} statusGovernista="GOVERNISTA" presentes="071111111-0"
+
 expect true votarPlenario codigo=${plnc} statusGovernista="GOVERNISTA" presentes="071111111-0,071222222-0,071333333-0,071444444-0,071555555-0,071666666-0,071777777-0,071888888-0,071999999-0"
 expectError "Erro ao votar proposta: tramitacao encerrada" votarPlenario codigo=${plnc} statusGovernista="GOVERNISTA" presentes="071111111-0,071222222-0,071333333-0,071444444-0,071555555-0,071666666-0"
 expect "POL: M3 - 071333333-0 (PI) - PartidoGov - Interesses: saude,seguranca publica,trabalho - 29/02/2016 - 1 Leis" exibirPessoa dni="071333333-0"
@@ -112,7 +124,7 @@ expect true votarComissao codigo=${plp} statusGovernista="GOVERNISTA" proximoLoc
 expectError "Erro ao votar proposta: proposta encaminhada ao plenario" votarComissao codigo=${plp} statusGovernista="GOVERNISTA" proximoLocal="plenario"
 expect false votarPlenario codigo=${plp} statusGovernista="OPOSICAO" presentes="071111111-0,071222222-0,071333333-0,071444444-0,071555555-0,071999999-0"
 expectError "Erro ao votar proposta: tramitacao encerrada" votarPlenario codigo=${plp} statusGovernista="OPOSICAO" presentes="071111111-0,071222222-0,071333333-0,071444444-0,071555555-0,071999999-0"
-expect "Projeto de Lei - PLP 2/2016 - 071222222-0 - Ementa PLP - ARQUIVADO" exibirProjeto codigo=${plp}
+expect "Projeto de Lei - PLP 2/2016 - 071222222-0 - Ementa PLP - ARQUIVADO" exibirProjeto codigo=${plp2}
 expect "POL: M2 - 071222222-0 (PE) - PartidoGov - Interesses: educacao,seguranca publica,saude - 29/02/2016 - 1 Leis" exibirPessoa dni="071222222-0"
 
 plp2=cadastrarPLP dni="071222222-0" ano=2013 ementa="Ementa PLP" interesses="saude" url="https://example.net/jogos%40aposta" artigos="153"
@@ -137,7 +149,7 @@ expectError "Erro ao votar proposta: tramitacao encerrada" votarPlenario codigo=
 expect "Projeto de Lei - PEC 1/2016 - 071222222-0 - Ementa PEC - ARQUIVADO" exibirProjeto codigo=${plp2}
 expect "POL: M2 - 071222222-0 (PE) - PartidoGov - Interesses: educacao,seguranca publica,saude - 29/02/2016 - 2 Leis" exibirPessoa dni="071222222-0"
 
-pec2=cadastrarPEC dni="071222222-0" ano=2016 ementa="Ementa PEC" interesses="" url="https://example.com/sindicato/algo.html" artigos="7,8"
+pec2=cadastrarPEC dni="071222222-0" ano=2016 ementa="Ementa PEC" interesses="saude" url="https://example.com/sindicato/algo.html" artigos="7,8"
 
 expect true votarComissao codigo=${pec2} statusGovernista="GOVERNISTA" proximoLocal="CGOV"
 expect true votarComissao codigo=${pec2} statusGovernista="GOVERNISTA" proximoLocal="plenario"
