@@ -80,8 +80,7 @@ public class PessoaService {
      * Deputado, false caso contrário
      */
     public boolean ehDeputado(String dni) {
-        return ehPessoaCadastrada(dni) &&
-                CargosPoliticos.DEPUTADO.equals(getPessoaPeloDni(dni).getCargoPolitico());
+        return ehPessoaCadastrada(dni) && CargosPoliticos.DEPUTADO.equals(getPessoaPeloDni(dni).getCargoPolitico());
     }
 
     public int contaDeputados() {
