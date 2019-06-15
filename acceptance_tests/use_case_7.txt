@@ -143,7 +143,7 @@ expect "POL: M2 - 071222222-0 (PE) - PartidoGov - Interesses: educacao,seguranca
 
 expect true votarComissao codigo=${pec} statusGovernista="GOVERNISTA" proximoLocal="CGOV"
 expect true votarComissao codigo=${pec} statusGovernista="GOVERNISTA" proximoLocal="plenario"
-expectError "Erro ao votar proposta: proposta encaminhada ao plenario" votarComissao codigo=${plp} statusGovernista="GOVERNISTA" proximoLocal="plenario"
+expectError "Erro ao votar proposta: proposta encaminhada ao plenario" votarComissao codigo=${pec} statusGovernista="GOVERNISTA" proximoLocal="plenario"
 expect false votarPlenario codigo=${pec} statusGovernista="OPOSICAO" presentes="071111111-0,071222222-0,071333333-0,071444444-0,071555555-0,071999999-0,071000000-0"
 expectError "Erro ao votar proposta: tramitacao encerrada" votarPlenario codigo=${plp} statusGovernista="OPOSICAO" presentes="071111111-0,071222222-0,071333333-0,071444444-0,071555555-0,071999999-0"
 expect "Projeto de Lei Complementar - PLP 1/2013 - 071222222-0 - Ementa PLP - 153 - APROVADO" exibirProjeto codigo=${plp2}
