@@ -1,6 +1,6 @@
 package interfaces;
 
-import enums.Projetos;
+import enums.TipoDeProjetos;
 import enums.SituacaoVotacao;
 
 /**
@@ -24,7 +24,7 @@ public interface PropostaLegislativa {
 
     public int getAno();
 
-    public Projetos getTipoDoProjeto();
+    public TipoDeProjetos getTipoDoProjeto();
 
     public String getLocalDeVotacao();
 

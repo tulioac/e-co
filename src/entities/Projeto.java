@@ -1,6 +1,6 @@
 package entities;
 
-import enums.Projetos;
+import enums.TipoDeProjetos;
 import enums.SituacaoVotacao;
 import interfaces.PropostaLegislativa;
 
@@ -17,7 +17,7 @@ import java.util.List;
  */
 public abstract class Projeto implements PropostaLegislativa {
 
-    protected Projetos tipoDoProjeto;
+    protected TipoDeProjetos tipoDoProjeto;
     private String codigo;
     private String dniAutor;
     private int ano;
@@ -38,7 +38,7 @@ public abstract class Projeto implements PropostaLegislativa {
         this.votacoes.add(new String[] {"CCJC", SituacaoVotacao.EM_VOTACAO.toString()});
     }
 
-    public Projetos getTipoDoProjeto() {
+    public TipoDeProjetos getTipoDoProjeto() {
         return this.tipoDoProjeto;
     }
 

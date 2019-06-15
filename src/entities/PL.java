@@ -1,6 +1,6 @@
 package entities;
 
-import enums.Projetos;
+import enums.TipoDeProjetos;
 
 /**
  * Essa classe representa um projeto de lei.
@@ -17,7 +17,7 @@ public class PL extends Projeto {
     public PL(String codigo, String dniAutor, int ano, String ementa, String interesses, String endereco, boolean conclusivo) {
         super(codigo, dniAutor, ano, ementa, interesses, endereco);
         this.conclusivo = conclusivo;
-        this.tipoDoProjeto = Projetos.PL;
+        this.tipoDoProjeto = TipoDeProjetos.PL;
     }
 
     @Override
