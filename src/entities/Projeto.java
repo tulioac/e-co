@@ -1,7 +1,7 @@
 package entities;
 
-import enums.TipoDeProjetos;
 import enums.SituacaoVotacao;
+import enums.TipoDeProjetos;
 import interfaces.PropostaLegislativa;
 
 import java.util.ArrayList;

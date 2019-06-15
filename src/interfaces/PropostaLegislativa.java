@@ -1,7 +1,7 @@
 package interfaces;
 
-import enums.TipoDeProjetos;
 import enums.SituacaoVotacao;
+import enums.TipoDeProjetos;
 
 /**
  * Essa interface representa as possibilidades de propostas legislativas

@@ -227,7 +227,7 @@ public class ProjetoController {
             throw new IllegalArgumentException("Erro ao votar proposta: quorum invalido");
     }
 
-    private boolean votacaoPlenario(StatusGovernistas status, Comissao comissao, PropostaLegislativa proposta, String presentes) {
+    private boolean votacaoPlenario(StatusGovernistas status, PropostaLegislativa proposta, String presentes) {
         TipoDeProjetos tipoDaProposta = proposta.getTipoDoProjeto();
         String[] listaDePresentes = presentes.split(",");
 
@@ -236,9 +236,9 @@ public class ProjetoController {
         if (tipoDaProposta == TipoDeProjetos.PL) {
             resultado = votaMaioriaSimples(status, proposta, listaDePresentes);
         } else if (tipoDaProposta == TipoDeProjetos.PLP) {
-            resultado = votaMaioriaAbsoluta(status, proposta, listaDePresentes, comissao);
+            resultado = votaMaioriaAbsoluta(status, proposta, listaDePresentes);
         } else {  // TipoDeProjetos.PEC
-            resultado = votaMaioriaQualificada(status, proposta, listaDePresentes, comissao);
+            resultado = votaMaioriaQualificada(status, proposta, listaDePresentes);
         }
 
         return resultado;
@@ -260,36 +260,36 @@ public class ProjetoController {
         return resultado;
     }
 
-    private boolean votaMaioriaAbsoluta(StatusGovernistas status, PropostaLegislativa proposta, String[] listaDePresentes, Comissao comissao) {
+    private boolean votaMaioriaAbsoluta(StatusGovernistas status, PropostaLegislativa proposta, String[] listaDePresentes) {
         boolean resultado = false;
 
         int qntPoliticosGovernistas = contaPoliticosGovernistas(listaDePresentes);
 
-        int qntPoliticosDaComissao = comissao.getIntegrantes().size();
+        int qntPoliticosPresentes = listaDePresentes.length;
 
         if (status == StatusGovernistas.GOVERNISTA) {
-            if (qntPoliticosGovernistas >= qntPoliticosDaComissao / 2 + 1)
+            if (qntPoliticosGovernistas >= qntPoliticosPresentes / 2 + 1)
                 resultado = true;
         } else { // StatusGovernistas.OPOSICAO
-            if (qntPoliticosGovernistas < qntPoliticosDaComissao / 2 + 1)
+            if (qntPoliticosGovernistas < qntPoliticosPresentes / 2 + 1)
                 resultado = true;
         }
 
         return resultado;
     }
 
-    private boolean votaMaioriaQualificada(StatusGovernistas status, PropostaLegislativa proposta, String[] listaDePresentes, Comissao comissao) {
+    private boolean votaMaioriaQualificada(StatusGovernistas status, PropostaLegislativa proposta, String[] listaDePresentes) {
         boolean resultado = false;
 
         int qntPoliticosGovernistas = contaPoliticosGovernistas(listaDePresentes);
 
-        int qntPoliticosDaComissao = comissao.getIntegrantes().size();
+        int qntPoliticosPresentes = listaDePresentes.length;
 
         if (status == StatusGovernistas.GOVERNISTA) {
-            if (qntPoliticosGovernistas >= 3 * qntPoliticosDaComissao / 5 + 1)
+            if (qntPoliticosGovernistas >= 3 * qntPoliticosPresentes / 5 + 1)
                 resultado = true;
         } else {// StatusGovernistas.OPOSICAO
-            if (qntPoliticosGovernistas < 3 * qntPoliticosDaComissao / 5 + 1)
+            if (qntPoliticosGovernistas < 3 * qntPoliticosPresentes / 5 + 1)
                 resultado = true;
         }
 
@@ -323,7 +323,7 @@ public class ProjetoController {
 
         StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
 
-        boolean resultado = votacaoPlenario(status, this.comissaoService.getComissao(proposta.getLocalDeVotacao()), proposta, presentes);
+        boolean resultado = votacaoPlenario(status, proposta, presentes);
 
         avaliaResultado(proposta, resultado);
 
@@ -333,14 +333,13 @@ public class ProjetoController {
     private void avaliaResultado(PropostaLegislativa proposta, boolean resultado) {
         TipoDeProjetos tipoDaProposta = proposta.getTipoDoProjeto();
 
-        if (tipoDaProposta == TipoDeProjetos.PL){
-            if (resultado == false)
-                proposta.encerraVotacao();
-            else {
-                proposta.aprovaVotacao();
-                String dniAutor = proposta.getAutor();
+        if (resultado == false)
+            proposta.encerraVotacao();
+        else {
+            proposta.aprovaVotacao();
+            String dniAutor = proposta.getAutor();
 
-                pessoaService.getPessoaPeloDni(dniAutor).aumentaLeis();}
+            pessoaService.getPessoaPeloDni(dniAutor).aumentaLeis();
         }
     }
 
