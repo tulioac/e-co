@@ -90,4 +90,14 @@ public class PessoaService {
         }
         return false;
     }
+
+    public int contaDeputados() {
+        int qntDeputados = 0;
+
+        for (Pessoa pessoa : this.getPessoas())
+            if (this.ehDeputado(pessoa.getDni()))
+                qntDeputados++;
+
+        return qntDeputados;
+    }
 }

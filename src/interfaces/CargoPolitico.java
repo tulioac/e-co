@@ -31,4 +31,6 @@ public interface CargoPolitico {
      * Esse método retorna a representação textual adicional do cargo político.
      */
     public String toString();
+
+    public void aumentaLeis();
 }

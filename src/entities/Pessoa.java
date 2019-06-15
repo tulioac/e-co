@@ -244,4 +244,11 @@ public class Pessoa {
 
         return representacaoPessoa.toString();
     }
+
+    /**
+     * Esse método aumenta a quantidade de leis de um político em uma unidade.
+     */
+    public void aumentaLeis() {
+        this.cargoPolitico.aumentaLeis();
+    }
 }

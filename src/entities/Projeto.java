@@ -43,8 +43,11 @@ public abstract class Projeto implements PropostaLegislativa {
     }
 
     public String exibeSituacaoAtual() {
-        if (this.getSituacaoAtual().equals("ARQUIVADO"))
+        if (this.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()))
             return "ARQUIVADO";
+
+        else if (this.getSituacaoAtual().equals(SituacaoVotacao.APROVADO.toString()))
+            return "APROVADO";
 
         StringBuilder situacaoAtual = new StringBuilder(this.getSituacaoAtual() + " (" + this.getLocalDeVotacao() + ")");
         return situacaoAtual.toString();
@@ -76,6 +79,14 @@ public abstract class Projeto implements PropostaLegislativa {
 
     public void encerraVotacao() {
         this.votacoes.add(new String[] {"", SituacaoVotacao.ARQUIVADO.toString()});
+    }
+
+    public void aprovaVotacao(){
+        this.votacoes.add(new String[] {"", SituacaoVotacao.APROVADO.toString()});
+    }
+
+    public String getAutor(){
+        return this.dniAutor;
     }
 
     @Override

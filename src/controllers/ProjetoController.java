@@ -164,10 +164,17 @@ public class ProjetoController {
     }
 
     public boolean votarComissao(String codigo, String statusGovernista, String proximoLocal) {
+        Validador v = new Validador();
+        v.validaString(proximoLocal, "Erro ao votar proposta: proximo local vazio");
+        v.validaStatus(statusGovernista, "Erro ao votar proposta: status invalido");
+
         if (!(this.propostas.containsKey(codigo)))
-            throw new NullPointerException("Erro ao votar proposta: codigo nao existe");
+            throw new NullPointerException("Erro ao votar proposta: projeto inexistente");
 
         PropostaLegislativa proposta = this.propostas.get(codigo);
+
+        if (proposta.getLocalDeVotacao().equals("plenario"))
+            throw new IllegalArgumentException("Erro ao votar proposta: proposta encaminhada ao plenario");
 
         if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()))
             throw new IllegalArgumentException("Erro ao votar proposta: tramitacao encerrada");
@@ -184,11 +191,19 @@ public class ProjetoController {
         if (proposta.toString().contains("Conclusiva") && resultado == false)
             proposta.encerraVotacao();
 
-        if (proximoLocal.equals("-"))
-            proposta.encerraVotacao();
+        if (proximoLocal.equals("-")) {
+            if (resultado){
+                proposta.aprovaVotacao();
+                String dniAutor = proposta.getAutor();
+
+                pessoaService.getPessoaPeloDni(dniAutor).aumentaLeis();
+            }
+            else
+                proposta.encerraVotacao();
+        }
 
         if (resultado)
-            proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.APROVADA);
+            proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.APROVADO);
         else
             proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
 
@@ -199,17 +214,37 @@ public class ProjetoController {
         return resultado;
     }
 
+    private void verificaQuorumMinimo(String presentes, Projetos tipoDoProjeto) {
+        int qntDeputadosPresentes = presentes.split(",").length;
+
+        int qntTotalDeputado = pessoaService.contaDeputados();
+
+        if (tipoDoProjeto == Projetos.PEC) {
+            if (qntDeputadosPresentes < 3 * qntTotalDeputado / 5 + 1)
+                throw new IllegalArgumentException("Erro ao votar proposta: quorum invalido");
+
+        } else if (qntDeputadosPresentes < qntTotalDeputado / 2 + 1)
+            throw new IllegalArgumentException("Erro ao votar proposta: quorum invalido");
+    }
+
     public boolean votarPlenario(String codigo, String statusGovernista, String presentes) {
         if (!(this.propostas.containsKey(codigo)))
             throw new NullPointerException("Erro ao votar proposta: codigo nao existe");
 
         PropostaLegislativa proposta = this.propostas.get(codigo);
 
+        verificaQuorumMinimo(presentes, proposta.getTipoDoProjeto());
+
         if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()))
             throw new IllegalArgumentException("Erro ao votar proposta: tramitacao encerrada");
 
+        if (!(proposta.getLocalDeVotacao().equals("plenario")))
+            throw new IllegalArgumentException("Erro ao votar proposta: tramitacao em comissao");
+
+
         return false;
     }
+
 
     public String exibirTramitacao(String codigo) {
         if (!(this.propostas.containsKey(codigo)))

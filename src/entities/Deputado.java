@@ -76,4 +76,13 @@ public class Deputado implements CargoPolitico {
     public String toString() {
         return this.getDataDeInicio() + " - " + this.getLeis() + " Leis";
     }
+
+
+    /**
+     * Esse método aumenta a quantidade de leis de um deputado em uma unidade.
+     */
+    @Override
+    public void aumentaLeis() {
+        this.leis++;
+    }
 }

@@ -37,4 +37,8 @@ public interface PropostaLegislativa {
     public void alteraSituacaoDoLocalAnterior(SituacaoVotacao situacao);
 
     public void encerraVotacao();
+
+    public void aprovaVotacao();
+
+    public String getAutor();
 }

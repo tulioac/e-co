@@ -87,7 +87,7 @@ expect true votarComissao codigo=${plcgov} statusGovernista="GOVERNISTA" proximo
 expect true votarComissao codigo=${plcgov} statusGovernista="GOVERNISTA" proximoLocal="-"
 # 1 lei aprovada ate o momento...:
 expect "POL: M2 - 071222222-0 (PE) - PartidoGov - Interesses: educacao,seguranca publica,saude - 29/02/2016 - 1 Leis" exibirPessoa dni="071222222-0"
-expect "Projeto de Lei - PL 3/2016 - 071222222-0 - Ementa PL conc - Conclusiva - APROVADO" exibirProjeto codigo=${plc}
+expect "Projeto de Lei - PL 3/2016 - 071222222-0 - Ementa PL conc - Conclusiva - APROVADO" exibirProjeto codigo=${plcgov}
 
 # PL Conc Livre - saude e nutricao
 expect true votarComissao codigo=${plcsaude} statusGovernista="LIVRE" proximoLocal="CGOV"
