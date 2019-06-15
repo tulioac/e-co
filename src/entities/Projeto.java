@@ -61,7 +61,7 @@ public abstract class Projeto implements PropostaLegislativa {
     private List<String[]> votacoes; // Local e Situação
     
     /**
-     * Constrói um deputado inicializando a lista com os locais de votaçao em CCJC e asituaçao em votaçao.
+     * Constrói um projeto inicializando a lista com os locais de votaçao em CCJC e asituaçao em votaçao.
      */
     public Projeto(String codigo, String dniAutor, int ano, String ementa, String interesses, String endereco) {
         super();
