@@ -57,30 +57,55 @@ public class PessoaService {
 		return false;
 	}
 
-	/**
-	 * Retorna um objeto Pessoa a partir de uma busca pelo seu dni.
-	 *
-	 * @param dni String contendo o dni da Pessoa que se quer obter
-	 * @return Pessoa dona do dni passado como parâmetro caso exista, null caso
-	 *         contrário
-	 */
-	public Pessoa getPessoaPeloDni(String dni) {
-		for (Pessoa pessoa : getPessoas())
-			if (pessoa.getDni().equals(dni))
-				return pessoa;
-		return null;
-	}
+    /**
+    * Retorna um objeto Pessoa a partir de uma busca pelo seu dni.
+    *
+    * @param dni String contendo o dni da Pessoa que se quer obter
+    * @return Pessoa dona do dni passado como parâmetro caso exista, null caso
+    *         contrário
+    */
+    public Pessoa getPessoaPeloDni(String dni) {
+        for (Pessoa pessoa : getPessoas())
+            if (pessoa.getDni().equals(dni))
+            return pessoa;
+        return null;
+    }
 
-	/**
-	 * Retorna um booleano sobre o fato de uma Pessoa com o dni passado possuir ou
-	 * não o cargo de deputado.
-	 *
-	 * @param dni String contendo o dni da Pessoa que se quer consultada
-	 * @return true para quando a pessoa com o dni passado possuir o cargo de
-	 *         Deputado, false caso contrário
-	 */
-	public boolean ehDeputado(String dni) {
-		return ehPessoaCadastrada(dni) && 
-				CargosPoliticos.DEPUTADO.equals(getPessoaPeloDni(dni).getCargoPolitico());
-	}
+    /**
+    * Retorna um objeto Pessoa a partir de uma busca pelo seu dni.
+    *
+    * @param dni String contendo o dni da Pessoa que se quer obter
+    * @return Pessoa dona do dni passado como parâmetro caso exista, null caso
+    * contrário
+    */
+    public Pessoa getPessoaPeloDni(String dni) {
+        for (Pessoa pessoa : getPessoas())
+            if (pessoa.getDni().equals(dni))
+            return pessoa;
+
+        return null;
+    }
+
+    /**
+    * Retorna um booleano sobre o fato de uma Pessoa com o dni passado possuir ou
+    * não o cargo de deputado.
+    *
+    * @param dni String contendo o dni da Pessoa que se quer consultada
+    * @return true para quando a pessoa com o dni passado possuir o cargo de
+    *         Deputado, false caso contrário
+    */
+    public boolean ehDeputado(String dni) {
+        return ehPessoaCadastrada(dni) && 
+            CargosPoliticos.DEPUTADO.equals(getPessoaPeloDni(dni).getCargoPolitico());
+    }
+
+    public int contaDeputados() {
+        int qntDeputados = 0;
+
+        for (Pessoa pessoa : this.getPessoas())
+            if (this.ehDeputado(pessoa.getDni()))
+            qntDeputados++;
+
+    return qntDeputados;
+    }
 }
