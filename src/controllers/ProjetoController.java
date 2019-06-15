@@ -55,7 +55,7 @@ public class ProjetoController {
     }
 
     public String cadastraPL(String dni, int ano, String ementa, String interesses, String url, boolean conclusivo) {
-    	Validador v = new Validador();
+        Validador v = new Validador();
         v.validaString(dni, "Erro ao cadastrar projeto: autor nao pode ser vazio ou nulo");
         v.validaDni(dni, "Erro ao cadastrar projeto: dni invalido");
         this.verificaDni(dni);
@@ -190,11 +190,12 @@ public class ProjetoController {
 
         PropostaLegislativa proposta = this.propostas.get(codigo);
 
-        if (proposta.getLocalDeVotacao().equals("Plenario - 1o turno"))
+        if (proposta.getLocalDeVotacao().equals("Plenario - 1o turno") || proposta.getLocalDeVotacao().equals("Plenario - 2o turno"))
             throw new IllegalArgumentException("Erro ao votar proposta: proposta encaminhada ao plenario");
 
-        if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()))
+        if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString())) {
             throw new IllegalArgumentException("Erro ao votar proposta: tramitacao encerrada");
+        }
 
         if (!(this.comissaoService.containsComissao(proposta.getLocalDeVotacao())))
             throw new NullPointerException("Erro ao votar proposta: " + proposta.getLocalDeVotacao() + " nao cadastrada");
@@ -206,10 +207,6 @@ public class ProjetoController {
         alteraNovoLocal(proximoLocal, proposta);
 
         avaliaResultado(proximoLocal, proposta, resultado);
-
-        // TODO: Conferir se ao votar a tramitação já está encerrada
-        // TODO: Ao aprovar um projeto, aumentar a quantidade de leis de um deputado
-        // TODO: Verificar se o projeto foi encaminhado ao plenário
 
         return resultado;
     }
@@ -345,8 +342,11 @@ public class ProjetoController {
         if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()) || proposta.getSituacaoAtual().equals(SituacaoVotacao.APROVADO.toString()))
             throw new IllegalArgumentException("Erro ao votar proposta: tramitacao encerrada");
 
-        if (!(proposta.getLocalDeVotacao().equals("Plenario - 1o turno")))
+
+        if (!(proposta.getLocalDeVotacao().equals("Plenario - 1o turno")) && !((proposta.getLocalDeVotacao().equals("Plenario - 2o turno")))) {
+            System.out.println(proposta);
             throw new IllegalArgumentException("Erro ao votar proposta: tramitacao em comissao");
+        }
 
         StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
 
@@ -360,7 +360,6 @@ public class ProjetoController {
     private void avaliaResultado(PropostaLegislativa proposta, boolean resultado) {
         TipoDeProjetos tipoDaProposta = proposta.getTipoDoProjeto();
 
-        System.out.println("Avaliando: " + proposta + " deu: " + resultado);
         if (tipoDaProposta == TipoDeProjetos.PL) {
             if (resultado) {
                 proposta.aprovaVotacao();
@@ -372,29 +371,24 @@ public class ProjetoController {
             }
         } else {
             if (proposta.getLocalDeVotacao().equals("Plenario - 1o turno")) {
-                System.out.println("Primeiro turno");
                 if (resultado) {
                     proposta.setNovoLocalDeVotacao("Plenario - 2o turno");
                 } else {
-                    System.out.println("Muda p/ Segundo turno");
-                    proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
+                    proposta.encerraVotacao();
                 }
             } else if (proposta.getLocalDeVotacao().equals("Plenario - 2o turno")) {
-                System.out.println("Segundo turno");
                 if (resultado) {
-                    proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.APROVADO);
+                    //proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.APROVADO);
                     proposta.aprovaVotacao();
                     String dniAutor = proposta.getAutor();
 
                     pessoaService.getPessoaPeloDni(dniAutor).aumentaLeis();
                 } else {
-                    proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
                     proposta.encerraVotacao();
                 }
             }
         }
     }
-
 
     public String exibirTramitacao(String codigo) {
         if (!(this.propostas.containsKey(codigo)))
