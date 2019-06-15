@@ -54,7 +54,7 @@ public class ProjetoController {
             throw new IllegalArgumentException("Erro ao cadastrar projeto: pessoa nao eh deputado");
     }
 
-    public String cadastraPL(String dni, int ano, String ementa, String interesses, String url, boolean conclusivo) {
+    private void validaEntradasDoProjeto(String dni, int ano, String ementa, String interesses, String url) {
         Validador v = new Validador();
         v.validaString(dni, "Erro ao cadastrar projeto: autor nao pode ser vazio ou nulo");
         v.validaDni(dni, "Erro ao cadastrar projeto: dni invalido");
@@ -63,7 +63,11 @@ public class ProjetoController {
         v.validaString(ementa, "Erro ao cadastrar projeto: ementa nao pode ser vazia ou nula");
         v.validaString(interesses, "Erro ao cadastrar projeto: interesse nao pode ser vazio ou nulo");
         v.validaString(url, "Erro ao cadastrar projeto: url nao pode ser vazio ou nulo");
-        v.validaNull(conclusivo, "Erro ao cadastrar projeto: conclusivo nao pode ser nula");
+    }
+
+    public String cadastraPL(String dni, int ano, String ementa, String interesses, String url, boolean conclusivo) {
+        validaEntradasDoProjeto(dni, ano, ementa, interesses, url);
+        new Validador().validaNull(conclusivo, "Erro ao cadastrar projeto: conclusivo nao pode ser nula");
 
         String codigo = criaCodigo(TipoDeProjetos.PL, ano);
         this.propostas.put(codigo, new PL(codigo, dni, ano, ementa, interesses, url, conclusivo));
@@ -72,15 +76,8 @@ public class ProjetoController {
     }
 
     public String cadastraPLP(String dni, int ano, String ementa, String interesses, String url, String artigos) {
-        Validador v = new Validador();
-        v.validaString(dni, "Erro ao cadastrar projeto: autor nao pode ser vazio ou nulo");
-        v.validaDni(dni, "Erro ao cadastrar projeto: dni invalido");
-        this.verificaDni(dni);
-        v.validaAno(ano);
-        v.validaString(ementa, "Erro ao cadastrar projeto: ementa nao pode ser vazia ou nula");
-        v.validaString(interesses, "Erro ao cadastrar projeto: interesse nao pode ser vazio ou nulo");
-        v.validaString(url, "Erro ao cadastrar projeto: url nao pode ser vazio ou nulo");
-        v.validaString(artigos, "Erro ao cadastrar projeto: artigo nao pode ser vazio ou nulo");
+        validaEntradasDoProjeto(dni, ano, ementa, interesses, url);
+        new Validador().validaString(artigos, "Erro ao cadastrar projeto: artigo nao pode ser vazio ou nulo");
 
         String codigo = criaCodigo(TipoDeProjetos.PLP, ano);
         this.propostas.put(codigo, new PLP(codigo, dni, ano, ementa, interesses, url, artigos));
@@ -89,15 +86,8 @@ public class ProjetoController {
     }
 
     public String cadastraPEC(String dni, int ano, String ementa, String interesses, String url, String artigos) {
-        Validador v = new Validador();
-        v.validaString(dni, "Erro ao cadastrar projeto: autor nao pode ser vazio ou nulo");
-        v.validaDni(dni, "Erro ao cadastrar projeto: dni invalido");
-        this.verificaDni(dni);
-        v.validaAno(ano);
-        v.validaString(ementa, "Erro ao cadastrar projeto: ementa nao pode ser vazia ou nula");
-        v.validaString(interesses, "Erro ao cadastrar projeto: interesse nao pode ser vazio ou nulo");
-        v.validaString(url, "Erro ao cadastrar projeto: url nao pode ser vazio ou nulo");
-        v.validaString(artigos, "Erro ao cadastrar projeto: artigo nao pode ser vazio ou nulo");
+        validaEntradasDoProjeto(dni, ano, ementa, interesses, url);
+        new Validador().validaString(artigos, "Erro ao cadastrar projeto: artigo nao pode ser vazio ou nulo");
 
         String codigo = criaCodigo(TipoDeProjetos.PEC, ano);
         this.propostas.put(codigo, new PEC(codigo, dni, ano, ementa, interesses, url, artigos));
@@ -337,32 +327,6 @@ public class ProjetoController {
         return qntPoliticosGovernistas;
     }
 
-    public boolean votarPlenario(String codigo, String statusGovernista, String presentes) {
-        if (!(this.propostas.containsKey(codigo)))
-            throw new NullPointerException("Erro ao votar proposta: codigo nao existe");
-
-        PropostaLegislativa proposta = this.propostas.get(codigo);
-
-        verificaQuorumMinimo(presentes, proposta.getTipoDoProjeto());
-
-        if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()) || proposta.getSituacaoAtual().equals(SituacaoVotacao.APROVADO.toString()))
-            throw new IllegalArgumentException("Erro ao votar proposta: tramitacao encerrada");
-
-
-        if (!(proposta.getLocalDeVotacao().equals("Plenario - 1o turno")) && !((proposta.getLocalDeVotacao().equals("Plenario - 2o turno")))) {
-            System.out.println(proposta);
-            throw new IllegalArgumentException("Erro ao votar proposta: tramitacao em comissao");
-        }
-
-        StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
-
-        boolean resultado = votacaoPlenario(status, proposta, presentes);
-
-        avaliaResultado(proposta, resultado);
-
-        return resultado;
-    }
-
     private void avaliaResultado(PropostaLegislativa proposta, boolean resultado) {
         TipoDeProjetos tipoDaProposta = proposta.getTipoDoProjeto();
 
@@ -394,6 +358,32 @@ public class ProjetoController {
                 }
             }
         }
+    }
+
+    public boolean votarPlenario(String codigo, String statusGovernista, String presentes) {
+        if (!(this.propostas.containsKey(codigo)))
+            throw new NullPointerException("Erro ao votar proposta: codigo nao existe");
+
+        PropostaLegislativa proposta = this.propostas.get(codigo);
+
+        verificaQuorumMinimo(presentes, proposta.getTipoDoProjeto());
+
+        if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()) || proposta.getSituacaoAtual().equals(SituacaoVotacao.APROVADO.toString()))
+            throw new IllegalArgumentException("Erro ao votar proposta: tramitacao encerrada");
+
+
+        if (!(proposta.getLocalDeVotacao().equals("Plenario - 1o turno")) && !((proposta.getLocalDeVotacao().equals("Plenario - 2o turno")))) {
+            System.out.println(proposta);
+            throw new IllegalArgumentException("Erro ao votar proposta: tramitacao em comissao");
+        }
+
+        StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
+
+        boolean resultado = votacaoPlenario(status, proposta, presentes);
+
+        avaliaResultado(proposta, resultado);
+
+        return resultado;
     }
 
     public String exibirTramitacao(String codigo) {
