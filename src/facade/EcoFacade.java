@@ -150,30 +150,118 @@ public class EcoFacade {
         this.comissaoController.cadastrarComissao(tema, politicos);
     }
 
+    /**
+     * Retorna uma String contendo o código da PL cadastrada. Cadastra uma Projeto de
+     * Lei a partir da DNI do autor, do ano de criação dela, de sua ementa, de seus
+     * interesses, de sua URL e se ela é ou não conclusiva. Não aceita valores nulos
+     * ou vazios passados como parâmetro. A String retornada é na seguinte formatação:
+     * 
+     * "PL X/YYYY", sendo X o número sequencial da PL considerando o ano em que ela foi
+     * cadastrada e YYYY o ano em que ela foi cadastrada.
+     * 
+     * @param dni String contendo o dni do autor
+     * @param ano ano de criação da PL
+     * @param ementa ementa da PL
+     * @param interesses interesses abordados na PL
+     * @param url url da ementa da PL
+     * @param conclusivo booleano sobre se a PL é ou não conclusiva
+     * @return String contendo o código da PL cadastrada
+     */
     public String cadastrarPL(String dni, int ano, String ementa, String interesses, String url, boolean conclusivo) {
         return this.projetoController.cadastraPL(dni, ano, ementa, interesses, url, conclusivo);
     }
 
+    /**
+     * Retorna uma String contendo o código da PLP cadastrada. Cadastra uma Projeto de
+     * Lei Parlamentar a partir da DNI do autor, do ano de criação dela, de sua ementa, de seus
+     * interesses, de sua URL e os artigos que ela interfere. Não aceita valores nulos
+     * ou vazios passados como parâmetro. A String retornada é na seguinte formatação:
+     * 
+     * "PLP X/YYYY", sendo X o número sequencial da PLP considerando o ano em que ela foi
+     * cadastrada e YYYY o ano em que ela foi cadastrada.
+     * 
+     * @param dni String contendo o dni do autor
+     * @param ano ano de criação da PLP
+     * @param ementa ementa da PLP
+     * @param interesses interesses abordados na PLP
+     * @param url url da ementa da PLP
+     * @param artigos String contendo os artigos que a PLP interfere, separados por ","
+     * @return String contendo o código da PLP cadastrada
+     */
     public String cadastrarPLP(String dni, int ano, String ementa, String interesses, String url, String artigos) {
         return this.projetoController.cadastraPLP(dni, ano, ementa, interesses, url, artigos);
     }
 
+    /**
+     * Retorna uma String contendo o código da PEC cadastrada. Cadastra uma Projeto de
+     * Lei Parlamentar a partir da DNI do autor, do ano de criação dela, de sua ementa, de seus
+     * interesses, de sua URL e os artigos que ela interfere. Não aceita valores nulos
+     * ou vazios passados como parâmetro. A String retornada é na seguinte formatação:
+     * 
+     * "PEC X/YYYY", sendo X o número sequencial da PEC considerando o ano em que ela foi
+     * cadastrada e YYYY o ano em que ela foi cadastrada.
+     * 
+     * @param dni String contendo o dni do autor
+     * @param ano ano de criação da PEC
+     * @param ementa ementa da PEC
+     * @param interesses interesses abordados na PEC
+     * @param url url da ementa da PEC
+     * @param artigos String contendo os artigos que a PEC interfere, separados por ","
+     * @return String contendo o código da PEC cadastrada
+     */
     public String cadastrarPEC(String dni, int ano, String ementa, String interesses, String url, String artigos) {
         return this.projetoController.cadastraPEC(dni, ano, ementa, interesses, url, artigos);
     }
-
+    
+    /**
+     * Retorna uma String contendo informações sobre o projeto buscado através do seu código.
+     * Cada tipo de projeto possui sua própria descrição, seguindo os seguintes padrões:
+     * 
+     * PL: "POL: nomePessoa - dni (estado) - partido - Interesses: educacao,seguranca publica,saude - dd/MM/yyyy - a Leis"
+     * 
+     * @param codigo String contendo o código do Projeto que se quer exibir
+     * @return String contendo as informações do projeto que se quer exibir
+     */
     public String exibirProjeto(String codigo) {
         return this.projetoController.exibirProjeto(codigo);
     }
 
+    /**
+     * Retorna booleano sobre a aprovação, ou não, de uma votação em uma comissão. 
+     * Cada tipo de Proposta Legislativa utiliza seu próprio tipo de maioria, podendo
+     * ser Simples, Absoluta e Qualificada.
+     * 
+     * @param codigo String contendo o código da proposta legislativa a ser votada
+     * @param statusGovernista String contendo o posicionamento político do projeto
+     * @param proximoLocal String contendo o próximo local em que será votada a proposta, caso aprovada no local atual
+     * @return true para uma votação aprovada pela comissão, false caso contrario
+     */
     public boolean votarComissao(String codigo, String statusGovernista, String proximoLocal) {
         return this.projetoController.votarComissao(codigo, statusGovernista, proximoLocal);
     }
 
+    /**
+     * Retorna booleano sobre a aprovação de uma proposta legislativa no plenário com base nos
+     * deputados presentes na sessão.
+     * 
+     * @param codigo código da proposta legislativa a ser votada
+     * @param statusGovernista posicionamento político da proposta legislativa a ser votada
+     * @param presentes String contendo as dnis dos deputados presentes na sessão que terá a votação de tal proposta no plenário
+     * @return true para uma proposta aprovada pelo plenário, false caso contrário
+     */
     public boolean votarPlenario(String codigo, String statusGovernista, String presentes) {
         return this.projetoController.votarPlenario(codigo, statusGovernista, presentes);
     }
 
+    /**
+     * Retorna String contendo o status da tramitação de uma proposta legislativa. 
+     * A String de saída segue o seguinte formato:
+     * 
+     * "tipoProjeto: SITUACAO-I (Local-I), SITUACAO-II (Local-II), SITUACAO-III (Local-III)"
+     * 
+     * @param codigo String contendo o código do pra proposta que se quer mostrar a tramitação
+     * @return String contendo informações sobre a tramitação de uma proposta
+     */
     public String exibirTramitacao(String codigo) {
         return this.projetoController.exibirTramitacao(codigo);
     }
