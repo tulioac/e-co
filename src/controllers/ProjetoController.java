@@ -360,7 +360,7 @@ public class ProjetoController {
     private void avaliaResultado(PropostaLegislativa proposta, boolean resultado) {
         TipoDeProjetos tipoDaProposta = proposta.getTipoDoProjeto();
 
-
+        // PL
         if (resultado) {
             proposta.aprovaVotacao();
             String dniAutor = proposta.getAutor();
@@ -371,6 +371,7 @@ public class ProjetoController {
         }
 
         // TODO: Corrigir
+        // PLP e PEC
         if (proposta.getSituacaoAtual().equals("Plenario - 1o turno")) {
             if (resultado) {
                 proposta.setNovoLocalDeVotacao("Plenario - 2o turno");
