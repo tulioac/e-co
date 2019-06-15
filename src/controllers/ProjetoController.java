@@ -1,8 +1,9 @@
 package controllers;
 
 import entities.*;
-import enums.Projetos;
+import enums.SituacaoVotacao;
 import enums.StatusGovernistas;
+import enums.TipoDeProjetos;
 import interfaces.PropostaLegislativa;
 import services.ComissaoService;
 import services.PartidoBaseService;
@@ -26,7 +27,7 @@ public class ProjetoController {
         this.propostas = new HashMap<>();
     }
 
-    private int contaProjetoEmAno(Projetos tipoProjeto, int ano) {
+    private int contaProjetoEmAno(TipoDeProjetos tipoProjeto, int ano) {
         int qntProjetosNoAno = 0;
 
         for (PropostaLegislativa proposta : this.propostas.values())
@@ -36,7 +37,7 @@ public class ProjetoController {
         return qntProjetosNoAno;
     }
 
-    private String criaCodigo(Projetos tipoProjeto, int ano) {
+    private String criaCodigo(TipoDeProjetos tipoProjeto, int ano) {
         int qntProjetosNoAno = contaProjetoEmAno(tipoProjeto, ano);
 
         qntProjetosNoAno++;
@@ -64,7 +65,7 @@ public class ProjetoController {
         v.validaString(url, "Erro ao cadastrar projeto: url nao pode ser vazio ou nulo");
         v.validaNull(conclusivo, "Erro ao cadastrar projeto: conclusivo nao pode ser nula");
 
-        String codigo = criaCodigo(Projetos.PL, ano);
+        String codigo = criaCodigo(TipoDeProjetos.PL, ano);
         this.propostas.put(codigo, new PL(codigo, dni, ano, ementa, interesses, url, conclusivo));
 
         return codigo;
@@ -81,7 +82,7 @@ public class ProjetoController {
         v.validaString(url, "Erro ao cadastrar projeto: url nao pode ser vazio ou nulo");
         v.validaString(artigos, "Erro ao cadastrar projeto: artigo nao pode ser vazio ou nulo");
 
-        String codigo = criaCodigo(Projetos.PLP, ano);
+        String codigo = criaCodigo(TipoDeProjetos.PLP, ano);
         this.propostas.put(codigo, new PLP(codigo, dni, ano, ementa, interesses, url, artigos));
 
         return codigo;
@@ -98,7 +99,7 @@ public class ProjetoController {
         v.validaString(url, "Erro ao cadastrar projeto: url nao pode ser vazio ou nulo");
         v.validaString(artigos, "Erro ao cadastrar projeto: artigo nao pode ser vazio ou nulo");
 
-        String codigo = criaCodigo(Projetos.PEC, ano);
+        String codigo = criaCodigo(TipoDeProjetos.PEC, ano);
         this.propostas.put(codigo, new PEC(codigo, dni, ano, ementa, interesses, url, artigos));
 
         return codigo;
@@ -109,6 +110,26 @@ public class ProjetoController {
             throw new NullPointerException("Erro ao exibir projeto: codigo nao cadastrado");
 
         return this.propostas.get(codigo).toString();
+    }
+
+    private void avaliaResultado(String proximoLocal, PropostaLegislativa proposta, boolean resultado) {
+        if (proposta.toString().contains("Conclusiva") && resultado == false)
+            proposta.encerraVotacao();
+
+        if (proximoLocal.equals("-")) {
+            if (resultado) {
+                proposta.aprovaVotacao();
+                String dniAutor = proposta.getAutor();
+
+                pessoaService.getPessoaPeloDni(dniAutor).aumentaLeis();
+            } else
+                proposta.encerraVotacao();
+        }
+
+        if (resultado)
+            proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.APROVADO);
+        else
+            proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
     }
 
     private int contaPoliticosInteressados(Comissao comissao, PropostaLegislativa projeto) {
@@ -125,64 +146,260 @@ public class ProjetoController {
     }
 
     private int contaPoliticosGovernistas(Comissao comissao) {
-        int politicosGovernistas = 0;
+        int qntPoliticosGovernistas = 0;
 
         for (Pessoa deputado : comissao.getIntegrantes())
             if (this.partidoService.containsPartido(deputado.getPartido()))
-                politicosGovernistas++;
+                qntPoliticosGovernistas++;
 
-        return politicosGovernistas;
+        return qntPoliticosGovernistas;
     }
 
-    private boolean votacaoDeComissao(StatusGovernistas status, Comissao comissao, PropostaLegislativa projeto) {
+    private boolean votaComissao(StatusGovernistas status, Comissao comissao, PropostaLegislativa projeto) {
         boolean resultado = false;
 
         int qntDePoliticosDaComissao = comissao.getIntegrantes().size();
 
-        if (status == StatusGovernistas.LIVRE){
+        if (status == StatusGovernistas.LIVRE) {
             int qntPoliticosInteressados = contaPoliticosInteressados(comissao, projeto);
 
-            if (qntPoliticosInteressados >= qntDePoliticosDaComissao / 2 + 1)
+            if (qntPoliticosInteressados >= (qntDePoliticosDaComissao / 2 + 1))
                 resultado = true;
-        }
 
-        else {
+        } else {
             int qntPoliticosGovernistas = contaPoliticosGovernistas(comissao);
 
-            if (status == StatusGovernistas.GOVERNISTA)
+            if (status == StatusGovernistas.GOVERNISTA) {
                 if (qntPoliticosGovernistas >= qntDePoliticosDaComissao / 2 + 1)
                     resultado = true;
 
-            else
+            } else // StatusGovernistas.OPOSICAO
                 if (qntPoliticosGovernistas < qntDePoliticosDaComissao / 2 + 1)
                     resultado = true;
+        }
+        return resultado;
+    }
+
+    public boolean votarComissao(String codigo, String statusGovernista, String proximoLocal) {
+        Validador v = new Validador();
+        v.validaString(proximoLocal, "Erro ao votar proposta: proximo local vazio");
+        v.validaStatus(statusGovernista, "Erro ao votar proposta: status invalido");
+
+        if (!(this.propostas.containsKey(codigo)))
+            throw new NullPointerException("Erro ao votar proposta: projeto inexistente");
+
+        PropostaLegislativa proposta = this.propostas.get(codigo);
+
+        if (proposta.getLocalDeVotacao().equals("Plenario - 1o turno"))
+            throw new IllegalArgumentException("Erro ao votar proposta: proposta encaminhada ao plenario");
+
+        if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()))
+            throw new IllegalArgumentException("Erro ao votar proposta: tramitacao encerrada");
+
+        if (!(this.comissaoService.containsComissao(proposta.getLocalDeVotacao())))
+            throw new NullPointerException("Erro ao votar proposta: " + proposta.getLocalDeVotacao() + " nao cadastrada");
+
+        StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
+
+        boolean resultado = this.votaComissao(status, this.comissaoService.getComissao(proposta.getLocalDeVotacao()), proposta);
+
+        alteraNovoLocal(proximoLocal, proposta);
+
+        avaliaResultado(proximoLocal, proposta, resultado);
+
+        // TODO: Conferir se ao votar a tramitação já está encerrada
+        // TODO: Ao aprovar um projeto, aumentar a quantidade de leis de um deputado
+        // TODO: Verificar se o projeto foi encaminhado ao plenário
+
+        return resultado;
+    }
+
+    private void alteraNovoLocal(String proximoLocal, PropostaLegislativa proposta) {
+        if (proximoLocal.equals("plenario")) {
+            proposta.setNovoLocalDeVotacao("Plenario - 1o turno");
+        } else {
+            proposta.setNovoLocalDeVotacao(proximoLocal);
+        }
+    }
+
+    private void verificaQuorumMinimo(String presentes, TipoDeProjetos tipoDoProjeto) {
+        int qntDeputadosPresentes = presentes.split(",").length;
+
+        int qntTotalDeputado = pessoaService.contaDeputados();
+
+        if (tipoDoProjeto == TipoDeProjetos.PEC) {
+            if (qntDeputadosPresentes < 3 * qntTotalDeputado / 5 + 1)
+                throw new IllegalArgumentException("Erro ao votar proposta: quorum invalido");
+
+        } else if (qntDeputadosPresentes < qntTotalDeputado / 2 + 1)
+            throw new IllegalArgumentException("Erro ao votar proposta: quorum invalido");
+    }
+
+    private boolean votacaoPlenario(StatusGovernistas status, PropostaLegislativa proposta, String presentes) {
+        TipoDeProjetos tipoDaProposta = proposta.getTipoDoProjeto();
+        String[] listaDePresentes = presentes.split(",");
+
+        boolean resultado = false;
+
+        if (tipoDaProposta == TipoDeProjetos.PL) {
+            resultado = votaMaioriaSimples(status, proposta, listaDePresentes);
+        } else if (tipoDaProposta == TipoDeProjetos.PLP) {
+            resultado = votaMaioriaAbsoluta(status, proposta, listaDePresentes);
+        } else {  // TipoDeProjetos.PEC
+            resultado = votaMaioriaQualificada(status, proposta, listaDePresentes);
         }
 
         return resultado;
     }
 
+    private boolean votaMaioriaSimples(StatusGovernistas status, PropostaLegislativa proposta, String[] listaDePresentes) {
+        boolean resultado = false;
 
+        int qntPoliticosGovernistas = contaPoliticosGovernistas(listaDePresentes);
 
-    public boolean votarComissao(String codigo, String statusGovernista, String proximoLocal) {
-        if (!(this.propostas.containsKey(codigo)))
-            throw new NullPointerException("Erro ao votar proposta: codigo nao existe");
+        if (status == StatusGovernistas.GOVERNISTA) {
+            if (qntPoliticosGovernistas >= listaDePresentes.length / 2 + 1)
+                resultado = true;
+        } else { // StatusGovernistas.OPOSICAO
+            if (listaDePresentes.length - qntPoliticosGovernistas >= listaDePresentes.length / 2 + 1)
+                resultado = true;
+        }
 
-        if(!(this.comissaoService.containsComissao(this.propostas.get(codigo).getLocalDeVotacao()))) // CCJC
-            throw new NullPointerException("Erro ao votar proposta: " + this.propostas.get(codigo).getLocalDeVotacao() + " nao cadastrada");
-
-        StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
-
-        boolean resultado = this.votacaoDeComissao(status, this.comissaoService.getComissao(this.propostas.get(codigo).getLocalDeVotacao()), this.propostas.get(codigo));
-
-        this.propostas.get(codigo).setLocalDeVotacao(proximoLocal);
         return resultado;
     }
 
-    public boolean votarPlenario(String codigo, String statusGovernista, String presentes) {
-        return false;
+    private boolean votaMaioriaAbsoluta(StatusGovernistas status, PropostaLegislativa proposta, String[] listaDePresentes) {
+        boolean resultado = false;
+
+        int qntPoliticosPresentes = listaDePresentes.length;
+
+        if (status == StatusGovernistas.LIVRE) {
+            int qntPoliticosInteressados = contaPoliticosInteressados(listaDePresentes, proposta);
+
+            if (qntPoliticosInteressados >= qntPoliticosPresentes / 2 + 1)
+                resultado = true;
+        } else {
+            int qntPoliticosGovernistas = contaPoliticosGovernistas(listaDePresentes);
+
+            if (status == StatusGovernistas.GOVERNISTA) {
+                if (qntPoliticosGovernistas >= qntPoliticosPresentes / 2 + 1)
+                    resultado = true;
+            } else { // StatusGovernistas.OPOSICAO
+                if (qntPoliticosGovernistas < qntPoliticosPresentes / 2 + 1)
+                    resultado = true;
+            }
+        }
+
+        return resultado;
     }
 
+    private int contaPoliticosInteressados(String[] listaDePresentes, PropostaLegislativa projeto) {
+        int qntPoliticosInteressados = 0;
+
+        for (String dniPolitico : listaDePresentes) {
+            Pessoa politico = this.pessoaService.getPessoaPeloDni(dniPolitico);
+            for (String interesseDoProjeto : projeto.getInteresses().split(","))
+                if (politico.getInteresses().contains(interesseDoProjeto))
+                    qntPoliticosInteressados++;
+        }
+        return qntPoliticosInteressados;
+    }
+
+    private boolean votaMaioriaQualificada(StatusGovernistas status, PropostaLegislativa proposta, String[] listaDePresentes) {
+        boolean resultado = false;
+
+        int qntPoliticosGovernistas = contaPoliticosGovernistas(listaDePresentes);
+
+        int qntPoliticosPresentes = listaDePresentes.length;
+
+        if (status == StatusGovernistas.GOVERNISTA) {
+            if (qntPoliticosGovernistas >= 3 * qntPoliticosPresentes / 5 + 1)
+                resultado = true;
+        } else {// StatusGovernistas.OPOSICAO
+            if (qntPoliticosGovernistas < 3 * qntPoliticosPresentes / 5 + 1)
+                resultado = true;
+        }
+
+        return resultado;
+    }
+
+    private int contaPoliticosGovernistas(String[] listaDePresentes) {
+        int qntPoliticosGovernistas = 0;
+
+        for (String dniPolitico : listaDePresentes) {
+            Pessoa politico = this.pessoaService.getPessoaPeloDni(dniPolitico);
+            if (this.partidoService.containsPartido(politico.getPartido()))
+                qntPoliticosGovernistas++;
+        }
+        return qntPoliticosGovernistas;
+    }
+
+    public boolean votarPlenario(String codigo, String statusGovernista, String presentes) {
+        if (!(this.propostas.containsKey(codigo)))
+            throw new NullPointerException("Erro ao votar proposta: codigo nao existe");
+
+        PropostaLegislativa proposta = this.propostas.get(codigo);
+
+        verificaQuorumMinimo(presentes, proposta.getTipoDoProjeto());
+
+        if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()) || proposta.getSituacaoAtual().equals(SituacaoVotacao.APROVADO.toString()))
+            throw new IllegalArgumentException("Erro ao votar proposta: tramitacao encerrada");
+
+        if (!(proposta.getLocalDeVotacao().equals("Plenario - 1o turno")))
+            throw new IllegalArgumentException("Erro ao votar proposta: tramitacao em comissao");
+
+        StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
+
+        boolean resultado = votacaoPlenario(status, proposta, presentes);
+
+        avaliaResultado(proposta, resultado);
+
+        return resultado;
+    }
+
+    private void avaliaResultado(PropostaLegislativa proposta, boolean resultado) {
+        TipoDeProjetos tipoDaProposta = proposta.getTipoDoProjeto();
+
+        System.out.println("Avaliando: " + proposta + " deu: " + resultado);
+        if (tipoDaProposta == TipoDeProjetos.PL) {
+            if (resultado) {
+                proposta.aprovaVotacao();
+                String dniAutor = proposta.getAutor();
+
+                pessoaService.getPessoaPeloDni(dniAutor).aumentaLeis();
+            } else {
+                proposta.encerraVotacao();
+            }
+        } else {
+            if (proposta.getLocalDeVotacao().equals("Plenario - 1o turno")) {
+                System.out.println("Primeiro turno");
+                if (resultado) {
+                    proposta.setNovoLocalDeVotacao("Plenario - 2o turno");
+                } else {
+                    System.out.println("Muda p/ Segundo turno");
+                    proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
+                }
+            } else if (proposta.getLocalDeVotacao().equals("Plenario - 2o turno")) {
+                System.out.println("Segundo turno");
+                if (resultado) {
+                    proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.APROVADO);
+                    proposta.aprovaVotacao();
+                    String dniAutor = proposta.getAutor();
+
+                    pessoaService.getPessoaPeloDni(dniAutor).aumentaLeis();
+                } else {
+                    proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
+                    proposta.encerraVotacao();
+                }
+            }
+        }
+    }
+
+
     public String exibirTramitacao(String codigo) {
-        return "";
+        if (!(this.propostas.containsKey(codigo)))
+            throw new NullPointerException("Erro ao exibir projeto: codigo nao cadastrado");
+
+        return "Ainda nao implementado!";
     }
 }
