@@ -190,7 +190,7 @@ public class ProjetoController {
 
         PropostaLegislativa proposta = this.propostas.get(codigo);
 
-        if (proposta.getLocalDeVotacao().equals("plenario"))
+        if (proposta.getLocalDeVotacao().equals("Plenario - 1o turno"))
             throw new IllegalArgumentException("Erro ao votar proposta: proposta encaminhada ao plenario");
 
         if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()))
@@ -203,7 +203,7 @@ public class ProjetoController {
 
         boolean resultado = this.votaComissao(status, this.comissaoService.getComissao(proposta.getLocalDeVotacao()), proposta);
 
-        proposta.setNovoLocalDeVotacao(proximoLocal);
+        alteraNovoLocal(proximoLocal, proposta);
 
         avaliaResultado(proximoLocal, proposta, resultado);
 
@@ -212,6 +212,14 @@ public class ProjetoController {
         // TODO: Verificar se o projeto foi encaminhado ao plenário
 
         return resultado;
+    }
+
+    private void alteraNovoLocal(String proximoLocal, PropostaLegislativa proposta) {
+        if (proximoLocal.equals("plenario")) {
+            proposta.setNovoLocalDeVotacao("Plenario - 1o turno");
+        } else {
+            proposta.setNovoLocalDeVotacao(proximoLocal);
+        }
     }
 
     private void verificaQuorumMinimo(String presentes, TipoDeProjetos tipoDoProjeto) {
@@ -263,19 +271,38 @@ public class ProjetoController {
     private boolean votaMaioriaAbsoluta(StatusGovernistas status, PropostaLegislativa proposta, String[] listaDePresentes) {
         boolean resultado = false;
 
-        int qntPoliticosGovernistas = contaPoliticosGovernistas(listaDePresentes);
-
         int qntPoliticosPresentes = listaDePresentes.length;
 
-        if (status == StatusGovernistas.GOVERNISTA) {
-            if (qntPoliticosGovernistas >= qntPoliticosPresentes / 2 + 1)
+        if (status == StatusGovernistas.LIVRE) {
+            int qntPoliticosInteressados = contaPoliticosInteressados(listaDePresentes, proposta);
+
+            if (qntPoliticosInteressados >= qntPoliticosPresentes / 2 + 1)
                 resultado = true;
-        } else { // StatusGovernistas.OPOSICAO
-            if (qntPoliticosGovernistas < qntPoliticosPresentes / 2 + 1)
-                resultado = true;
+        } else {
+            int qntPoliticosGovernistas = contaPoliticosGovernistas(listaDePresentes);
+
+            if (status == StatusGovernistas.GOVERNISTA) {
+                if (qntPoliticosGovernistas >= qntPoliticosPresentes / 2 + 1)
+                    resultado = true;
+            } else { // StatusGovernistas.OPOSICAO
+                if (qntPoliticosGovernistas < qntPoliticosPresentes / 2 + 1)
+                    resultado = true;
+            }
         }
 
         return resultado;
+    }
+
+    private int contaPoliticosInteressados(String[] listaDePresentes, PropostaLegislativa projeto) {
+        int qntPoliticosInteressados = 0;
+
+        for (String dniPolitico : listaDePresentes) {
+            Pessoa politico = this.pessoaService.getPessoaPeloDni(dniPolitico);
+            for (String interesseDoProjeto : projeto.getInteresses().split(","))
+                if (politico.getInteresses().contains(interesseDoProjeto))
+                    qntPoliticosInteressados++;
+        }
+        return qntPoliticosInteressados;
     }
 
     private boolean votaMaioriaQualificada(StatusGovernistas status, PropostaLegislativa proposta, String[] listaDePresentes) {
@@ -318,7 +345,7 @@ public class ProjetoController {
         if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()) || proposta.getSituacaoAtual().equals(SituacaoVotacao.APROVADO.toString()))
             throw new IllegalArgumentException("Erro ao votar proposta: tramitacao encerrada");
 
-        if (!(proposta.getLocalDeVotacao().equals("plenario")))
+        if (!(proposta.getLocalDeVotacao().equals("Plenario - 1o turno")))
             throw new IllegalArgumentException("Erro ao votar proposta: tramitacao em comissao");
 
         StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
@@ -333,13 +360,34 @@ public class ProjetoController {
     private void avaliaResultado(PropostaLegislativa proposta, boolean resultado) {
         TipoDeProjetos tipoDaProposta = proposta.getTipoDoProjeto();
 
-        if (resultado == false)
-            proposta.encerraVotacao();
-        else {
+
+        if (resultado) {
             proposta.aprovaVotacao();
             String dniAutor = proposta.getAutor();
 
             pessoaService.getPessoaPeloDni(dniAutor).aumentaLeis();
+        } else {
+            proposta.encerraVotacao();
+        }
+
+        // TODO: Corrigir
+        if (proposta.getSituacaoAtual().equals("Plenario - 1o turno")) {
+            if (resultado) {
+                proposta.setNovoLocalDeVotacao("Plenario - 2o turno");
+            } else {
+                proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
+            }
+        } else if (proposta.getSituacaoAtual().equals("Plenario - 2o turno")) {
+            if (resultado) {
+                proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.APROVADO);
+                proposta.aprovaVotacao();
+                String dniAutor = proposta.getAutor();
+
+                pessoaService.getPessoaPeloDni(dniAutor).aumentaLeis();
+            } else {
+                proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
+                proposta.encerraVotacao();
+            }
         }
     }
 
