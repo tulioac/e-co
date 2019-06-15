@@ -72,21 +72,6 @@ public class PessoaService {
     }
 
     /**
-    * Retorna um objeto Pessoa a partir de uma busca pelo seu dni.
-    *
-    * @param dni String contendo o dni da Pessoa que se quer obter
-    * @return Pessoa dona do dni passado como parâmetro caso exista, null caso
-    * contrário
-    */
-    public Pessoa getPessoaPeloDni(String dni) {
-        for (Pessoa pessoa : getPessoas())
-            if (pessoa.getDni().equals(dni))
-            return pessoa;
-
-        return null;
-    }
-
-    /**
     * Retorna um booleano sobre o fato de uma Pessoa com o dni passado possuir ou
     * não o cargo de deputado.
     *
