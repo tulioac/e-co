@@ -360,34 +360,37 @@ public class ProjetoController {
     private void avaliaResultado(PropostaLegislativa proposta, boolean resultado) {
         TipoDeProjetos tipoDaProposta = proposta.getTipoDoProjeto();
 
-        // PL
-        if (resultado) {
-            proposta.aprovaVotacao();
-            String dniAutor = proposta.getAutor();
-
-            pessoaService.getPessoaPeloDni(dniAutor).aumentaLeis();
-        } else {
-            proposta.encerraVotacao();
-        }
-
-        // TODO: Corrigir
-        // PLP e PEC
-        if (proposta.getSituacaoAtual().equals("Plenario - 1o turno")) {
+        System.out.println("Avaliando: " + proposta + " deu: " + resultado);
+        if (tipoDaProposta == TipoDeProjetos.PL) {
             if (resultado) {
-                proposta.setNovoLocalDeVotacao("Plenario - 2o turno");
-            } else {
-                proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
-            }
-        } else if (proposta.getSituacaoAtual().equals("Plenario - 2o turno")) {
-            if (resultado) {
-                proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.APROVADO);
                 proposta.aprovaVotacao();
                 String dniAutor = proposta.getAutor();
 
                 pessoaService.getPessoaPeloDni(dniAutor).aumentaLeis();
             } else {
-                proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
                 proposta.encerraVotacao();
+            }
+        } else {
+            if (proposta.getLocalDeVotacao().equals("Plenario - 1o turno")) {
+                System.out.println("Primeiro turno");
+                if (resultado) {
+                    proposta.setNovoLocalDeVotacao("Plenario - 2o turno");
+                } else {
+                    System.out.println("Muda p/ Segundo turno");
+                    proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
+                }
+            } else if (proposta.getLocalDeVotacao().equals("Plenario - 2o turno")) {
+                System.out.println("Segundo turno");
+                if (resultado) {
+                    proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.APROVADO);
+                    proposta.aprovaVotacao();
+                    String dniAutor = proposta.getAutor();
+
+                    pessoaService.getPessoaPeloDni(dniAutor).aumentaLeis();
+                } else {
+                    proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
+                    proposta.encerraVotacao();
+                }
             }
         }
     }
