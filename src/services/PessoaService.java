@@ -91,6 +91,11 @@ public class PessoaService {
         return false;
     }
 
+    /**
+     * Retorna o número de deputados já cadastrados no sistema.
+     * 
+     * @return número de deputados cadastrados no sistema
+     */
     public int contaDeputados() {
         int qntDeputados = 0;
 
