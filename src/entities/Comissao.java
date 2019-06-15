@@ -71,4 +71,13 @@ public class Comissao {
             return false;
         return true;
     }
+
+    public String getTema() {
+        return this.tema;
+    }
+
+    public Set<Pessoa> getIntegrantes() {
+        return this.integrantes;
+    }
+
 }

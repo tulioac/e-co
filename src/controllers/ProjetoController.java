@@ -1,10 +1,11 @@
 package controllers;
 
-import entities.PEC;
-import entities.PL;
-import entities.PLP;
+import entities.*;
 import enums.Projetos;
+import enums.StatusGovernistas;
 import interfaces.PropostaLegislativa;
+import services.ComissaoService;
+import services.PartidoBaseService;
 import services.PessoaService;
 import util.Validador;
 
@@ -14,10 +15,14 @@ import java.util.Map;
 public class ProjetoController {
 
     private PessoaService pessoaService;
+    private ComissaoService comissaoService;
+    private PartidoBaseService partidoService;
     private Map<String, PropostaLegislativa> propostas;
 
-    public ProjetoController(PessoaService pessoaService) {
+    public ProjetoController(PessoaService pessoaService, ComissaoService comissaoService, PartidoBaseService partidoService) {
         this.pessoaService = pessoaService;
+        this.comissaoService = comissaoService;
+        this.partidoService = partidoService;
         this.propostas = new HashMap<>();
     }
 
@@ -49,7 +54,7 @@ public class ProjetoController {
     }
 
     public String cadastraPL(String dni, int ano, String ementa, String interesses, String url, boolean conclusivo) {
-        Validador v = new Validador();
+    	Validador v = new Validador();
         v.validaString(dni, "Erro ao cadastrar projeto: autor nao pode ser vazio ou nulo");
         v.validaDni(dni, "Erro ao cadastrar projeto: dni invalido");
         this.verificaDni(dni);
@@ -106,8 +111,71 @@ public class ProjetoController {
         return this.propostas.get(codigo).toString();
     }
 
+    private int contaPoliticosInteressados(Comissao comissao, PropostaLegislativa projeto) {
+        int politicosInteressados = 0;
+
+        for (Pessoa deputado : comissao.getIntegrantes())
+            for (String interesses : deputado.getInteresses().split(","))
+                if (projeto.getInteresses().contains(interesses)) {
+                    politicosInteressados++;
+                    break;
+                }
+
+        return politicosInteressados;
+    }
+
+    private int contaPoliticosGovernistas(Comissao comissao) {
+        int politicosGovernistas = 0;
+
+        for (Pessoa deputado : comissao.getIntegrantes())
+            if (this.partidoService.containsPartido(deputado.getPartido()))
+                politicosGovernistas++;
+
+        return politicosGovernistas;
+    }
+
+    private boolean votacaoDeComissao(StatusGovernistas status, Comissao comissao, PropostaLegislativa projeto) {
+        boolean resultado = false;
+
+        int qntDePoliticosDaComissao = comissao.getIntegrantes().size();
+
+        if (status == StatusGovernistas.LIVRE){
+            int qntPoliticosInteressados = contaPoliticosInteressados(comissao, projeto);
+
+            if (qntPoliticosInteressados >= qntDePoliticosDaComissao / 2 + 1)
+                resultado = true;
+        }
+
+        else {
+            int qntPoliticosGovernistas = contaPoliticosGovernistas(comissao);
+
+            if (status == StatusGovernistas.GOVERNISTA)
+                if (qntPoliticosGovernistas >= qntDePoliticosDaComissao / 2 + 1)
+                    resultado = true;
+
+            else
+                if (qntPoliticosGovernistas < qntDePoliticosDaComissao / 2 + 1)
+                    resultado = true;
+        }
+
+        return resultado;
+    }
+
+
+
     public boolean votarComissao(String codigo, String statusGovernista, String proximoLocal) {
-        return false;
+        if (!(this.propostas.containsKey(codigo)))
+            throw new NullPointerException("Erro ao votar proposta: codigo nao existe");
+
+        if(!(this.comissaoService.containsComissao(this.propostas.get(codigo).getLocalDeVotacao()))) // CCJC
+            throw new NullPointerException("Erro ao votar proposta: " + this.propostas.get(codigo).getLocalDeVotacao() + " nao cadastrada");
+
+        StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
+
+        boolean resultado = this.votacaoDeComissao(status, this.comissaoService.getComissao(this.propostas.get(codigo).getLocalDeVotacao()), this.propostas.get(codigo));
+
+        this.propostas.get(codigo).setLocalDeVotacao(proximoLocal);
+        return resultado;
     }
 
     public boolean votarPlenario(String codigo, String statusGovernista, String presentes) {

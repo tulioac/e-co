@@ -5,6 +5,8 @@ import interfaces.CargoPolitico;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import enums.CargosPoliticos;
+
 /**
  * Essa classe representa um Deputado.
  *
@@ -39,8 +41,8 @@ public class Deputado implements CargoPolitico {
      * @return o nome do cargo.
      */
     @Override
-    public String getNomeCargo() {
-        return "Deputado";
+    public CargosPoliticos getNomeCargo() {
+        return CargosPoliticos.DEPUTADO;
     }
 
     /**

@@ -66,4 +66,8 @@ public class PartidoBaseController {
 
         return mensagem;
     }
+
+    public Set<Partido> getPartidos() {
+        return new HashSet<Partido>(this.partidos.values());
+    }
 }
