@@ -1,10 +1,10 @@
 package entities;
 
+import java.util.Date;
+
 import enums.CargosPoliticos;
 import interfaces.CargoPolitico;
 import util.Validador;
-
-import java.util.Date;
 
 /**
  * Essa classe representa uma Pessoa.
@@ -136,8 +136,8 @@ public class Pessoa {
      *
      * @return cargo politico da pessoa
      */
-    public String getCargoPolitico() {
-        return (this.cargoPolitico != null) ? this.cargoPolitico.getNomeCargo() : "Sem Cargo";
+    public CargosPoliticos getCargoPolitico() {
+        return (this.cargoPolitico != null) ? this.cargoPolitico.getNomeCargo() : CargosPoliticos.SEM_CARGO;
     }
 
     /**
@@ -225,7 +225,7 @@ public class Pessoa {
     public String toString() {
         StringBuilder representacaoPessoa = new StringBuilder();
 
-        if (this.getCargoPolitico().equals("Sem Cargo")) {
+        if (this.getCargoPolitico().equals(CargosPoliticos.SEM_CARGO)) {
             representacaoPessoa.append(this.informacoesBasicas());
 
             if (!this.getPartido().equals(""))
@@ -234,7 +234,7 @@ public class Pessoa {
                 representacaoPessoa.append(" - Interesses: " + this.interesses);
         }
 
-        if (this.getCargoPolitico().equals("Deputado")) {
+        if (this.getCargoPolitico().equals(CargosPoliticos.DEPUTADO)) {
             representacaoPessoa.append("POL: " + this.informacoesBasicas() + " - " + this.getPartido());
 
             if (!this.interesses.equals(""))

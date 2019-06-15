@@ -55,7 +55,7 @@ public class ProjetoController {
     }
 
     public String cadastraPL(String dni, int ano, String ementa, String interesses, String url, boolean conclusivo) {
-        Validador v = new Validador();
+    	Validador v = new Validador();
         v.validaString(dni, "Erro ao cadastrar projeto: autor nao pode ser vazio ou nulo");
         v.validaDni(dni, "Erro ao cadastrar projeto: dni invalido");
         this.verificaDni(dni);

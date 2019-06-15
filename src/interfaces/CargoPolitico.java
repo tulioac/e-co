@@ -1,5 +1,7 @@
 package interfaces;
 
+import enums.CargosPoliticos;
+
 /**
  * Essa interface representa o cargo político de uma pessoa.
  *
@@ -14,7 +16,7 @@ public interface CargoPolitico {
     /**
      * Esse método retorna o nome do cargo político.
      */
-    public String getNomeCargo();
+    public CargosPoliticos getNomeCargo();
 
     /**
      * Esse método retorna a data de início do mandato político.

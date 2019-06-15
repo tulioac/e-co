@@ -2,6 +2,7 @@ package services;
 
 import controllers.PessoaController;
 import entities.Pessoa;
+import enums.CargosPoliticos;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,45 +18,44 @@ import java.util.Set;
  */
 public class PessoaService {
 
-    /**
-     * Armazena um controlador de Pessoas.
-     */
-    private PessoaController pessoas;
+	/**
+	 * Armazena um controlador de Pessoas.
+	 */
+	private PessoaController pessoas;
 
-    /**
-     * Constroi uma classe Service a partir de um Controlador de Pessoas.
-     *
-     * @param pessoas controlador de pessoas
-     */
-    public PessoaService(PessoaController pessoas) {
-        this.pessoas = pessoas;
-    }
+	/**
+	 * Constroi uma classe Service a partir de um Controlador de Pessoas.
+	 *
+	 * @param pessoas controlador de pessoas
+	 */
+	public PessoaService(PessoaController pessoas) {
+		this.pessoas = pessoas;
+	}
 
-    /**
-     * Retorna um Set de objetos Pessoa. Obtém um grupo de todas as Pessoas
-     * cadastradas no sistema.
-     *
-     * @return Set de Pessoa contendo todas as pessoas que foram cadastradas no
-     * sistema até o momento
-     */
-    public Set<Pessoa> getPessoas() {
-        return new HashSet<Pessoa>(this.pessoas.getPessoas());
-    }
+	/**
+	 * Retorna um Set de objetos Pessoa. Obtém um grupo de todas as Pessoas
+	 * cadastradas no sistema.
+	 *
+	 * @return Set de Pessoa contendo todas as pessoas que foram cadastradas no
+	 *         sistema até o momento
+	 */
+	public Set<Pessoa> getPessoas() {
+		return new HashSet<Pessoa>(this.pessoas.getPessoas());
+	}
 
-    /**
-     * Retorna booleano sobre o fato de uma Pessoa estar ou não cadastrada no
-     * sistema.
-     *
-     * @param dni String com o dni buscado
-     * @return true para uma pessoa cadastrada, false caso contrário.
-     */
-    public boolean ehPessoaCadastrada(String dni) {
-        for (Pessoa pessoa : getPessoas())
-            if (pessoa.getDni().equals(dni))
-                return true;
-
-        return false;
-    }
+	/**
+	 * Retorna booleano sobre o fato de uma Pessoa estar ou não cadastrada no
+	 * sistema.
+	 *
+	 * @param dni String com o dni buscado
+	 * @return true para uma pessoa cadastrada, false caso contrário.
+	 */
+	public boolean ehPessoaCadastrada(String dni) {
+		for (Pessoa pessoa : getPessoas())
+			if (pessoa.getDni().equals(dni))
+				return true;
+		return false;
+	}
 
     /**
      * Retorna um objeto Pessoa a partir de uma busca pelo seu dni.
