@@ -87,8 +87,7 @@ public class Validador {
      * no momento da validaçao: anos anteriores à 1988(ano da constituiçao brasileira) e
      * anos posteriores ao ano vigente.
      *
-     * @param ano         ano a ser validado.
-     * 
+     * @param ano ano a ser validado.
      * @throws IllegalArgumentException caso o ano seja anterior à 1988.
      * @throws IllegalArgumentException caso o ano seja posterior ao ano vigente.
      */
@@ -106,15 +105,14 @@ public class Validador {
      * Esse método valida uma String verificando se esta é igual à algum dos valores
      * estabelecidos para dentro do enum StatusGovernista.
      *
-     * @param statusGovernista         status a ser validado.
-     * @param mensagem 				   mensagem de erro a ser lançada em caso de 
-     * 								   strings diferentes das estabelecidas no enum.
-     * 
+     * @param statusGovernista status a ser validado.
+     * @param mensagem         mensagem de erro a ser lançada em caso de
+     *                         strings diferentes das estabelecidas no enum.
      * @throws IllegalArgumentException caso o status nao seja nenhum dos valores estabecidos
-     * 									no enum.
+     *                                  no enum.
      */
     public void validaStatus(String statusGovernista, String mensagem) {
-        try{
+        try {
             StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
         } catch (IllegalArgumentException iae) {
             throw new IllegalArgumentException(mensagem);
