@@ -93,7 +93,7 @@ public interface PropostaLegislativa {
     /**
      * Esse método retorna a representaçao em String de um projeto de lei.
      * 
-     * @return String contendo a representação em String do objeto
+     * @return String contendo a representação em String do objeto.
      */
     public String toString();
 }
