@@ -3,11 +3,11 @@ package entities;
 import enums.TipoDeProjetos;
 
 public class PEC extends Projeto {
-	/**
+    /**
      * Armazena uma string contendo os artigos que foram referenciados na PEC.
      */
     private String artigos;
-    
+
     /**
      * Constrói um Projeto do tipo PEC inicializando o tipo de projeto como PEC.
      */
@@ -16,9 +16,9 @@ public class PEC extends Projeto {
         this.artigos = artigos;
         this.tipoDoProjeto = TipoDeProjetos.PEC;
     }
-    
+
     /**
-     * Retorna uma representaçao em String da PEC sobreescrevendo o método toString que foi criado na 
+     * Retorna uma representaçao em String da PEC sobreescrevendo o método toString que foi criado na
      * classe Projeto exibindo os artigos que foram referenciados nessa PEC.
      *
      * @return string no formato Projeto de Emenda Constitucional - codigo - dni do autor do projeto - ementa - artigos - situacao.

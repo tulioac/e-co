@@ -3,7 +3,7 @@ package entities;
 import enums.TipoDeProjetos;
 
 public class PLP extends Projeto {
-	/**
+    /**
      * Armazena uma string contendo os artigos que foram referenciados na PLP.
      */
     private String artigos;
@@ -18,7 +18,7 @@ public class PLP extends Projeto {
     }
 
     /**
-     * Retorna uma representaçao em String da PLP sobreescrevendo o método toString que foi criado na 
+     * Retorna uma representaçao em String da PLP sobreescrevendo o método toString que foi criado na
      * classe Projeto, exibindo os artigos que foram referenciados nessa PLP.
      *
      * @return string no formato Projeto de Emenda Constitucional - codigo - dni do autor do projeto - ementa - artigos - situacao.

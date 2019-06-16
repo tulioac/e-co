@@ -16,50 +16,50 @@ import java.util.List;
  * @author Guilherme de Melo Carneiro
  */
 public abstract class Projeto implements PropostaLegislativa {
-	
-	/**
+
+    /**
      * Armazena um enum do que cartacteriza o tipo do projeto em analise,
      * pode ser do tipo PL, PLP ou PEC.
      */
     protected TipoDeProjetos tipoDoProjeto;
-    
+
     /**
-     * Armazena uma String codigo do projeto. 
+     * Armazena uma String codigo do projeto.
      * Atributo responsavel por identificar o projeto. Eh composto pela sequencia cronologica
      * de projetos do mesmo tipo naquele ano seguida por este ano.
      */
     private String codigo;
-    
+
     /**
      * Armazena a Dni do autor do projeto.
      */
     private String dniAutor;
-    
+
     /**
      * Armazena ano no qual o projeto foi criado.
      */
     private int ano;
-    
+
     /**
      * Armazena uma String contendo uma breve descricao do projeto.
      */
     private String ementa;
-    
+
     /**
      * Armazena os interesses realcionados ao projeto.
      */
     private String interesses;
-    
+
     /**
      * Armazena uma String com a url de endereço do projeto.
      */
     private String endereco;
-    
+
     /**
      * Armazena uma lista com os locais de votaçao por onde o projeto passou.
      */
     private List<String[]> votacoes; // Local e Situação
-    
+
     /**
      * Constrói um projeto inicializando a lista com os locais de votaçao em CCJC e asituaçao em votaçao.
      */
@@ -72,7 +72,7 @@ public abstract class Projeto implements PropostaLegislativa {
         this.interesses = interesses;
         this.endereco = endereco;
         this.votacoes = new ArrayList<>();
-        this.votacoes.add(new String[] {"CCJC", SituacaoVotacao.EM_VOTACAO.toString()});
+        this.votacoes.add(new String[]{"CCJC", SituacaoVotacao.EM_VOTACAO.toString()});
     }
 
     /**
@@ -83,7 +83,7 @@ public abstract class Projeto implements PropostaLegislativa {
     public TipoDeProjetos getTipoDoProjeto() {
         return this.tipoDoProjeto;
     }
-    
+
     /**
      * Esse método retorna uma string contendo informaçoes acerca do estado atual do projeto.
      *
@@ -108,33 +108,33 @@ public abstract class Projeto implements PropostaLegislativa {
     public int getAno() {
         return this.ano;
     }
-    
+
     /**
      * Retorna o local onde o projeto foi votado.
      *
      * @return uma String contendo o endereço onde o projeto votado.
      */
-    public String getLocalDeVotacao(){
+    public String getLocalDeVotacao() {
         return this.votacoes.get(this.votacoes.size() - 1)[0];
     }
-    
+
     /**
      * Altera o local onde o projeto sera votado.
      */
-    public void setNovoLocalDeVotacao(String novoLocalDeVotacao){
-        this.votacoes.add(new String[] {novoLocalDeVotacao, SituacaoVotacao.EM_VOTACAO.toString()});
+    public void setNovoLocalDeVotacao(String novoLocalDeVotacao) {
+        this.votacoes.add(new String[]{novoLocalDeVotacao, SituacaoVotacao.EM_VOTACAO.toString()});
     }
-    
+
     /**
      * Retorna uma String com a situacao do projeto.
      *
-     * @return String contendo a situacao atual do projeto, 
+     * @return String contendo a situacao atual do projeto,
      * que pode ser em votaçao, aprovado, rejeitado ou arquivado.
      */
-    public String getSituacaoAtual(){
+    public String getSituacaoAtual() {
         return this.votacoes.get(this.votacoes.size() - 1)[1].replace("_", " ");
     }
-    
+
     /**
      * Método que altera o resultado da votaçao no ultimo local onde ela foi votada.
      */
@@ -153,24 +153,24 @@ public abstract class Projeto implements PropostaLegislativa {
 
     /**
      * Altera o estado da votaçao para arquivada.
-     */    
+     */
     public void encerraVotacao() {
-        this.votacoes.add(new String[] {"", SituacaoVotacao.ARQUIVADO.toString()});
+        this.votacoes.add(new String[]{"", SituacaoVotacao.ARQUIVADO.toString()});
     }
-    
+
     /**
      * Altera o estado da votaçao para aprovado.
      */
-    public void aprovaVotacao(){
-        this.votacoes.add(new String[] {"", SituacaoVotacao.APROVADO.toString()});
+    public void aprovaVotacao() {
+        this.votacoes.add(new String[]{"", SituacaoVotacao.APROVADO.toString()});
     }
-    
+
     /**
      * Retorna a dni do autor do projeto.
      *
      * @return string contendo a dni do autor do projeto.
      */
-    public String getAutor(){
+    public String getAutor() {
         return this.dniAutor;
     }
 
@@ -183,7 +183,7 @@ public abstract class Projeto implements PropostaLegislativa {
     public String toString() {
         return this.codigo + " - " + this.dniAutor + " - " + this.ementa;
     }
-    
+
     /**
      * Esse método recupera o hash do objeto partido baseado no seu codigo.
      *
