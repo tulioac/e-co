@@ -366,16 +366,14 @@ public class ProjetoController {
 
         PropostaLegislativa proposta = this.propostas.get(codigo);
 
-        verificaQuorumMinimo(presentes, proposta.getTipoDoProjeto());
 
         if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()) || proposta.getSituacaoAtual().equals(SituacaoVotacao.APROVADO.toString()))
             throw new IllegalArgumentException("Erro ao votar proposta: tramitacao encerrada");
 
+        verificaQuorumMinimo(presentes, proposta.getTipoDoProjeto());
 
-        if (!(proposta.getLocalDeVotacao().equals("Plenario - 1o turno")) && !((proposta.getLocalDeVotacao().equals("Plenario - 2o turno")))) {
-            System.out.println(proposta);
+        if (!(proposta.getLocalDeVotacao().equals("Plenario - 1o turno")) && !((proposta.getLocalDeVotacao().equals("Plenario - 2o turno"))))
             throw new IllegalArgumentException("Erro ao votar proposta: tramitacao em comissao");
-        }
 
         StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
 
