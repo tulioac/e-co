@@ -5,6 +5,7 @@ import entities.Pessoa;
 import services.PessoaService;
 import util.Validador;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -19,7 +20,7 @@ import java.util.Set;
  * @author Tulio Araujo Cunha
  * @author Guilherme de Melo Carneiro
  */
-public class ComissaoController {
+public class ComissaoController implements Serializable {
 
     /**
      * Service responsável por fornecer informações sobre os objetos Pessoa

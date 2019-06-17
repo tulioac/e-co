@@ -4,6 +4,7 @@ import entities.Pessoa;
 import enums.CargosPoliticos;
 import util.Validador;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -15,7 +16,7 @@ import java.util.*;
  * @author Tulio Araujo Cunha
  * @author Guilherme de Melo Carneiro
  */
-public class PessoaController {
+public class PessoaController implements Serializable {
     /**
      * Armazena um mapa de pessoas em que a chave e o documento de identificação e
      * aponta para um objeto do tipo Pessoa.
