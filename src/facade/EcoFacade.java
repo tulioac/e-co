@@ -1,10 +1,7 @@
 package facade;
 
 
-import controllers.ComissaoController;
-import controllers.PartidoBaseController;
-import controllers.PessoaController;
-import controllers.ProjetoController;
+import controllers.*;
 import easyaccept.EasyAccept;
 import services.ComissaoService;
 import services.PartidoBaseService;
@@ -27,6 +24,7 @@ public class EcoFacade {
     private PartidoBaseController partidoController;
     private ComissaoController comissaoController;
     private ProjetoController projetoController;
+    private PersistenciaController persistenciaController;
 
     /**
      * Constrói a classe EcoFacade e inicializa uma instância da classe
@@ -37,6 +35,7 @@ public class EcoFacade {
         this.partidoController = new PartidoBaseController();
         this.comissaoController = new ComissaoController(new PessoaService(pessoaController));
         this.projetoController = new ProjetoController(new PessoaService(pessoaController), new ComissaoService(comissaoController), new PartidoBaseService(partidoController));
+        this.persistenciaController = new PersistenciaController();
     }
 
     /**
@@ -59,15 +58,15 @@ public class EcoFacade {
     }
 
     public void limparSistema() {
-        // Persistência de dados
+        this.persistenciaController.limparSistema();
     }
 
     public void salvarSistema() {
-        // Persistência de dados
+        this.persistenciaController.salvarSistema();
     }
 
     public void carregarSistema() {
-        // Persistência de dados
+        this.persistenciaController.carregarSistema();
     }
 
     /**

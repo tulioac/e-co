@@ -10,10 +10,11 @@ import services.PartidoBaseService;
 import services.PessoaService;
 import util.Validador;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ProjetoController {
+public class ProjetoController implements Serializable {
 
     private PessoaService pessoaService;
     private ComissaoService comissaoService;
@@ -215,7 +216,7 @@ public class ProjetoController {
         int qntTotalDeputado = pessoaService.contaDeputados();
 
         if (tipoDoProjeto == TipoDeProjetos.PEC) {
-            if (qntDeputadosPresentes < 3 * qntTotalDeputado / 5 + 1)
+            if (qntDeputadosPresentes < qntTotalDeputado * 3 / 5 + 1)
                 throw new IllegalArgumentException("Erro ao votar proposta: quorum invalido");
 
         } else if (qntDeputadosPresentes < qntTotalDeputado / 2 + 1)

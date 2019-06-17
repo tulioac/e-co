@@ -4,6 +4,7 @@ import comparators.ComparatorOrdemAlfabeticaPartido;
 import entities.Partido;
 import util.Validador;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -15,7 +16,7 @@ import java.util.*;
  * @author Tulio Araujo Cunha
  * @author Guilherme de Melo Carneiro
  */
-public class PartidoBaseController {
+public class PartidoBaseController implements Serializable {
 
     /**
      * Armazena objetos do tipo Partido e utiliza como chave o nome do partido
