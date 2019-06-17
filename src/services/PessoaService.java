@@ -4,6 +4,7 @@ import controllers.PessoaController;
 import entities.Pessoa;
 import enums.CargosPoliticos;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +17,7 @@ import java.util.Set;
  * @author Tulio Araujo Cunha
  * @author Guilherme de Melo Carneiro
  */
-public class PessoaService {
+public class PessoaService implements Serializable {
 
     /**
      * Armazena um controlador de Pessoas.

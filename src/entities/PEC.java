@@ -2,7 +2,9 @@ package entities;
 
 import enums.TipoDeProjetos;
 
-public class PEC extends Projeto {
+import java.io.Serializable;
+
+public class PEC extends Projeto implements Serializable {
     /**
      * Armazena uma string contendo os artigos que foram referenciados na PEC.
      */

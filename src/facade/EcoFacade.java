@@ -7,6 +7,9 @@ import services.ComissaoService;
 import services.PartidoBaseService;
 import services.PessoaService;
 
+import java.io.Serializable;
+import java.net.URL;
+
 /**
  * Essa classe usa o padrão Facade contendo métodos de acesso ao E-Camara
  * Organizada, provendo uma interface mais simples de acesso ao subsistema.
@@ -45,12 +48,12 @@ public class EcoFacade {
      */
     public static void main(String[] args) {
         args = new String[]{"facade.EcoFacade",
-//                "acceptance_tests/use_case_1.txt",
-//                "acceptance_tests/use_case_2.txt",
-//                "acceptance_tests/use_case_3.txt",
-//                "acceptance_tests/use_case_4.txt",
-//                "acceptance_tests/use_case_5.txt",
-//                "acceptance_tests/use_case_6.txt",
+                "acceptance_tests/use_case_1.txt",
+                "acceptance_tests/use_case_2.txt",
+                "acceptance_tests/use_case_3.txt",
+                "acceptance_tests/use_case_4.txt",
+                "acceptance_tests/use_case_5.txt",
+                "acceptance_tests/use_case_6.txt",
                 "acceptance_tests/use_case_7.txt"
         };
 
@@ -62,7 +65,8 @@ public class EcoFacade {
     }
 
     public void salvarSistema() {
-        this.persistenciaController.salvarSistema();
+        this.persistenciaController.salvarSistema(this.comissaoController, this.partidoController,
+                this.pessoaController, this.projetoController);
     }
 
     public void carregarSistema() {

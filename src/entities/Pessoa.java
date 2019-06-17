@@ -1,5 +1,6 @@
 package entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import enums.CargosPoliticos;
@@ -14,7 +15,7 @@ import util.Validador;
  * @author Tulio Araujo Cunha
  * @author Guilherme de Melo Carneiro
  */
-public class Pessoa {
+public class Pessoa implements Serializable {
     /**
      * Armazena o nome da pessoa.
      */

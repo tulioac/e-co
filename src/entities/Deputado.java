@@ -2,6 +2,7 @@ package entities;
 
 import interfaces.CargoPolitico;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,7 +16,7 @@ import enums.CargosPoliticos;
  * @author Tulio Araujo Cunha
  * @author Guilherme de Melo Carneiro
  */
-public class Deputado implements CargoPolitico {
+public class Deputado implements CargoPolitico, Serializable {
 
     /**
      * Armazena a quantidade de leis aprovadas.
