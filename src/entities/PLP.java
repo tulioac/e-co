@@ -2,7 +2,9 @@ package entities;
 
 import enums.TipoDeProjetos;
 
-public class PLP extends Projeto {
+import java.io.Serializable;
+
+public class PLP extends Projeto implements Serializable {
     /**
      * Armazena uma string contendo os artigos que foram referenciados na PLP.
      */

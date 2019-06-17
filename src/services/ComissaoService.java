@@ -3,6 +3,7 @@ package services;
 import controllers.ComissaoController;
 import entities.Comissao;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ import java.util.Set;
  * @author Tulio Araujo Cunha
  * @author Guilherme de Melo Carneiro
  */
-public class ComissaoService {
+public class ComissaoService implements Serializable {
 
     /**
      * Controlador de Comissões, fonte dos objetos conhecidos pelo serviço

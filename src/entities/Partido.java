@@ -2,6 +2,8 @@ package entities;
 
 import util.Validador;
 
+import java.io.Serializable;
+
 /**
  * Essa classe representa um Partido.
  *
@@ -10,7 +12,7 @@ import util.Validador;
  * @author Tulio Araujo Cunha
  * @author Guilherme de Melo Carneiro
  */
-public class Partido {
+public class Partido implements Serializable {
 
     /**
      * String que representa o nome do partido.

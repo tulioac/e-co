@@ -3,6 +3,7 @@ package services;
 import controllers.PartidoBaseController;
 import entities.Partido;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ import java.util.Set;
  * @author Tulio Araujo Cunha
  * @author Guilherme de Melo Carneiro
  */
-public class PartidoBaseService {
+public class PartidoBaseService implements Serializable {
 
     /**
      * Controlador de Partidos da Base, fonte dos objetos conhecidos pelo serviço

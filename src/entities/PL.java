@@ -2,6 +2,8 @@ package entities;
 
 import enums.TipoDeProjetos;
 
+import java.io.Serializable;
+
 /**
  * Essa classe representa um projeto de lei.
  *
@@ -10,7 +12,7 @@ import enums.TipoDeProjetos;
  * @author Tulio Araujo Cunha
  * @author Guilherme de Melo Carneiro
  */
-public class PL extends Projeto {
+public class PL extends Projeto implements Serializable {
     /**
      * Armazena se a PL era conclusiva ou nao.
      */

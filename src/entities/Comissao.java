@@ -2,6 +2,7 @@ package entities;
 
 import util.Validador;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Set;
  * @author Tulio Araujo Cunha
  * @author Guilherme de Melo Carneiro
  */
-public class Comissao {
+public class Comissao implements Serializable {
 
     /**
      * Armazena o tema da comissão.
