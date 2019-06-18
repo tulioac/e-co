@@ -1,6 +1,6 @@
 package entities;
 
-import enums.TipoDeProjetos;
+import enums.TipoProjeto;
 
 import java.io.Serializable;
 
@@ -25,7 +25,7 @@ public class PL extends Projeto implements Serializable {
     public PL(String codigo, String dniAutor, int ano, String ementa, String interesses, String endereco, boolean conclusivo) {
         super(codigo, dniAutor, ano, ementa, interesses, endereco);
         this.conclusivo = conclusivo;
-        this.tipoDoProjeto = TipoDeProjetos.PL;
+        this.tipoDoProjeto = TipoProjeto.PL;
     }
 
     /**

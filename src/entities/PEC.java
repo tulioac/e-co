@@ -1,6 +1,6 @@
 package entities;
 
-import enums.TipoDeProjetos;
+import enums.TipoProjeto;
 
 import java.io.Serializable;
 
@@ -16,7 +16,7 @@ public class PEC extends Projeto implements Serializable {
     public PEC(String codigo, String dniAutor, int ano, String ementa, String interesses, String endereco, String artigos) {
         super(codigo, dniAutor, ano, ementa, interesses, endereco);
         this.artigos = artigos;
-        this.tipoDoProjeto = TipoDeProjetos.PEC;
+        this.tipoDoProjeto = TipoProjeto.PEC;
     }
 
     /**

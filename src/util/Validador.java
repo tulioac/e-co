@@ -1,6 +1,6 @@
 package util;
 
-import enums.StatusGovernistas;
+import enums.StatusGovernista;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -127,7 +127,7 @@ public class Validador implements Serializable {
      */
     public void validaStatus(String statusGovernista, String mensagem) {
         try {
-            StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
+            StatusGovernista status = StatusGovernista.valueOf(statusGovernista);
         } catch (IllegalArgumentException iae) {
             throw new IllegalArgumentException(mensagem);
         }

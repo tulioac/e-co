@@ -1,7 +1,7 @@
 package interfaces;
 
 import enums.SituacaoVotacao;
-import enums.TipoDeProjetos;
+import enums.TipoProjeto;
 
 /**
  * Essa interface representa as possibilidades de propostas legislativas
@@ -34,7 +34,7 @@ public interface PropostaLegislativa {
      *
      * @return tipo da proposta legislativa
      */
-    public TipoDeProjetos getTipoDoProjeto();
+    public TipoProjeto getTipoDoProjeto();
 
     /**
      * Retorna o local de votação atual da proposta.

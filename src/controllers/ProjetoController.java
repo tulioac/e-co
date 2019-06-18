@@ -2,8 +2,8 @@ package controllers;
 
 import entities.*;
 import enums.SituacaoVotacao;
-import enums.StatusGovernistas;
-import enums.TipoDeProjetos;
+import enums.StatusGovernista;
+import enums.TipoProjeto;
 import interfaces.PropostaLegislativa;
 import services.ComissaoService;
 import services.PartidoBaseService;
@@ -28,7 +28,7 @@ public class ProjetoController implements Serializable {
         this.propostas = new HashMap<>();
     }
 
-    private int contaProjetoEmAno(TipoDeProjetos tipoProjeto, int ano) {
+    private int contaProjetoEmAno(TipoProjeto tipoProjeto, int ano) {
         int qntProjetosNoAno = 0;
 
         for (PropostaLegislativa proposta : this.propostas.values())
@@ -38,7 +38,7 @@ public class ProjetoController implements Serializable {
         return qntProjetosNoAno;
     }
 
-    private String criaCodigo(TipoDeProjetos tipoProjeto, int ano) {
+    private String criaCodigo(TipoProjeto tipoProjeto, int ano) {
         int qntProjetosNoAno = contaProjetoEmAno(tipoProjeto, ano);
 
         qntProjetosNoAno++;
@@ -70,7 +70,7 @@ public class ProjetoController implements Serializable {
         validaEntradasDoProjeto(dni, ano, ementa, interesses, url);
         new Validador().validaNull(conclusivo, "Erro ao cadastrar projeto: conclusivo nao pode ser nula");
 
-        String codigo = criaCodigo(TipoDeProjetos.PL, ano);
+        String codigo = criaCodigo(TipoProjeto.PL, ano);
         this.propostas.put(codigo, new PL(codigo, dni, ano, ementa, interesses, url, conclusivo));
 
         return codigo;
@@ -80,7 +80,7 @@ public class ProjetoController implements Serializable {
         validaEntradasDoProjeto(dni, ano, ementa, interesses, url);
         new Validador().validaString(artigos, "Erro ao cadastrar projeto: artigo nao pode ser vazio ou nulo");
 
-        String codigo = criaCodigo(TipoDeProjetos.PLP, ano);
+        String codigo = criaCodigo(TipoProjeto.PLP, ano);
         this.propostas.put(codigo, new PLP(codigo, dni, ano, ementa, interesses, url, artigos));
 
         return codigo;
@@ -90,7 +90,7 @@ public class ProjetoController implements Serializable {
         validaEntradasDoProjeto(dni, ano, ementa, interesses, url);
         new Validador().validaString(artigos, "Erro ao cadastrar projeto: artigo nao pode ser vazio ou nulo");
 
-        String codigo = criaCodigo(TipoDeProjetos.PEC, ano);
+        String codigo = criaCodigo(TipoProjeto.PEC, ano);
         this.propostas.put(codigo, new PEC(codigo, dni, ano, ementa, interesses, url, artigos));
 
         return codigo;
@@ -146,12 +146,12 @@ public class ProjetoController implements Serializable {
         return qntPoliticosGovernistas;
     }
 
-    private boolean votaComissao(StatusGovernistas status, Comissao comissao, PropostaLegislativa projeto) {
+    private boolean votaComissao(StatusGovernista status, Comissao comissao, PropostaLegislativa projeto) {
         boolean resultado = false;
 
         int qntDePoliticosDaComissao = comissao.getIntegrantes().size();
 
-        if (status == StatusGovernistas.LIVRE) {
+        if (status == StatusGovernista.LIVRE) {
             int qntPoliticosInteressados = contaPoliticosInteressados(comissao, projeto);
 
             if (qntPoliticosInteressados >= (qntDePoliticosDaComissao / 2 + 1))
@@ -160,11 +160,11 @@ public class ProjetoController implements Serializable {
         } else {
             int qntPoliticosGovernistas = contaPoliticosGovernistas(comissao);
 
-            if (status == StatusGovernistas.GOVERNISTA) {
+            if (status == StatusGovernista.GOVERNISTA) {
                 if (qntPoliticosGovernistas >= qntDePoliticosDaComissao / 2 + 1)
                     resultado = true;
 
-            } else // StatusGovernistas.OPOSICAO
+            } else // StatusGovernista.OPOSICAO
                 if (qntPoliticosGovernistas < qntDePoliticosDaComissao / 2 + 1)
                     resultado = true;
         }
@@ -191,7 +191,7 @@ public class ProjetoController implements Serializable {
         if (!(this.comissaoService.containsComissao(proposta.getLocalDeVotacao())))
             throw new NullPointerException("Erro ao votar proposta: " + proposta.getLocalDeVotacao() + " nao cadastrada");
 
-        StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
+        StatusGovernista status = StatusGovernista.valueOf(statusGovernista);
 
         boolean resultado = this.votaComissao(status, this.comissaoService.getComissao(proposta.getLocalDeVotacao()), proposta);
 
@@ -210,12 +210,12 @@ public class ProjetoController implements Serializable {
         }
     }
 
-    private void verificaQuorumMinimo(String presentes, TipoDeProjetos tipoDoProjeto) {
+    private void verificaQuorumMinimo(String presentes, TipoProjeto tipoDoProjeto) {
         int qntDeputadosPresentes = presentes.split(",").length;
 
         int qntTotalDeputado = pessoaService.contaDeputados();
 
-        if (tipoDoProjeto == TipoDeProjetos.PEC) {
+        if (tipoDoProjeto == TipoProjeto.PEC) {
             if (qntDeputadosPresentes < qntTotalDeputado * 3 / 5 + 1)
                 throw new IllegalArgumentException("Erro ao votar proposta: quorum invalido");
 
@@ -223,32 +223,32 @@ public class ProjetoController implements Serializable {
             throw new IllegalArgumentException("Erro ao votar proposta: quorum invalido");
     }
 
-    private boolean votacaoPlenario(StatusGovernistas status, PropostaLegislativa proposta, String presentes) {
-        TipoDeProjetos tipoDaProposta = proposta.getTipoDoProjeto();
+    private boolean votacaoPlenario(StatusGovernista status, PropostaLegislativa proposta, String presentes) {
+        TipoProjeto tipoDaProposta = proposta.getTipoDoProjeto();
         String[] listaDePresentes = presentes.split(",");
 
         boolean resultado = false;
 
-        if (tipoDaProposta == TipoDeProjetos.PL) {
+        if (tipoDaProposta == TipoProjeto.PL) {
             resultado = votaMaioriaSimples(status, proposta, listaDePresentes);
-        } else if (tipoDaProposta == TipoDeProjetos.PLP) {
+        } else if (tipoDaProposta == TipoProjeto.PLP) {
             resultado = votaMaioriaAbsoluta(status, proposta, listaDePresentes);
-        } else {  // TipoDeProjetos.PEC
+        } else {  // TipoProjeto.PEC
             resultado = votaMaioriaQualificada(status, proposta, listaDePresentes);
         }
 
         return resultado;
     }
 
-    private boolean votaMaioriaSimples(StatusGovernistas status, PropostaLegislativa proposta, String[] listaDePresentes) {
+    private boolean votaMaioriaSimples(StatusGovernista status, PropostaLegislativa proposta, String[] listaDePresentes) {
         boolean resultado = false;
 
         int qntPoliticosGovernistas = contaPoliticosGovernistas(listaDePresentes);
 
-        if (status == StatusGovernistas.GOVERNISTA) {
+        if (status == StatusGovernista.GOVERNISTA) {
             if (qntPoliticosGovernistas >= listaDePresentes.length / 2 + 1)
                 resultado = true;
-        } else { // StatusGovernistas.OPOSICAO
+        } else { // StatusGovernista.OPOSICAO
             if (listaDePresentes.length - qntPoliticosGovernistas >= listaDePresentes.length / 2 + 1)
                 resultado = true;
         }
@@ -256,12 +256,12 @@ public class ProjetoController implements Serializable {
         return resultado;
     }
 
-    private boolean votaMaioriaAbsoluta(StatusGovernistas status, PropostaLegislativa proposta, String[] listaDePresentes) {
+    private boolean votaMaioriaAbsoluta(StatusGovernista status, PropostaLegislativa proposta, String[] listaDePresentes) {
         boolean resultado = false;
 
         int qntPoliticosPresentes = listaDePresentes.length;
 
-        if (status == StatusGovernistas.LIVRE) {
+        if (status == StatusGovernista.LIVRE) {
             int qntPoliticosInteressados = contaPoliticosInteressados(listaDePresentes, proposta);
 
             if (qntPoliticosInteressados >= qntPoliticosPresentes / 2 + 1)
@@ -269,10 +269,10 @@ public class ProjetoController implements Serializable {
         } else {
             int qntPoliticosGovernistas = contaPoliticosGovernistas(listaDePresentes);
 
-            if (status == StatusGovernistas.GOVERNISTA) {
+            if (status == StatusGovernista.GOVERNISTA) {
                 if (qntPoliticosGovernistas >= qntPoliticosPresentes / 2 + 1)
                     resultado = true;
-            } else { // StatusGovernistas.OPOSICAO
+            } else { // StatusGovernista.OPOSICAO
                 if (qntPoliticosGovernistas < qntPoliticosPresentes / 2 + 1)
                     resultado = true;
             }
@@ -293,23 +293,23 @@ public class ProjetoController implements Serializable {
         return qntPoliticosInteressados;
     }
 
-    private boolean votaMaioriaQualificada(StatusGovernistas status, PropostaLegislativa proposta, String[] listaDePresentes) {
+    private boolean votaMaioriaQualificada(StatusGovernista status, PropostaLegislativa proposta, String[] listaDePresentes) {
         boolean resultado = false;
 
         int qntPoliticosGovernistas = contaPoliticosGovernistas(listaDePresentes);
 
         int qntPoliticosPresentes = listaDePresentes.length;
 
-        if (status == StatusGovernistas.LIVRE) {
+        if (status == StatusGovernista.LIVRE) {
             int qntPoliticosInteressados = contaPoliticosInteressados(listaDePresentes, proposta);
 
             if (qntPoliticosInteressados >= 3 * qntPoliticosPresentes / 5 + 1)
                 resultado = true;
 
-        } else if (status == StatusGovernistas.GOVERNISTA) {
+        } else if (status == StatusGovernista.GOVERNISTA) {
             if (qntPoliticosGovernistas >= 3 * qntPoliticosPresentes / 5 + 1)
                 resultado = true;
-        } else {// StatusGovernistas.OPOSICAO
+        } else {// StatusGovernista.OPOSICAO
             if (qntPoliticosGovernistas < 3 * qntPoliticosPresentes / 5 + 1)
                 resultado = true;
         }
@@ -329,9 +329,9 @@ public class ProjetoController implements Serializable {
     }
 
     private void avaliaResultado(PropostaLegislativa proposta, boolean resultado) {
-        TipoDeProjetos tipoDaProposta = proposta.getTipoDoProjeto();
+        TipoProjeto tipoDaProposta = proposta.getTipoDoProjeto();
 
-        if (tipoDaProposta == TipoDeProjetos.PL) {
+        if (tipoDaProposta == TipoProjeto.PL) {
             if (resultado) {
                 proposta.aprovaVotacao();
                 String dniAutor = proposta.getAutor();
@@ -376,7 +376,7 @@ public class ProjetoController implements Serializable {
         if (!(proposta.getLocalDeVotacao().equals("Plenario - 1o turno")) && !((proposta.getLocalDeVotacao().equals("Plenario - 2o turno"))))
             throw new IllegalArgumentException("Erro ao votar proposta: tramitacao em comissao");
 
-        StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
+        StatusGovernista status = StatusGovernista.valueOf(statusGovernista);
 
         boolean resultado = votacaoPlenario(status, proposta, presentes);
 

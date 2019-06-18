@@ -1,7 +1,7 @@
 package entities;
 
 import enums.SituacaoVotacao;
-import enums.TipoDeProjetos;
+import enums.TipoProjeto;
 import interfaces.PropostaLegislativa;
 
 import java.io.Serializable;
@@ -26,7 +26,7 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      * Armazena um enum do que cartacteriza o tipo do projeto em analise,
      * pode ser do tipo PL, PLP ou PEC.
      */
-    protected TipoDeProjetos tipoDoProjeto;
+    protected TipoProjeto tipoDoProjeto;
 
     /**
      * Armazena uma String codigo do projeto.
@@ -85,7 +85,7 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      *
      * @return o tipo do projeto.
      */
-    public TipoDeProjetos getTipoDoProjeto() {
+    public TipoProjeto getTipoDoProjeto() {
         return this.tipoDoProjeto;
     }
 
