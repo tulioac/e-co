@@ -18,6 +18,10 @@ import java.util.*;
  */
 public class PessoaController implements Serializable {
     /**
+     * Armazena Id de serialização de PessoaController
+     */
+    private static final long serialVersionUID = 2198811903520135676L;
+    /**
      * Armazena um mapa de pessoas em que a chave e o documento de identificação e
      * aponta para um objeto do tipo Pessoa.
      */
@@ -128,6 +132,10 @@ public class PessoaController implements Serializable {
         return this.pessoas.get(dni).toString();
     }
 
+    /**
+     * Retorna o conjunto de pessoas cadastradas no sistema
+     * @return Set de pessoas
+     */
     public Set<Pessoa> getPessoas() {
         return new HashSet<Pessoa>(this.pessoas.values());
     }

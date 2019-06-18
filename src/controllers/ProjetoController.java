@@ -14,11 +14,38 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Essa classe usa o padrão Controller contendo métodos que operam sobre os diferentes
+ * tipos de Propostas Legislativas.
+ *
+ * @author Jonathan Tavares da Silva
+ * @author Mirella Quintans Lyra
+ * @author Tulio Araujo Cunha
+ * @author Guilherme de Melo Carneiro
+ */
 public class ProjetoController implements Serializable {
 
+    /**
+     * Armazena Id de serialização de ProjetoController
+     */
+    private static final long serialVersionUID = 5355952377322155764L;
+    /**
+     * Armazena instancia de PessoaService
+     */
     private PessoaService pessoaService;
+    /**
+     * Armazena instancia de ComissaoService
+     */
     private ComissaoService comissaoService;
+    /**
+     * Armazena instancia de PartidoService
+     */
     private PartidoBaseService partidoService;
+    /**
+     * Armazena um mapa de propostas legislativas em que
+     * a chave segue o formato: TipoProjeto numero/ano e
+     * o valor é do tipo PropostaLegislativa
+     */
     private Map<String, PropostaLegislativa> propostas;
 
     public ProjetoController(PessoaService pessoaService, ComissaoService comissaoService, PartidoBaseService partidoService) {
@@ -386,9 +413,9 @@ public class ProjetoController implements Serializable {
     }
 
     public String exibirTramitacao(String codigo) {
-        if (!(this.propostas.containsKey(codigo)))
-            throw new NullPointerException("Erro ao exibir projeto: codigo nao cadastrado");
-
-        return "Ainda nao implementado!";
+//        if (!(this.propostas.containsKey(codigo)))
+//            throw new NullPointerException("Erro ao exibir projeto: codigo nao cadastrado");
+//
+//        return "Ainda nao implementado!";
     }
 }

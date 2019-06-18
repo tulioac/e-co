@@ -23,6 +23,10 @@ import java.util.Set;
 public class ComissaoController implements Serializable {
 
     /**
+     * Armazena Id de serialização de ComissaoController
+     */
+    private static final long serialVersionUID = 5812622990246783000L;
+    /**
      * Service responsável por fornecer informações sobre os objetos Pessoa
      * cadastrados no sistema.
      */
@@ -99,6 +103,10 @@ public class ComissaoController implements Serializable {
         this.comissoes.put(tema, new Comissao(tema, integrantesComissao));
     }
 
+    /**
+     * Retorna o conjunto de todas as Comissões Legislativas cadastradas no sistema.
+     * @return Set de comissões legislativas.
+     */
     public Set<Comissao> getComissoes() {
         return new HashSet<Comissao>(this.comissoes.values());
     }
