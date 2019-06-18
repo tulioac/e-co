@@ -1,7 +1,6 @@
 package controllers;
 
 import entities.Comissao;
-import entities.Pessoa;
 import services.PessoaService;
 import util.Validador;
 
@@ -55,8 +54,8 @@ public class ComissaoController implements Serializable {
      * @throws IllegalArgumentException se alguma dni não for de um político.
      */
     private String[] validaDnis(String politicos) {
-        String[] dnis = politicos.split(",");
         Validador v = new Validador();
+        String[] dnis = politicos.split(",");
 
         for (String dniPolitico : dnis) {
             v.validaDni(dniPolitico, "Erro ao cadastrar comissao: dni invalido");
@@ -87,9 +86,9 @@ public class ComissaoController implements Serializable {
         v.validaString(tema, "Erro ao cadastrar comissao: tema nao pode ser vazio ou nulo");
         v.validaString(politicos, "Erro ao cadastrar comissao: lista de politicos nao pode ser vazio ou nulo");
 
-        if (this.comissoes.containsKey(tema)) {
+        if (this.comissoes.containsKey(tema))
             throw new IllegalArgumentException("Erro ao cadastrar comissao: tema existente");
-        }
+
 
         String[] dnis = validaDnis(politicos);
         Set<String> integrantes = new HashSet<>(Arrays.asList(dnis));
