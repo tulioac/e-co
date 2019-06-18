@@ -95,6 +95,13 @@ public class ProjetoController implements Serializable {
         return tipoProjeto.toString() + " " + numeroDoProjeto + "/" + ano;
     }
 
+    /**
+     * Esse método verifica o documento nacional de identificação.
+     *
+     * @param dni documento nacional de identificação
+     * @throws NullPointerException pessoa inexistente
+     * @throws IllegalArgumentException pessoa nao é deputado
+     */
     private void verificaDni(String dni) {
         if (!(this.pessoaService.ehPessoaCadastrada(dni)))
             throw new NullPointerException("Erro ao cadastrar projeto: pessoa inexistente");
@@ -103,6 +110,15 @@ public class ProjetoController implements Serializable {
             throw new IllegalArgumentException("Erro ao cadastrar projeto: pessoa nao eh deputado");
     }
 
+    /**
+     * Esse método valida as entradas de projeto controller
+     *
+     * @param dni dni
+     * @param ano ano do projeto
+     * @param ementa ementa do projeto
+     * @param interesses interesses do projeto
+     * @param url url do projeto
+     */
     private void validaEntradasDoProjeto(String dni, int ano, String ementa, String interesses, String url) {
         Validador v = new Validador();
         v.validaString(dni, "Erro ao cadastrar projeto: autor nao pode ser vazio ou nulo");
