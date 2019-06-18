@@ -6,15 +6,15 @@ import java.io.*;
 public class PersistenciaController {
 
     public void limparSistema() {
-//        File arquivoEco = new File("eco.txt");
-//        if (arquivoEco.exists()) arquivoEco.delete();
+        File arquivoEco = new File("eco.txt");
+        if (arquivoEco.exists()) arquivoEco.delete();
 //        arquivoEco = new File("eco.txt");
     }
 
     public void salvarSistema(Serializable... controllers) {
         ObjectOutputStream objGravador = null;
         try {
-            objGravador = new ObjectOutputStream(new FileOutputStream("eco.txt"));
+            objGravador = new ObjectOutputStream(new FileOutputStream("dados/eco.txt"));
 
             for (Serializable controller : controllers) objGravador.writeObject(controller);
         } catch (IOException ioe) {
@@ -33,7 +33,7 @@ public class PersistenciaController {
     public void carregarSistema() {
         ObjectInputStream objLeitor = null;
         try {
-            objLeitor = new ObjectInputStream(new FileInputStream("eco.txt"));
+            objLeitor = new ObjectInputStream(new FileInputStream("dados/eco.txt"));
 
             objLeitor.readObject();
         } catch (IOException | ClassNotFoundException e) {

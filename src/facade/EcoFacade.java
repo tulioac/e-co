@@ -7,9 +7,6 @@ import services.ComissaoService;
 import services.PartidoBaseService;
 import services.PessoaService;
 
-import java.io.Serializable;
-import java.net.URL;
-
 /**
  * Essa classe usa o padrão Facade contendo métodos de acesso ao E-Camara
  * Organizada, provendo uma interface mais simples de acesso ao subsistema.
@@ -60,15 +57,25 @@ public class EcoFacade {
         EasyAccept.main(args);
     }
 
+
+    /**
+     * Esse método serve para limpar o arquivo txt no qual é guardado os dados serializados do sistema
+     */
     public void limparSistema() {
         this.persistenciaController.limparSistema();
     }
 
+    /**
+     * Esse método serve para guardar os dados serializados do sistema em um arquivo txt
+     */
     public void salvarSistema() {
         this.persistenciaController.salvarSistema(this.comissaoController, this.partidoController,
                 this.pessoaController, this.projetoController);
     }
 
+    /**
+     * Esse método carrega os dados serializados do sistema que estão gravados no arquivo txt
+     */
     public void carregarSistema() {
         this.persistenciaController.carregarSistema();
     }
