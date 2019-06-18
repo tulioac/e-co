@@ -1,5 +1,7 @@
 package enums;
 
-public enum TipoDeProjetos {
+import java.io.Serializable;
+
+public enum TipoDeProjetos implements Serializable {
     PL, PLP, PEC;
 }

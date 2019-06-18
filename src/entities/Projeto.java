@@ -4,19 +4,24 @@ import enums.SituacaoVotacao;
 import enums.TipoDeProjetos;
 import interfaces.PropostaLegislativa;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Essa classe representa XXXX.
+ * Essa classe representa a abstração de um Projeto que tramita no Sistema.
  *
  * @author Jonathan Tavares da Silva
  * @author Mirella Quintans Lyra
  * @author Tulio Araujo Cunha
  * @author Guilherme de Melo Carneiro
  */
-public abstract class Projeto implements PropostaLegislativa {
+public abstract class Projeto implements PropostaLegislativa, Serializable {
 
+    /**
+     * Armazena Id de Serialização do objeto
+     */
+    private static final long serialVersionUID = 100476511324712155L;
     /**
      * Armazena um enum do que cartacteriza o tipo do projeto em analise,
      * pode ser do tipo PL, PLP ou PEC.

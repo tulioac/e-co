@@ -2,13 +2,27 @@ package util;
 
 import enums.StatusGovernistas;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Validador {
+/**
+ * Essa classe serve para Validar os dados que são recebidos nos controllers e nas entidades.
+ *
+ * @author Jonathan Tavares da Silva
+ * @author Mirella Quintans Lyra
+ * @author Tulio Araujo Cunha
+ * @author Guilherme de Melo Carneiro
+ */
+public class Validador implements Serializable {
+
+    /**
+     * Armazena Id de serialização do objeto Validador
+     */
+    private static final long serialVersionUID = 185782666456642438L;
 
     /**
      * Esse método válida uma string testando se é nula ou vazia.

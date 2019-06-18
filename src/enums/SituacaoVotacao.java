@@ -1,5 +1,7 @@
 package enums;
 
-public enum SituacaoVotacao {
+import java.io.Serializable;
+
+public enum SituacaoVotacao implements Serializable {
     EM_VOTACAO, REJEITADA, APROVADO, ARQUIVADO;
 }
