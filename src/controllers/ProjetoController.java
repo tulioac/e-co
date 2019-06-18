@@ -403,6 +403,14 @@ public class ProjetoController implements Serializable {
         return resultado;
     }
 
+    /**
+     * Esse método vota o projeto com a regra da maioria simples e retorna o resultado
+     *
+     * @param status status do projeto
+     * @param proposta projeto
+     * @param listaDePresentes presentes na votação
+     * @return true se aprovado
+     */
     private boolean votaMaioriaSimples(StatusGovernista status, PropostaLegislativa proposta, String[] listaDePresentes) {
         boolean resultado = false;
 
@@ -419,6 +427,14 @@ public class ProjetoController implements Serializable {
         return resultado;
     }
 
+    /**
+     * Esse método vota a proposta com a regra da maioria absoluta e retorna resultado
+     *
+     * @param status status do projeto
+     * @param proposta projeto
+     * @param listaDePresentes politicos presentes na votação
+     * @return true se aprovado
+     */
     private boolean votaMaioriaAbsoluta(StatusGovernista status, PropostaLegislativa proposta, String[] listaDePresentes) {
         boolean resultado = false;
 
@@ -444,6 +460,14 @@ public class ProjetoController implements Serializable {
         return resultado;
     }
 
+    /**
+     * Esse método cruza os interesses dos políticos com os da proposta e retorna
+     * a quantidade de politicos interessados.
+     *
+     * @param listaDePresentes presentes na votação
+     * @param projeto projeto
+     * @return quantidade de politicos interessados no projeto
+     */
     private int contaPoliticosInteressados(String[] listaDePresentes, PropostaLegislativa projeto) {
         int qntPoliticosInteressados = 0;
 
@@ -456,6 +480,14 @@ public class ProjetoController implements Serializable {
         return qntPoliticosInteressados;
     }
 
+    /**
+     * Esse método vota projeto com maioria qualificada e retorna resultado.
+     *
+     * @param status status do projeto
+     * @param proposta projeto
+     * @param listaDePresentes presentes na votação
+     * @return true se aprovado
+     */
     private boolean votaMaioriaQualificada(StatusGovernista status, PropostaLegislativa proposta, String[] listaDePresentes) {
         boolean resultado = false;
 
@@ -480,6 +512,12 @@ public class ProjetoController implements Serializable {
         return resultado;
     }
 
+    /**
+     * Esse método conta a quantidade de politicos governistas e retorna
+     *
+     * @param listaDePresentes governistas presentes
+     * @return quantidade de politicos governistas
+     */
     private int contaPoliticosGovernistas(String[] listaDePresentes) {
         int qntPoliticosGovernistas = 0;
 
@@ -491,6 +529,12 @@ public class ProjetoController implements Serializable {
         return qntPoliticosGovernistas;
     }
 
+    /**
+     * Esse método avalia o resultado da votação e avança ou encerra tramitação
+     *
+     * @param proposta projeto
+     * @param resultado resultado
+     */
     private void avaliaResultado(PropostaLegislativa proposta, boolean resultado) {
         TipoProjeto tipoDaProposta = proposta.getTipoDoProjeto();
 
@@ -524,6 +568,14 @@ public class ProjetoController implements Serializable {
         }
     }
 
+    /**
+     * Esse método vota o projeto no plenário e retorna se foi aprovado ou não.
+     *
+     * @param codigo código do projeto
+     * @param statusGovernista status do projeto
+     * @param presentes presentes na votação
+     * @return true se for aprovado
+     */
     public boolean votarPlenario(String codigo, String statusGovernista, String presentes) {
         if (!(this.propostas.containsKey(codigo)))
             throw new NullPointerException("Erro ao votar proposta: codigo nao existe");
