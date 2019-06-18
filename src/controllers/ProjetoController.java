@@ -130,6 +130,17 @@ public class ProjetoController implements Serializable {
         v.validaString(url, "Erro ao cadastrar projeto: url nao pode ser vazio ou nulo");
     }
 
+    /**
+     * Esse método cadastra um novo projeto de lei e retorna o seu código.
+     *
+     * @param dni dni do autor
+     * @param ano ano do projeto
+     * @param ementa ementa do projeto
+     * @param interesses interesses do projeto
+     * @param url url do projeto
+     * @param conclusivo conclusividade do projeto
+     * @return string que representa codigo do projeto de lei
+     */
     public String cadastraPL(String dni, int ano, String ementa, String interesses, String url, boolean conclusivo) {
         validaEntradasDoProjeto(dni, ano, ementa, interesses, url);
         new Validador().validaNull(conclusivo, "Erro ao cadastrar projeto: conclusivo nao pode ser nula");
@@ -140,6 +151,17 @@ public class ProjetoController implements Serializable {
         return codigo;
     }
 
+    /**
+     * Esse método cadastra um novo projeto de lei complementar e retorna seu código.
+     *
+     * @param dni dni do autor
+     * @param ano ano do projeto
+     * @param ementa ementa do projeto
+     * @param interesses interesses do projeto
+     * @param url url do projeto
+     * @param artigos artigos do projeto
+     * @return string que representa código do projeto de lei complementar
+     */
     public String cadastraPLP(String dni, int ano, String ementa, String interesses, String url, String artigos) {
         validaEntradasDoProjeto(dni, ano, ementa, interesses, url);
         new Validador().validaString(artigos, "Erro ao cadastrar projeto: artigo nao pode ser vazio ou nulo");
@@ -150,6 +172,17 @@ public class ProjetoController implements Serializable {
         return codigo;
     }
 
+    /**
+     * Esse método cadastra um novo projeto de emenda constitucional e retorna o seu código.
+     *
+     * @param dni dni do autor
+     * @param ano ano do projeto
+     * @param ementa ementa do projeto
+     * @param interesses interesses do projeto
+     * @param url url do projeto
+     * @param artigos artigos do projeto
+     * @return string que representa o codigo do projeto de emenda constitucional
+     */
     public String cadastraPEC(String dni, int ano, String ementa, String interesses, String url, String artigos) {
         validaEntradasDoProjeto(dni, ano, ementa, interesses, url);
         new Validador().validaString(artigos, "Erro ao cadastrar projeto: artigo nao pode ser vazio ou nulo");
@@ -160,6 +193,12 @@ public class ProjetoController implements Serializable {
         return codigo;
     }
 
+    /**
+     * Esse método retorna uma string contendo a descrição do projeto
+     *
+     * @param codigo codigo do projeto
+     * @return string que representa o projeto
+     */
     public String exibirProjeto(String codigo) {
         if (!(this.propostas.containsKey(codigo)))
             throw new NullPointerException("Erro ao exibir projeto: codigo nao cadastrado");
