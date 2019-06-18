@@ -48,6 +48,14 @@ public class ProjetoController implements Serializable {
      */
     private Map<String, PropostaLegislativa> propostas;
 
+    /**
+     * Constrói um Controlador de Projetos que inicializa um mapa que guarda
+     * as propostas legislativas do sistema
+     *
+     * @param pessoaService instancia de PessoaService
+     * @param comissaoService instancia de ComissaoService
+     * @param partidoService instancia de PartidoService
+     */
     public ProjetoController(PessoaService pessoaService, ComissaoService comissaoService, PartidoBaseService partidoService) {
         this.pessoaService = pessoaService;
         this.comissaoService = comissaoService;
@@ -416,6 +424,6 @@ public class ProjetoController implements Serializable {
 //        if (!(this.propostas.containsKey(codigo)))
 //            throw new NullPointerException("Erro ao exibir projeto: codigo nao cadastrado");
 //
-//        return "Ainda nao implementado!";
+        return "Ainda nao implementado!";
     }
 }
