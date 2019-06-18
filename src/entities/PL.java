@@ -25,7 +25,7 @@ public class PL extends Projeto implements Serializable {
     public PL(String codigo, String dniAutor, int ano, String ementa, String interesses, String endereco, boolean conclusivo) {
         super(codigo, dniAutor, ano, ementa, interesses, endereco);
         this.conclusivo = conclusivo;
-        this.tipoDoProjeto = TipoProjeto.PL;
+        this.setTipoDoProjeto(TipoProjeto.PL);
     }
 
     /**

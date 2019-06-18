@@ -220,4 +220,12 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
             return other.codigo == null;
         } else return codigo.equals(other.codigo);
     }
+
+    /**
+     * Esse método altera o tipo do projeto
+     * @param tipoDoProjeto tipo do projeto
+     */
+    public void setTipoDoProjeto(TipoProjeto tipoDoProjeto) {
+        this.tipoDoProjeto = tipoDoProjeto;
+    }
 }
