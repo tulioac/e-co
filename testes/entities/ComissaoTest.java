@@ -12,8 +12,8 @@ class ComissaoTest {
     private Comissao c1;
     private Comissao c2;
     private Comissao c3;
-    private Set<Pessoa> integrantes1;
-    private Set<Pessoa> integrantes2;
+    private Set<String> integrantes1;
+    private Set<String> integrantes2;
 
     @BeforeEach
     void setUp() {
@@ -56,7 +56,7 @@ class ComissaoTest {
 
     @Test
     void testaGetIntegrantes() {
-        integrantes1.add(new Pessoa("Twopac", "123456789-0", "FDP", ""));
+        integrantes1.add("123456789-0");
         assertEquals(1, c1.getIntegrantes().size());
     }
 }

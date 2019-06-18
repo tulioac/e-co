@@ -23,7 +23,7 @@ public class Comissao implements Serializable {
     /**
      * Armazena o conjunto de integrantes da comissão.
      */
-    private Set<Pessoa> integrantes;
+    private Set<String> integrantes;
 
     /**
      * Constroi uma comissão a partir de um tema e de um conjunto de Pessoas.
@@ -84,7 +84,7 @@ public class Comissao implements Serializable {
      * Retorna os integrantes de uma Comissão Legislativa
      * @return Set de integrantes da comissão
      */
-    public Set<Pessoa> getIntegrantes() {
+    public Set<String> getIntegrantes() {
         return this.integrantes;
     }
 
