@@ -43,8 +43,8 @@ public class PessoaService implements Serializable {
      * @return Set de Pessoa contendo todas as pessoas que foram cadastradas no
      * sistema até o momento
      */
-    public Set<Pessoa> getPessoas() {
-        return new HashSet<Pessoa>(this.pessoas.getPessoas());
+    private Set<Pessoa> getPessoas() {
+        return new HashSet<>(this.pessoas.getPessoas());
     }
 
     /**

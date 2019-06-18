@@ -30,7 +30,7 @@ public class PartidoBaseService implements Serializable {
     /**
      * Constroi um serviço a partir de um controlador de Partidos da Base
      *
-     * @param comissaoController controlador de partidos da base PartidosBaseController
+     * @param partidos controlador de partidos da base PartidosBaseController
      */
     public PartidoBaseService(PartidoBaseController partidos) {
         this.partidos = partidos;
@@ -42,8 +42,8 @@ public class PartidoBaseService implements Serializable {
      *
      * @return Set de Partidos pertencentes a Base governista.
      */
-    public Set<Partido> getPartidos() {
-        return new HashSet<Partido>(this.partidos.getPartidos());
+    private Set<Partido> getPartidos() {
+        return new HashSet<>(this.partidos.getPartidos());
     }
 
     /**
@@ -57,7 +57,6 @@ public class PartidoBaseService implements Serializable {
         for (Partido partido : getPartidos())
             if (partido.getNome().equals(partidoDesejado))
                 return true;
-
         return false;
     }
 }

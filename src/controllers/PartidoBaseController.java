@@ -6,6 +6,7 @@ import util.Validador;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Essa classe usa o padrão Controller contendo métodos que operam sobre a
@@ -46,9 +47,8 @@ public class PartidoBaseController implements Serializable {
         Validador v = new Validador();
         v.validaString(partido, "Erro ao cadastrar partido: partido nao pode ser vazio ou nulo");
 
-        if (this.partidos.containsKey(partido)) {
-            throw new IllegalArgumentException("Partido já cadastrado");
-        }
+        if (this.partidos.containsKey(partido))
+            throw new IllegalArgumentException("Erro ao cadastrar partido: partido já cadastrado");
 
         this.partidos.put(partido, new Partido(partido));
     }
@@ -59,17 +59,10 @@ public class PartidoBaseController implements Serializable {
      * @return uma string com todos os partidos ordenados alfabeticamente.
      */
     public String exibeBase() {
-        List<Partido> ordenaPartidos = new ArrayList<>(this.partidos.values());
-        Collections.sort(ordenaPartidos, new ComparatorOrdemAlfabeticaPartido());
+        List<Partido> partidos = new ArrayList<>(this.partidos.values());
+        Collections.sort(partidos, new ComparatorOrdemAlfabeticaPartido());
 
-        String mensagem = "";
-        for (Partido partido : ordenaPartidos)
-            mensagem += partido.getNome() + ",";
-
-        if (!("".equals(mensagem)))
-            mensagem = mensagem.substring(0, mensagem.length() - 1);
-
-        return mensagem;
+        return partidos.stream().map(Partido::getNome).collect(Collectors.joining(","));
     }
 
     /**
@@ -77,6 +70,6 @@ public class PartidoBaseController implements Serializable {
      * @return Set de partidos
      */
     public Set<Partido> getPartidos() {
-        return new HashSet<Partido>(this.partidos.values());
+        return new HashSet<>(this.partidos.values());
     }
 }

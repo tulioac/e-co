@@ -244,8 +244,8 @@ public class ProjetoController implements Serializable {
     private int contaPoliticosInteressados(Comissao comissao, PropostaLegislativa projeto) {
         int politicosInteressados = 0;
 
-        for (Pessoa deputado : comissao.getIntegrantes())
-            for (String interesses : deputado.getInteresses().split(","))
+        for (String deputado : comissao.getIntegrantes())
+            for (String interesses : this.pessoaService.getPessoaPeloDni(deputado).getInteresses().split(","))
                 if (projeto.getInteresses().contains(interesses)) {
                     politicosInteressados++;
                     break;
@@ -264,8 +264,8 @@ public class ProjetoController implements Serializable {
     private int contaPoliticosGovernistas(Comissao comissao) {
         int qntPoliticosGovernistas = 0;
 
-        for (Pessoa deputado : comissao.getIntegrantes())
-            if (this.partidoService.containsPartido(deputado.getPartido()))
+        for (String deputado : comissao.getIntegrantes())
+            if (this.partidoService.containsPartido(this.pessoaService.getPessoaPeloDni(deputado).getPartido()))
                 qntPoliticosGovernistas++;
 
         return qntPoliticosGovernistas;

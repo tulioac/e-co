@@ -43,7 +43,7 @@ public class ComissaoService implements Serializable {
      * @return Set de objetos Comissao cadastrados no sistema
      */
     public Set<Comissao> getComissoes() {
-        return new HashSet<Comissao>(this.comissoes.getComissoes());
+        return new HashSet<>(this.comissoes.getComissoes());
     }
 
     /**
@@ -56,7 +56,6 @@ public class ComissaoService implements Serializable {
         for (Comissao comissao : this.getComissoes())
             if (comissao.getTema().equals(comissaoDesejada))
                 return true;
-
         return false;
     }
 
@@ -71,7 +70,6 @@ public class ComissaoService implements Serializable {
         for (Comissao comissao : this.getComissoes())
             if (comissao.getTema().equals(comissaoDesejada))
                 return comissao;
-
         return null;
     }
 }

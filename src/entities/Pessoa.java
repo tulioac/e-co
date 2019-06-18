@@ -171,11 +171,8 @@ public class Pessoa implements Serializable {
             return false;
         Pessoa other = (Pessoa) obj;
         if (dni == null) {
-            if (other.dni != null)
-                return false;
-        } else if (!dni.equals(other.dni))
-            return false;
-        return true;
+            return other.dni == null;
+        } else return dni.equals(other.dni);
     }
 
     /**
@@ -194,12 +191,10 @@ public class Pessoa implements Serializable {
 
         CargosPoliticos cargos = CargosPoliticos.valueOf(novoCargo.toUpperCase());
 
-        switch (cargos) {
-            case DEPUTADO:
-                this.cargoPolitico = new Deputado(dataInicialValidada);
-                break;
-            default:
-                throw new IllegalArgumentException("Cargo inválido!");
+        if (cargos == CargosPoliticos.DEPUTADO) {
+            this.cargoPolitico = new Deputado(dataInicialValidada);
+        } else {
+            throw new IllegalArgumentException("Cargo inválido!");
         }
     }
 
@@ -230,17 +225,17 @@ public class Pessoa implements Serializable {
             representacaoPessoa.append(this.informacoesBasicas());
 
             if (!this.getPartido().equals(""))
-                representacaoPessoa.append(" - " + this.getPartido());
+                representacaoPessoa.append(" - ").append(this.getPartido());
             if (!this.interesses.equals(""))
-                representacaoPessoa.append(" - Interesses: " + this.interesses);
+                representacaoPessoa.append(" - Interesses: ").append(this.interesses);
         }
 
         if (this.getCargoPolitico().equals(CargosPoliticos.DEPUTADO)) {
-            representacaoPessoa.append("POL: " + this.informacoesBasicas() + " - " + this.getPartido());
+            representacaoPessoa.append("POL: ").append(this.informacoesBasicas()).append(" - ").append(this.getPartido());
 
             if (!this.interesses.equals(""))
-                representacaoPessoa.append(" - Interesses: " + this.interesses);
-            representacaoPessoa.append(" - " + this.cargoPolitico.toString());
+                representacaoPessoa.append(" - Interesses: ").append(this.interesses);
+            representacaoPessoa.append(" - ").append(this.cargoPolitico.toString());
         }
 
         return representacaoPessoa.toString();

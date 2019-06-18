@@ -23,15 +23,14 @@ public class Comissao implements Serializable {
     /**
      * Armazena o conjunto de integrantes da comissão.
      */
-    private Set<Pessoa> integrantes;
+    private Set<String> integrantes;
 
     /**
      * Constroi uma comissão a partir de um tema e de um conjunto de Pessoas.
-     *
-     * @param tema        tema da comissão
+     *  @param tema        tema da comissão
      * @param integrantes conjunto de Pessoas integrantes da comissão
      */
-    public Comissao(String tema, Set<Pessoa> integrantes) {
+    public Comissao(String tema, Set<String> integrantes) {
         Validador v = new Validador();
         v.validaString(tema, "Erro ao cadastrar comissao: tema nao pode ser vazio ou nulo");
         v.validaNull(integrantes, "Erro ao cadastrar comissao: lista de politicos nao pode ser vazio ou nulo");
@@ -68,8 +67,7 @@ public class Comissao implements Serializable {
         if (tema == null) {
             if (other.tema != null)
                 return false;
-        } else if (!tema.equals(other.tema))
-            return false;
+        } else return tema.equals(other.tema);
         return true;
     }
 
@@ -85,7 +83,7 @@ public class Comissao implements Serializable {
      * Retorna os integrantes de uma Comissão Legislativa
      * @return Set de integrantes da comissão
      */
-    public Set<Pessoa> getIntegrantes() {
+    public Set<String> getIntegrantes() {
         return this.integrantes;
     }
 
