@@ -63,6 +63,14 @@ public class ProjetoController implements Serializable {
         this.propostas = new HashMap<>();
     }
 
+    /**
+     * Esse método retorna um inteiro que representa a quantidade
+     * de projetos de um ano específico e de um tipo específico.
+     *
+     * @param tipoProjeto tipo do projeto
+     * @param ano ano do projeto
+     * @return quantidade de projetos de um ano especifico
+     */
     private int contaProjetoEmAno(TipoProjeto tipoProjeto, int ano) {
         int qntProjetosNoAno = 0;
 
@@ -73,13 +81,18 @@ public class ProjetoController implements Serializable {
         return qntProjetosNoAno;
     }
 
+    /**
+     * Esse método retorna a string que representa o código
+     * gerado para um projeto
+     *
+     * @param tipoProjeto tipo do projeto
+     * @param ano ano do projeto
+     * @return codigo gerado para o projeto
+     */
     private String criaCodigo(TipoProjeto tipoProjeto, int ano) {
-        int qntProjetosNoAno = contaProjetoEmAno(tipoProjeto, ano);
+        int numeroDoProjeto = contaProjetoEmAno(tipoProjeto, ano) + 1;
 
-        qntProjetosNoAno++;
-
-        StringBuilder codigo = new StringBuilder(tipoProjeto.toString() + " " + qntProjetosNoAno + "/" + ano);
-        return codigo.toString();
+        return tipoProjeto.toString() + " " + numeroDoProjeto + "/" + ano;
     }
 
     private void verificaDni(String dni) {
