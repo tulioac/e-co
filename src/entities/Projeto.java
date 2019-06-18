@@ -26,7 +26,7 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      * Armazena um enum do que cartacteriza o tipo do projeto em analise,
      * pode ser do tipo PL, PLP ou PEC.
      */
-    protected TipoProjeto tipoDoProjeto;
+    private TipoProjeto tipoDoProjeto;
 
     /**
      * Armazena uma String codigo do projeto.
@@ -66,7 +66,7 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
     private List<String[]> votacoes; // Local e Situação
 
     /**
-     * Constrói um projeto inicializando a lista com os locais de votaçao em CCJC e asituaçao em votaçao.
+     * Constrói um projeto inicializando a lista com os locais de votaçao em CCJC e a situaçao em votaçao.
      */
     public Projeto(String codigo, String dniAutor, int ano, String ementa, String interesses, String endereco) {
         super();
@@ -101,8 +101,7 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
         else if (this.getSituacaoAtual().equals(SituacaoVotacao.APROVADO.toString()))
             return "APROVADO";
 
-        StringBuilder situacaoAtual = new StringBuilder(this.getSituacaoAtual() + " (" + this.getLocalDeVotacao() + ")");
-        return situacaoAtual.toString();
+        return this.getSituacaoAtual() + " (" + this.getLocalDeVotacao() + ")";
     }
 
     /**
@@ -218,10 +217,7 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
             return false;
         Projeto other = (Projeto) obj;
         if (codigo == null) {
-            if (other.codigo != null)
-                return false;
-        } else if (!codigo.equals(other.codigo))
-            return false;
-        return true;
+            return other.codigo == null;
+        } else return codigo.equals(other.codigo);
     }
 }

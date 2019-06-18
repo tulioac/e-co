@@ -28,16 +28,15 @@ public class PLP extends Projeto implements Serializable {
     }
 
     /**
-     * Retorna uma representaçao em String da PLP sobreescrevendo o método toString que foi criado na
-     * classe Projeto, exibindo os artigos que foram referenciados nessa PLP.
+     * Retorna uma representaçao em String da PLP sobrescrevendo o método toString que foi criado na
+     * classe Projeto e exibindo os artigos que foram referenciados nessa PLP.
      *
      * @return string no formato Projeto de Emenda Constitucional - codigo - dni do autor do projeto - ementa - artigos - situacao.
      */
     @Override
     public String toString() {
-        StringBuilder representacaoDeProjeto = new StringBuilder("Projeto de Lei Complementar - " + super.toString() + " - " + this.getArtigos() + " - " + this.exibeSituacaoAtual());
-
-        return representacaoDeProjeto.toString();
+        return "Projeto de Lei Complementar - " + super.toString()
+                + " - " + this.getArtigos() + " - " + this.exibeSituacaoAtual();
     }
 
     /**
