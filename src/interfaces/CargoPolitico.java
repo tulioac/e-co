@@ -34,5 +34,8 @@ public interface CargoPolitico {
      */
     public String toString();
 
+    /**
+     * Esse método adiciona uma lei aprovada à uma pessoa que possui um Cargo Político.
+     */
     public void aumentaLeis();
 }
