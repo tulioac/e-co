@@ -27,11 +27,10 @@ public class Comissao implements Serializable {
 
     /**
      * Constroi uma comissão a partir de um tema e de um conjunto de Pessoas.
-     *
-     * @param tema        tema da comissão
+     *  @param tema        tema da comissão
      * @param integrantes conjunto de Pessoas integrantes da comissão
      */
-    public Comissao(String tema, Set<Pessoa> integrantes) {
+    public Comissao(String tema, Set<String> integrantes) {
         Validador v = new Validador();
         v.validaString(tema, "Erro ao cadastrar comissao: tema nao pode ser vazio ou nulo");
         v.validaNull(integrantes, "Erro ao cadastrar comissao: lista de politicos nao pode ser vazio ou nulo");

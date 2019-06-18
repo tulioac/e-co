@@ -6,10 +6,7 @@ import services.PessoaService;
 import util.Validador;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Essa classe usa o padrão Controller contendo métodos que operam sobre a
@@ -94,13 +91,10 @@ public class ComissaoController implements Serializable {
             throw new IllegalArgumentException("Erro ao cadastrar comissao: tema existente");
         }
 
-        String[] dnisValidadas = validaDnis(politicos);
+        String[] dnis = validaDnis(politicos);
+        Set<String> integrantes = new HashSet<>(Arrays.asList(dnis));
 
-        Set<Pessoa> integrantesComissao = new HashSet<>();
-        for (String dniValida : dnisValidadas) {
-            integrantesComissao.add(this.pessoaService.getPessoaPeloDni(dniValida));
-        }
-        this.comissoes.put(tema, new Comissao(tema, integrantesComissao));
+        this.comissoes.put(tema, new Comissao(tema, integrantes));
     }
 
     /**
@@ -108,6 +102,6 @@ public class ComissaoController implements Serializable {
      * @return Set de comissões legislativas.
      */
     public Set<Comissao> getComissoes() {
-        return new HashSet<Comissao>(this.comissoes.values());
+        return new HashSet<>(this.comissoes.values());
     }
 }
