@@ -67,8 +67,7 @@ public class Comissao implements Serializable {
         if (tema == null) {
             if (other.tema != null)
                 return false;
-        } else if (!tema.equals(other.tema))
-            return false;
+        } else return tema.equals(other.tema);
         return true;
     }
 
