@@ -19,6 +19,10 @@ import java.util.Set;
 public class ComissaoService implements Serializable {
 
     /**
+     * Armazena Id de serialização de ComissaoService
+     */
+    private static final long serialVersionUID = -2013457738366725452L;
+    /**
      * Controlador de Comissões, fonte dos objetos conhecidos pelo serviço
      */
     private ComissaoController comissoes;

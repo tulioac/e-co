@@ -8,8 +8,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Classe de serviço que busca objetos Partido da Base e retorna informações sobre os
- * mesmos.
+ * Essa classe representa uma serviço que funciona como um comunicador para
+ * PartidoBaseController.
  *
  * @author Jonathan Tavares da Silva
  * @author Mirella Quintans Lyra
@@ -18,6 +18,10 @@ import java.util.Set;
  */
 public class PartidoBaseService implements Serializable {
 
+    /**
+     * Armazena Id de serialização do objeto PartidoBaseService
+     */
+    private static final long serialVersionUID = 8814742272344710601L;
     /**
      * Controlador de Partidos da Base, fonte dos objetos conhecidos pelo serviço
      */
