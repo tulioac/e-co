@@ -206,6 +206,13 @@ public class ProjetoController implements Serializable {
         return this.propostas.get(codigo).toString();
     }
 
+    /**
+     * Esse método avalia o resultado da votação e encaminha ou encerra tramitação.
+     *
+     * @param proximoLocal proximo local do projeto
+     * @param proposta projeto
+     * @param resultado resultado da votacao atual
+     */
     private void avaliaResultado(String proximoLocal, PropostaLegislativa proposta, boolean resultado) {
         if (proposta.toString().contains("Conclusiva") && !resultado)
             proposta.encerraVotacao();
@@ -226,6 +233,14 @@ public class ProjetoController implements Serializable {
             proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
     }
 
+    /**
+     * Esse método cruza os interesses dos politicos com os da proposta e
+     * retorna a quantidade de politicos interessados
+     *
+     * @param comissao comissao
+     * @param projeto projeto
+     * @return inteiro que representa quantidade de politicos interessados na proposta
+     */
     private int contaPoliticosInteressados(Comissao comissao, PropostaLegislativa projeto) {
         int politicosInteressados = 0;
 
@@ -239,6 +254,13 @@ public class ProjetoController implements Serializable {
         return politicosInteressados;
     }
 
+    /**
+     * Esse método conta os politicos governistas que fazem parte
+     * de uma comissao
+     *
+     * @param comissao comissao
+     * @return inteiro que representa a quantidade de politicos governistas.
+     */
     private int contaPoliticosGovernistas(Comissao comissao) {
         int qntPoliticosGovernistas = 0;
 
@@ -249,6 +271,15 @@ public class ProjetoController implements Serializable {
         return qntPoliticosGovernistas;
     }
 
+    /**
+     * Esse método vota o projeto em uma comissao com base em um status governista
+     * e retorna o resultado da votação
+     *
+     * @param status status do projeto na votação
+     * @param comissao comissão
+     * @param projeto projeto
+     * @return true se aprovado
+     */
     private boolean votaComissao(StatusGovernista status, Comissao comissao, PropostaLegislativa projeto) {
         boolean resultado = false;
 
@@ -274,6 +305,15 @@ public class ProjetoController implements Serializable {
         return resultado;
     }
 
+    /**
+     * Esse método vota o projeto na comissão e retorna o resultado
+     * da votação
+     *
+     * @param codigo codigo do projeto
+     * @param statusGovernista status do projeto
+     * @param proximoLocal proximo local de votação do projeto
+     * @return resultado da votação
+     */
     public boolean votarComissao(String codigo, String statusGovernista, String proximoLocal) {
         Validador v = new Validador();
         v.validaString(proximoLocal, "Erro ao votar proposta: proximo local vazio");
@@ -305,6 +345,12 @@ public class ProjetoController implements Serializable {
         return resultado;
     }
 
+    /**
+     * Esse método altera o local de votação do projeto
+     *
+     * @param proximoLocal proximo local de votação do projeto
+     * @param proposta projeto
+     */
     private void alteraNovoLocal(String proximoLocal, PropostaLegislativa proposta) {
         if (proximoLocal.equals("plenario")) {
             proposta.setNovoLocalDeVotacao("Plenario - 1o turno");
@@ -313,6 +359,12 @@ public class ProjetoController implements Serializable {
         }
     }
 
+    /**
+     * Esse método verifica se existe quórum mínimo para votação do projeto
+     *
+     * @param presentes politicos presentes na votação
+     * @param tipoDoProjeto tipo do projeto
+     */
     private void verificaQuorumMinimo(String presentes, TipoProjeto tipoDoProjeto) {
         int qntDeputadosPresentes = presentes.split(",").length;
 
@@ -326,6 +378,14 @@ public class ProjetoController implements Serializable {
             throw new IllegalArgumentException("Erro ao votar proposta: quorum invalido");
     }
 
+    /**
+     * Esse método vota o projeto no plenário e retorna se foi aprovado ou não.
+     *
+     * @param status status do projeto
+     * @param proposta projeto
+     * @param presentes presentes na votação
+     * @return true se aprovado
+     */
     private boolean votacaoPlenario(StatusGovernista status, PropostaLegislativa proposta, String presentes) {
         TipoProjeto tipoDaProposta = proposta.getTipoDoProjeto();
         String[] listaDePresentes = presentes.split(",");
