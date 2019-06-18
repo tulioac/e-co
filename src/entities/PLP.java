@@ -1,9 +1,17 @@
 package entities;
 
-import enums.TipoDeProjetos;
+import enums.TipoProjeto;
 
 import java.io.Serializable;
 
+/**
+ * Essa classe representa um projeto de lei complementar.
+ *
+ * @author Jonathan Tavares da Silva
+ * @author Mirella Quintans Lyra
+ * @author Tulio Araujo Cunha
+ * @author Guilherme de Melo Carneiro
+ */
 public class PLP extends Projeto implements Serializable {
     /**
      * Armazena uma string contendo os artigos que foram referenciados na PLP.
@@ -16,7 +24,7 @@ public class PLP extends Projeto implements Serializable {
     public PLP(String codigo, String dniAutor, int ano, String ementa, String interesses, String endereco, String artigos) {
         super(codigo, dniAutor, ano, ementa, interesses, endereco);
         this.artigos = artigos;
-        this.tipoDoProjeto = TipoDeProjetos.PLP;
+        this.tipoDoProjeto = TipoProjeto.PLP;
     }
 
     /**

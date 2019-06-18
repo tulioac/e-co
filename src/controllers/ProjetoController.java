@@ -2,8 +2,8 @@ package controllers;
 
 import entities.*;
 import enums.SituacaoVotacao;
-import enums.StatusGovernistas;
-import enums.TipoDeProjetos;
+import enums.StatusGovernista;
+import enums.TipoProjeto;
 import interfaces.PropostaLegislativa;
 import services.ComissaoService;
 import services.PartidoBaseService;
@@ -14,13 +14,48 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Essa classe usa o padrão Controller contendo métodos que operam sobre os diferentes
+ * tipos de Propostas Legislativas.
+ *
+ * @author Jonathan Tavares da Silva
+ * @author Mirella Quintans Lyra
+ * @author Tulio Araujo Cunha
+ * @author Guilherme de Melo Carneiro
+ */
 public class ProjetoController implements Serializable {
 
+    /**
+     * Armazena Id de serialização de ProjetoController
+     */
+    private static final long serialVersionUID = 5355952377322155764L;
+    /**
+     * Armazena instancia de PessoaService
+     */
     private PessoaService pessoaService;
+    /**
+     * Armazena instancia de ComissaoService
+     */
     private ComissaoService comissaoService;
+    /**
+     * Armazena instancia de PartidoService
+     */
     private PartidoBaseService partidoService;
+    /**
+     * Armazena um mapa de propostas legislativas em que
+     * a chave segue o formato: TipoProjeto numero/ano e
+     * o valor é do tipo PropostaLegislativa
+     */
     private Map<String, PropostaLegislativa> propostas;
 
+    /**
+     * Constrói um Controlador de Projetos que inicializa um mapa que guarda
+     * as propostas legislativas do sistema
+     *
+     * @param pessoaService instancia de PessoaService
+     * @param comissaoService instancia de ComissaoService
+     * @param partidoService instancia de PartidoService
+     */
     public ProjetoController(PessoaService pessoaService, ComissaoService comissaoService, PartidoBaseService partidoService) {
         this.pessoaService = pessoaService;
         this.comissaoService = comissaoService;
@@ -28,7 +63,15 @@ public class ProjetoController implements Serializable {
         this.propostas = new HashMap<>();
     }
 
-    private int contaProjetoEmAno(TipoDeProjetos tipoProjeto, int ano) {
+    /**
+     * Esse método retorna um inteiro que representa a quantidade
+     * de projetos de um ano específico e de um tipo específico.
+     *
+     * @param tipoProjeto tipo do projeto
+     * @param ano ano do projeto
+     * @return quantidade de projetos de um ano especifico
+     */
+    private int contaProjetoEmAno(TipoProjeto tipoProjeto, int ano) {
         int qntProjetosNoAno = 0;
 
         for (PropostaLegislativa proposta : this.propostas.values())
@@ -38,15 +81,27 @@ public class ProjetoController implements Serializable {
         return qntProjetosNoAno;
     }
 
-    private String criaCodigo(TipoDeProjetos tipoProjeto, int ano) {
-        int qntProjetosNoAno = contaProjetoEmAno(tipoProjeto, ano);
+    /**
+     * Esse método retorna a string que representa o código
+     * gerado para um projeto
+     *
+     * @param tipoProjeto tipo do projeto
+     * @param ano ano do projeto
+     * @return codigo gerado para o projeto
+     */
+    private String criaCodigo(TipoProjeto tipoProjeto, int ano) {
+        int numeroDoProjeto = contaProjetoEmAno(tipoProjeto, ano) + 1;
 
-        qntProjetosNoAno++;
-
-        StringBuilder codigo = new StringBuilder(tipoProjeto.toString() + " " + qntProjetosNoAno + "/" + ano);
-        return codigo.toString();
+        return tipoProjeto.toString() + " " + numeroDoProjeto + "/" + ano;
     }
 
+    /**
+     * Esse método verifica o documento nacional de identificação.
+     *
+     * @param dni documento nacional de identificação
+     * @throws NullPointerException pessoa inexistente
+     * @throws IllegalArgumentException pessoa nao é deputado
+     */
     private void verificaDni(String dni) {
         if (!(this.pessoaService.ehPessoaCadastrada(dni)))
             throw new NullPointerException("Erro ao cadastrar projeto: pessoa inexistente");
@@ -55,6 +110,15 @@ public class ProjetoController implements Serializable {
             throw new IllegalArgumentException("Erro ao cadastrar projeto: pessoa nao eh deputado");
     }
 
+    /**
+     * Esse método valida as entradas de projeto controller
+     *
+     * @param dni dni
+     * @param ano ano do projeto
+     * @param ementa ementa do projeto
+     * @param interesses interesses do projeto
+     * @param url url do projeto
+     */
     private void validaEntradasDoProjeto(String dni, int ano, String ementa, String interesses, String url) {
         Validador v = new Validador();
         v.validaString(dni, "Erro ao cadastrar projeto: autor nao pode ser vazio ou nulo");
@@ -66,36 +130,75 @@ public class ProjetoController implements Serializable {
         v.validaString(url, "Erro ao cadastrar projeto: url nao pode ser vazio ou nulo");
     }
 
+    /**
+     * Esse método cadastra um novo projeto de lei e retorna o seu código.
+     *
+     * @param dni dni do autor
+     * @param ano ano do projeto
+     * @param ementa ementa do projeto
+     * @param interesses interesses do projeto
+     * @param url url do projeto
+     * @param conclusivo conclusividade do projeto
+     * @return string que representa codigo do projeto de lei
+     */
     public String cadastraPL(String dni, int ano, String ementa, String interesses, String url, boolean conclusivo) {
         validaEntradasDoProjeto(dni, ano, ementa, interesses, url);
         new Validador().validaNull(conclusivo, "Erro ao cadastrar projeto: conclusivo nao pode ser nula");
 
-        String codigo = criaCodigo(TipoDeProjetos.PL, ano);
+        String codigo = criaCodigo(TipoProjeto.PL, ano);
         this.propostas.put(codigo, new PL(codigo, dni, ano, ementa, interesses, url, conclusivo));
 
         return codigo;
     }
 
+    /**
+     * Esse método cadastra um novo projeto de lei complementar e retorna seu código.
+     *
+     * @param dni dni do autor
+     * @param ano ano do projeto
+     * @param ementa ementa do projeto
+     * @param interesses interesses do projeto
+     * @param url url do projeto
+     * @param artigos artigos do projeto
+     * @return string que representa código do projeto de lei complementar
+     */
     public String cadastraPLP(String dni, int ano, String ementa, String interesses, String url, String artigos) {
         validaEntradasDoProjeto(dni, ano, ementa, interesses, url);
         new Validador().validaString(artigos, "Erro ao cadastrar projeto: artigo nao pode ser vazio ou nulo");
 
-        String codigo = criaCodigo(TipoDeProjetos.PLP, ano);
+        String codigo = criaCodigo(TipoProjeto.PLP, ano);
         this.propostas.put(codigo, new PLP(codigo, dni, ano, ementa, interesses, url, artigos));
 
         return codigo;
     }
 
+    /**
+     * Esse método cadastra um novo projeto de emenda constitucional e retorna o seu código.
+     *
+     * @param dni dni do autor
+     * @param ano ano do projeto
+     * @param ementa ementa do projeto
+     * @param interesses interesses do projeto
+     * @param url url do projeto
+     * @param artigos artigos do projeto
+     * @return string que representa o codigo do projeto de emenda constitucional
+     */
     public String cadastraPEC(String dni, int ano, String ementa, String interesses, String url, String artigos) {
         validaEntradasDoProjeto(dni, ano, ementa, interesses, url);
         new Validador().validaString(artigos, "Erro ao cadastrar projeto: artigo nao pode ser vazio ou nulo");
 
-        String codigo = criaCodigo(TipoDeProjetos.PEC, ano);
+        String codigo = criaCodigo(TipoProjeto.PEC, ano);
         this.propostas.put(codigo, new PEC(codigo, dni, ano, ementa, interesses, url, artigos));
 
         return codigo;
     }
 
+    /**
+     * Esse método retorna uma string contendo a descrição do projeto
+     *
+     * @param codigo codigo do projeto
+     * @return string que representa o projeto
+     */
     public String exibirProjeto(String codigo) {
         if (!(this.propostas.containsKey(codigo)))
             throw new NullPointerException("Erro ao exibir projeto: codigo nao cadastrado");
@@ -103,6 +206,13 @@ public class ProjetoController implements Serializable {
         return this.propostas.get(codigo).toString();
     }
 
+    /**
+     * Esse método avalia o resultado da votação e encaminha ou encerra tramitação.
+     *
+     * @param proximoLocal proximo local do projeto
+     * @param proposta projeto
+     * @param resultado resultado da votacao atual
+     */
     private void avaliaResultado(String proximoLocal, PropostaLegislativa proposta, boolean resultado) {
         if (proposta.toString().contains("Conclusiva") && !resultado)
             proposta.encerraVotacao();
@@ -123,6 +233,14 @@ public class ProjetoController implements Serializable {
             proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
     }
 
+    /**
+     * Esse método cruza os interesses dos politicos com os da proposta e
+     * retorna a quantidade de politicos interessados
+     *
+     * @param comissao comissao
+     * @param projeto projeto
+     * @return inteiro que representa quantidade de politicos interessados na proposta
+     */
     private int contaPoliticosInteressados(Comissao comissao, PropostaLegislativa projeto) {
         int politicosInteressados = 0;
 
@@ -136,6 +254,13 @@ public class ProjetoController implements Serializable {
         return politicosInteressados;
     }
 
+    /**
+     * Esse método conta os politicos governistas que fazem parte
+     * de uma comissao
+     *
+     * @param comissao comissao
+     * @return inteiro que representa a quantidade de politicos governistas.
+     */
     private int contaPoliticosGovernistas(Comissao comissao) {
         int qntPoliticosGovernistas = 0;
 
@@ -146,12 +271,21 @@ public class ProjetoController implements Serializable {
         return qntPoliticosGovernistas;
     }
 
-    private boolean votaComissao(StatusGovernistas status, Comissao comissao, PropostaLegislativa projeto) {
+    /**
+     * Esse método vota o projeto em uma comissao com base em um status governista
+     * e retorna o resultado da votação
+     *
+     * @param status status do projeto na votação
+     * @param comissao comissão
+     * @param projeto projeto
+     * @return true se aprovado
+     */
+    private boolean votaComissao(StatusGovernista status, Comissao comissao, PropostaLegislativa projeto) {
         boolean resultado = false;
 
         int qntDePoliticosDaComissao = comissao.getIntegrantes().size();
 
-        if (status == StatusGovernistas.LIVRE) {
+        if (status == StatusGovernista.LIVRE) {
             int qntPoliticosInteressados = contaPoliticosInteressados(comissao, projeto);
 
             if (qntPoliticosInteressados >= (qntDePoliticosDaComissao / 2 + 1))
@@ -160,17 +294,26 @@ public class ProjetoController implements Serializable {
         } else {
             int qntPoliticosGovernistas = contaPoliticosGovernistas(comissao);
 
-            if (status == StatusGovernistas.GOVERNISTA) {
+            if (status == StatusGovernista.GOVERNISTA) {
                 if (qntPoliticosGovernistas >= qntDePoliticosDaComissao / 2 + 1)
                     resultado = true;
 
-            } else // StatusGovernistas.OPOSICAO
+            } else // StatusGovernista.OPOSICAO
                 if (qntPoliticosGovernistas < qntDePoliticosDaComissao / 2 + 1)
                     resultado = true;
         }
         return resultado;
     }
 
+    /**
+     * Esse método vota o projeto na comissão e retorna o resultado
+     * da votação
+     *
+     * @param codigo codigo do projeto
+     * @param statusGovernista status do projeto
+     * @param proximoLocal proximo local de votação do projeto
+     * @return resultado da votação
+     */
     public boolean votarComissao(String codigo, String statusGovernista, String proximoLocal) {
         Validador v = new Validador();
         v.validaString(proximoLocal, "Erro ao votar proposta: proximo local vazio");
@@ -191,7 +334,7 @@ public class ProjetoController implements Serializable {
         if (!(this.comissaoService.containsComissao(proposta.getLocalDeVotacao())))
             throw new NullPointerException("Erro ao votar proposta: " + proposta.getLocalDeVotacao() + " nao cadastrada");
 
-        StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
+        StatusGovernista status = StatusGovernista.valueOf(statusGovernista);
 
         boolean resultado = this.votaComissao(status, this.comissaoService.getComissao(proposta.getLocalDeVotacao()), proposta);
 
@@ -202,6 +345,12 @@ public class ProjetoController implements Serializable {
         return resultado;
     }
 
+    /**
+     * Esse método altera o local de votação do projeto
+     *
+     * @param proximoLocal proximo local de votação do projeto
+     * @param proposta projeto
+     */
     private void alteraNovoLocal(String proximoLocal, PropostaLegislativa proposta) {
         if (proximoLocal.equals("plenario")) {
             proposta.setNovoLocalDeVotacao("Plenario - 1o turno");
@@ -210,12 +359,18 @@ public class ProjetoController implements Serializable {
         }
     }
 
-    private void verificaQuorumMinimo(String presentes, TipoDeProjetos tipoDoProjeto) {
+    /**
+     * Esse método verifica se existe quórum mínimo para votação do projeto
+     *
+     * @param presentes politicos presentes na votação
+     * @param tipoDoProjeto tipo do projeto
+     */
+    private void verificaQuorumMinimo(String presentes, TipoProjeto tipoDoProjeto) {
         int qntDeputadosPresentes = presentes.split(",").length;
 
         int qntTotalDeputado = pessoaService.contaDeputados();
 
-        if (tipoDoProjeto == TipoDeProjetos.PEC) {
+        if (tipoDoProjeto == TipoProjeto.PEC) {
             if (qntDeputadosPresentes < qntTotalDeputado * 3 / 5 + 1)
                 throw new IllegalArgumentException("Erro ao votar proposta: quorum invalido");
 
@@ -223,32 +378,48 @@ public class ProjetoController implements Serializable {
             throw new IllegalArgumentException("Erro ao votar proposta: quorum invalido");
     }
 
-    private boolean votacaoPlenario(StatusGovernistas status, PropostaLegislativa proposta, String presentes) {
-        TipoDeProjetos tipoDaProposta = proposta.getTipoDoProjeto();
+    /**
+     * Esse método vota o projeto no plenário e retorna se foi aprovado ou não.
+     *
+     * @param status status do projeto
+     * @param proposta projeto
+     * @param presentes presentes na votação
+     * @return true se aprovado
+     */
+    private boolean votacaoPlenario(StatusGovernista status, PropostaLegislativa proposta, String presentes) {
+        TipoProjeto tipoDaProposta = proposta.getTipoDoProjeto();
         String[] listaDePresentes = presentes.split(",");
 
         boolean resultado = false;
 
-        if (tipoDaProposta == TipoDeProjetos.PL) {
+        if (tipoDaProposta == TipoProjeto.PL) {
             resultado = votaMaioriaSimples(status, proposta, listaDePresentes);
-        } else if (tipoDaProposta == TipoDeProjetos.PLP) {
+        } else if (tipoDaProposta == TipoProjeto.PLP) {
             resultado = votaMaioriaAbsoluta(status, proposta, listaDePresentes);
-        } else {  // TipoDeProjetos.PEC
+        } else {  // TipoProjeto.PEC
             resultado = votaMaioriaQualificada(status, proposta, listaDePresentes);
         }
 
         return resultado;
     }
 
-    private boolean votaMaioriaSimples(StatusGovernistas status, PropostaLegislativa proposta, String[] listaDePresentes) {
+    /**
+     * Esse método vota o projeto com a regra da maioria simples e retorna o resultado
+     *
+     * @param status status do projeto
+     * @param proposta projeto
+     * @param listaDePresentes presentes na votação
+     * @return true se aprovado
+     */
+    private boolean votaMaioriaSimples(StatusGovernista status, PropostaLegislativa proposta, String[] listaDePresentes) {
         boolean resultado = false;
 
         int qntPoliticosGovernistas = contaPoliticosGovernistas(listaDePresentes);
 
-        if (status == StatusGovernistas.GOVERNISTA) {
+        if (status == StatusGovernista.GOVERNISTA) {
             if (qntPoliticosGovernistas >= listaDePresentes.length / 2 + 1)
                 resultado = true;
-        } else { // StatusGovernistas.OPOSICAO
+        } else { // StatusGovernista.OPOSICAO
             if (listaDePresentes.length - qntPoliticosGovernistas >= listaDePresentes.length / 2 + 1)
                 resultado = true;
         }
@@ -256,12 +427,20 @@ public class ProjetoController implements Serializable {
         return resultado;
     }
 
-    private boolean votaMaioriaAbsoluta(StatusGovernistas status, PropostaLegislativa proposta, String[] listaDePresentes) {
+    /**
+     * Esse método vota a proposta com a regra da maioria absoluta e retorna resultado
+     *
+     * @param status status do projeto
+     * @param proposta projeto
+     * @param listaDePresentes politicos presentes na votação
+     * @return true se aprovado
+     */
+    private boolean votaMaioriaAbsoluta(StatusGovernista status, PropostaLegislativa proposta, String[] listaDePresentes) {
         boolean resultado = false;
 
         int qntPoliticosPresentes = listaDePresentes.length;
 
-        if (status == StatusGovernistas.LIVRE) {
+        if (status == StatusGovernista.LIVRE) {
             int qntPoliticosInteressados = contaPoliticosInteressados(listaDePresentes, proposta);
 
             if (qntPoliticosInteressados >= qntPoliticosPresentes / 2 + 1)
@@ -269,10 +448,10 @@ public class ProjetoController implements Serializable {
         } else {
             int qntPoliticosGovernistas = contaPoliticosGovernistas(listaDePresentes);
 
-            if (status == StatusGovernistas.GOVERNISTA) {
+            if (status == StatusGovernista.GOVERNISTA) {
                 if (qntPoliticosGovernistas >= qntPoliticosPresentes / 2 + 1)
                     resultado = true;
-            } else { // StatusGovernistas.OPOSICAO
+            } else { // StatusGovernista.OPOSICAO
                 if (qntPoliticosGovernistas < qntPoliticosPresentes / 2 + 1)
                     resultado = true;
             }
@@ -281,6 +460,14 @@ public class ProjetoController implements Serializable {
         return resultado;
     }
 
+    /**
+     * Esse método cruza os interesses dos políticos com os da proposta e retorna
+     * a quantidade de politicos interessados.
+     *
+     * @param listaDePresentes presentes na votação
+     * @param projeto projeto
+     * @return quantidade de politicos interessados no projeto
+     */
     private int contaPoliticosInteressados(String[] listaDePresentes, PropostaLegislativa projeto) {
         int qntPoliticosInteressados = 0;
 
@@ -293,23 +480,31 @@ public class ProjetoController implements Serializable {
         return qntPoliticosInteressados;
     }
 
-    private boolean votaMaioriaQualificada(StatusGovernistas status, PropostaLegislativa proposta, String[] listaDePresentes) {
+    /**
+     * Esse método vota projeto com maioria qualificada e retorna resultado.
+     *
+     * @param status status do projeto
+     * @param proposta projeto
+     * @param listaDePresentes presentes na votação
+     * @return true se aprovado
+     */
+    private boolean votaMaioriaQualificada(StatusGovernista status, PropostaLegislativa proposta, String[] listaDePresentes) {
         boolean resultado = false;
 
         int qntPoliticosGovernistas = contaPoliticosGovernistas(listaDePresentes);
 
         int qntPoliticosPresentes = listaDePresentes.length;
 
-        if (status == StatusGovernistas.LIVRE) {
+        if (status == StatusGovernista.LIVRE) {
             int qntPoliticosInteressados = contaPoliticosInteressados(listaDePresentes, proposta);
 
             if (qntPoliticosInteressados >= 3 * qntPoliticosPresentes / 5 + 1)
                 resultado = true;
 
-        } else if (status == StatusGovernistas.GOVERNISTA) {
+        } else if (status == StatusGovernista.GOVERNISTA) {
             if (qntPoliticosGovernistas >= 3 * qntPoliticosPresentes / 5 + 1)
                 resultado = true;
-        } else {// StatusGovernistas.OPOSICAO
+        } else {// StatusGovernista.OPOSICAO
             if (qntPoliticosGovernistas < 3 * qntPoliticosPresentes / 5 + 1)
                 resultado = true;
         }
@@ -317,6 +512,12 @@ public class ProjetoController implements Serializable {
         return resultado;
     }
 
+    /**
+     * Esse método conta a quantidade de politicos governistas e retorna
+     *
+     * @param listaDePresentes governistas presentes
+     * @return quantidade de politicos governistas
+     */
     private int contaPoliticosGovernistas(String[] listaDePresentes) {
         int qntPoliticosGovernistas = 0;
 
@@ -328,10 +529,16 @@ public class ProjetoController implements Serializable {
         return qntPoliticosGovernistas;
     }
 
+    /**
+     * Esse método avalia o resultado da votação e avança ou encerra tramitação
+     *
+     * @param proposta projeto
+     * @param resultado resultado
+     */
     private void avaliaResultado(PropostaLegislativa proposta, boolean resultado) {
-        TipoDeProjetos tipoDaProposta = proposta.getTipoDoProjeto();
+        TipoProjeto tipoDaProposta = proposta.getTipoDoProjeto();
 
-        if (tipoDaProposta == TipoDeProjetos.PL) {
+        if (tipoDaProposta == TipoProjeto.PL) {
             if (resultado) {
                 proposta.aprovaVotacao();
                 String dniAutor = proposta.getAutor();
@@ -361,6 +568,14 @@ public class ProjetoController implements Serializable {
         }
     }
 
+    /**
+     * Esse método vota o projeto no plenário e retorna se foi aprovado ou não.
+     *
+     * @param codigo código do projeto
+     * @param statusGovernista status do projeto
+     * @param presentes presentes na votação
+     * @return true se for aprovado
+     */
     public boolean votarPlenario(String codigo, String statusGovernista, String presentes) {
         if (!(this.propostas.containsKey(codigo)))
             throw new NullPointerException("Erro ao votar proposta: codigo nao existe");
@@ -376,7 +591,7 @@ public class ProjetoController implements Serializable {
         if (!(proposta.getLocalDeVotacao().equals("Plenario - 1o turno")) && !((proposta.getLocalDeVotacao().equals("Plenario - 2o turno"))))
             throw new IllegalArgumentException("Erro ao votar proposta: tramitacao em comissao");
 
-        StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
+        StatusGovernista status = StatusGovernista.valueOf(statusGovernista);
 
         boolean resultado = votacaoPlenario(status, proposta, presentes);
 
@@ -386,9 +601,9 @@ public class ProjetoController implements Serializable {
     }
 
     public String exibirTramitacao(String codigo) {
-        if (!(this.propostas.containsKey(codigo)))
-            throw new NullPointerException("Erro ao exibir projeto: codigo nao cadastrado");
-
+//        if (!(this.propostas.containsKey(codigo)))
+//            throw new NullPointerException("Erro ao exibir projeto: codigo nao cadastrado");
+//
         return "Ainda nao implementado!";
     }
 }

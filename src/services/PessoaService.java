@@ -18,7 +18,10 @@ import java.util.Set;
  * @author Guilherme de Melo Carneiro
  */
 public class PessoaService implements Serializable {
-
+    /**
+     * Armazena Id de serialização do objeto PessoaService
+     */
+    private static final long serialVersionUID = 3322829397196919614L;
     /**
      * Armazena um controlador de Pessoas.
      */

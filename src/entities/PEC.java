@@ -1,9 +1,17 @@
 package entities;
 
-import enums.TipoDeProjetos;
+import enums.TipoProjeto;
 
 import java.io.Serializable;
 
+/**
+ * Essa classe representa um projeto de emenda constitucional.
+ *
+ * @author Jonathan Tavares da Silva
+ * @author Mirella Quintans Lyra
+ * @author Tulio Araujo Cunha
+ * @author Guilherme de Melo Carneiro
+ */
 public class PEC extends Projeto implements Serializable {
     /**
      * Armazena uma string contendo os artigos que foram referenciados na PEC.
@@ -16,7 +24,7 @@ public class PEC extends Projeto implements Serializable {
     public PEC(String codigo, String dniAutor, int ano, String ementa, String interesses, String endereco, String artigos) {
         super(codigo, dniAutor, ano, ementa, interesses, endereco);
         this.artigos = artigos;
-        this.tipoDoProjeto = TipoDeProjetos.PEC;
+        this.tipoDoProjeto = TipoProjeto.PEC;
     }
 
     /**

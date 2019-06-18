@@ -19,6 +19,10 @@ import java.util.*;
 public class PartidoBaseController implements Serializable {
 
     /**
+     * Armazena Id de Serialização de PartidoBaseController
+     */
+    private static final long serialVersionUID = 2659674081170951377L;
+    /**
      * Armazena objetos do tipo Partido e utiliza como chave o nome do partido
      * cadastrado.
      */
@@ -68,6 +72,10 @@ public class PartidoBaseController implements Serializable {
         return mensagem;
     }
 
+    /**
+     * Retorna o conjunto de partidos de base cadastrados no sistema
+     * @return Set de partidos
+     */
     public Set<Partido> getPartidos() {
         return new HashSet<Partido>(this.partidos.values());
     }

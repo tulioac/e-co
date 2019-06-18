@@ -73,10 +73,18 @@ public class Comissao implements Serializable {
         return true;
     }
 
+    /**
+     * Retorna o tema da Comissão Legislativa
+     * @return string contendo nome da comissão
+     */
     public String getTema() {
         return this.tema;
     }
 
+    /**
+     * Retorna os integrantes de uma Comissão Legislativa
+     * @return Set de integrantes da comissão
+     */
     public Set<Pessoa> getIntegrantes() {
         return this.integrantes;
     }
