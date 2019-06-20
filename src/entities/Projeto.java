@@ -220,6 +220,8 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
             this.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
     }
 
+    public abstract void avaliaResultado(boolean resultado, Pessoa autorDaProposta);
+
 
     /**
      * Retorna uma representaçao em String do projeto

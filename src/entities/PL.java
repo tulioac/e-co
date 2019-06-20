@@ -64,6 +64,17 @@ public class PL extends Projeto implements Serializable {
     }
 
     @Override
+    public void avaliaResultado(boolean resultado, Pessoa autorDaProposta) {
+        if (resultado) {
+            this.aprovaVotacao();
+
+            autorDaProposta.aumentaLeis();
+        } else {
+            this.encerraVotacao();
+        }
+    }
+
+    @Override
     public String toString() {
         StringBuilder representacaoDeProjeto = new StringBuilder("Projeto de Lei - " + super.toString() + " - ");
 
