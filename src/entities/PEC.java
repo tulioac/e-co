@@ -1,7 +1,7 @@
 package entities;
 
-import enums.StatusGovernistas;
-import enums.TipoDeProjetos;
+import enums.StatusGovernista;
+import enums.TipoProjeto;
 
 import java.io.Serializable;
 
@@ -41,13 +41,13 @@ public class PEC extends Projeto implements Serializable {
     }
 
     @Override
-    public boolean votarPlenario(int qntPoliticosFavoraveis, int qntPoliticosPresentes, StatusGovernistas status) {
+    public boolean votarPlenario(int qntPoliticosFavoraveis, int qntPoliticosPresentes, StatusGovernista status) {
         boolean resultado = false;
 
         if (qntPoliticosFavoraveis >= 3 * qntPoliticosPresentes / 5 + 1)
             resultado = true;
 
-        if (status == StatusGovernistas.OPOSICAO)
+        if (status == StatusGovernista.OPOSICAO)
             resultado = !resultado;
 
         return resultado;
@@ -67,6 +67,5 @@ public class PEC extends Projeto implements Serializable {
     private String getArtigos() {
         return this.artigos.replace(",", ", ");
     }
-
 
 }

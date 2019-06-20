@@ -75,7 +75,7 @@ public class ProjetoController implements Serializable {
         int qntProjetosNoAno = 0;
 
         for (PropostaLegislativa proposta : this.propostas.values())
-            if (proposta.getTipoDoProjeto().equals(tipoProjeto) && proposta.getAno() == ano)
+            if (proposta.getTipoDoProjeto() == tipoProjeto && proposta.getAno() == ano)
                 qntProjetosNoAno++;
 
         return qntProjetosNoAno;
@@ -277,15 +277,15 @@ public class ProjetoController implements Serializable {
      *
      * @param status status do projeto na votação
      * @param comissao comissão
-     * @param projeto projeto
+     * @param proposta proposta
      * @return true se aprovado
      */
-      private boolean votarComissao(StatusGovernistas status, Comissao comissao, PropostaLegislativa proposta) {
+      private boolean votarComissao(StatusGovernista status, Comissao comissao, PropostaLegislativa proposta) {
         int qntDePoliticosDaComissao = comissao.getIntegrantes().size();
 
         int qntPoliticosFavoraveis;
 
-        if (status == StatusGovernistas.LIVRE)
+        if (status == StatusGovernista.LIVRE)
             qntPoliticosFavoraveis = contaPoliticosInteressados(comissao, proposta);
         else
             qntPoliticosFavoraveis = contaPoliticosGovernistas(comissao);
@@ -342,9 +342,9 @@ public class ProjetoController implements Serializable {
      * Esse método verifica se existe quórum mínimo para votação do projeto.
      *
      * @param presentes politicos presentes na votação
-     * @param tipoDoProjeto tipo do projeto
+     * @param proposta proposta
      */
-    private void verificaQuorumMinimo(String presentes, TipoProjeto tipoDoProjeto) {
+    private void verificaQuorumMinimo(String presentes, PropostaLegislativa proposta) {
         int qntDeputadosPresentes = presentes.split(",").length;
         int qntTotalDeputado = pessoaService.contaDeputados();
         
@@ -359,15 +359,12 @@ public class ProjetoController implements Serializable {
      * @param presentes presentes na votação
      * @return true se aprovado
      */
-    private boolean votarPlenario(StatusGovernistas status, PropostaLegislativa proposta, String presentes) {
-        TipoDeProjetos tipoDaProposta = proposta.getTipoDoProjeto();
+    private boolean votarPlenario(StatusGovernista status, PropostaLegislativa proposta, String presentes) {
         String[] listaDePresentes = presentes.split(",");
-
-        boolean resultado = false;
 
         int qntPoliticosFavoraveis;
 
-        if (status == StatusGovernistas.LIVRE)
+        if (status == StatusGovernista.LIVRE)
             qntPoliticosFavoraveis = contaPoliticosInteressados(listaDePresentes, proposta);
         else
             qntPoliticosFavoraveis = contaPoliticosGovernistas(listaDePresentes);
