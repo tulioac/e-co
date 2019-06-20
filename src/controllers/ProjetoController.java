@@ -403,8 +403,6 @@ public class ProjetoController implements Serializable {
      * @param resultado resultado
      */
     private void avaliaResultado(PropostaLegislativa proposta, boolean resultado) {
-        TipoProjeto tipoDaProposta = proposta.getTipoDoProjeto();
-
         Pessoa autorDaProposta = pessoaService.getPessoaPeloDni(proposta.getAutor());
 
         proposta.avaliaResultado(resultado, autorDaProposta);
