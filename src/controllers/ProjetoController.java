@@ -102,26 +102,6 @@ public class ProjetoController {
         return this.propostas.get(codigo).toString();
     }
 
-    private void avaliaResultado(String proximoLocal, PropostaLegislativa proposta, boolean resultado) {
-        if (proposta.toString().contains("Conclusiva") && !resultado)
-            proposta.encerraVotacao();
-
-        if (proximoLocal.equals("-")) {
-            if (resultado) {
-                proposta.aprovaVotacao();
-                String dniAutor = proposta.getAutor();
-
-                pessoaService.getPessoaPeloDni(dniAutor).aumentaLeis();
-            } else
-                proposta.encerraVotacao();
-        }
-
-        if (resultado)
-            proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.APROVADO);
-        else
-            proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
-    }
-
     private int contaPoliticosInteressados(Comissao comissao, PropostaLegislativa projeto) {
         int politicosInteressados = 0;
 
@@ -145,6 +125,26 @@ public class ProjetoController {
         return qntPoliticosGovernistas;
     }
 
+    private void avaliaResultado(String proximoLocal, PropostaLegislativa proposta, boolean resultado) {
+        if (proposta.toString().contains("Conclusiva") && !resultado)
+            proposta.encerraVotacao();
+
+        if (proximoLocal.equals("-")) {
+            if (resultado) {
+                proposta.aprovaVotacao();
+                String dniAutor = proposta.getAutor();
+
+                pessoaService.getPessoaPeloDni(dniAutor).aumentaLeis();
+            } else
+                proposta.encerraVotacao();
+        }
+
+        if (resultado)
+            proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.APROVADO);
+        else
+            proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
+    }
+
     private boolean votarComissao(StatusGovernistas status, Comissao comissao, PropostaLegislativa proposta) {
         int qntDePoliticosDaComissao = comissao.getIntegrantes().size();
 
@@ -155,7 +155,7 @@ public class ProjetoController {
         else
             qntPoliticosFavoraveis = contaPoliticosGovernistas(comissao);
 
-        return proposta.votaComissao(qntPoliticosFavoraveis, qntDePoliticosDaComissao, status);
+        return proposta.votarComissao(qntPoliticosFavoraveis, qntDePoliticosDaComissao, status);
     }
 
     public boolean votarComissao(String codigo, String statusGovernista, String proximoLocal) {
@@ -201,62 +201,22 @@ public class ProjetoController {
         proposta.verificaQuorumMinimo(qntDeputadosPresentes, qntTotalDeputado);
     }
 
-    private boolean votacaoPlenario(StatusGovernistas status, PropostaLegislativa proposta, String presentes) {
+    private boolean votarPlenario(StatusGovernistas status, PropostaLegislativa proposta, String presentes) {
         TipoDeProjetos tipoDaProposta = proposta.getTipoDoProjeto();
         String[] listaDePresentes = presentes.split(",");
 
         boolean resultado = false;
 
-        if (tipoDaProposta == TipoDeProjetos.PL) {
-            resultado = votaMaioriaSimples(status, proposta, listaDePresentes);
-        } else if (tipoDaProposta == TipoDeProjetos.PLP) {
-            resultado = votaMaioriaAbsoluta(status, proposta, listaDePresentes);
-        } else {  // TipoDeProjetos.PEC
-            resultado = votaMaioriaQualificada(status, proposta, listaDePresentes);
-        }
+        int qntPoliticosFavoraveis;
 
-        return resultado;
-    }
-
-    private boolean votaMaioriaSimples(StatusGovernistas status, PropostaLegislativa proposta, String[] listaDePresentes) {
-        boolean resultado = false;
-
-        int qntPoliticosGovernistas = contaPoliticosGovernistas(listaDePresentes);
-
-        if (status == StatusGovernistas.GOVERNISTA) {
-            if (qntPoliticosGovernistas >= listaDePresentes.length / 2 + 1)
-                resultado = true;
-        } else { // StatusGovernistas.OPOSICAO
-            if (listaDePresentes.length - qntPoliticosGovernistas >= listaDePresentes.length / 2 + 1)
-                resultado = true;
-        }
-
-        return resultado;
-    }
-
-    private boolean votaMaioriaAbsoluta(StatusGovernistas status, PropostaLegislativa proposta, String[] listaDePresentes) {
-        boolean resultado = false;
+        if (status == StatusGovernistas.LIVRE)
+            qntPoliticosFavoraveis = contaPoliticosInteressados(listaDePresentes, proposta);
+        else
+            qntPoliticosFavoraveis = contaPoliticosGovernistas(listaDePresentes);
 
         int qntPoliticosPresentes = listaDePresentes.length;
 
-        if (status == StatusGovernistas.LIVRE) {
-            int qntPoliticosInteressados = contaPoliticosInteressados(listaDePresentes, proposta);
-
-            if (qntPoliticosInteressados >= qntPoliticosPresentes / 2 + 1)
-                resultado = true;
-        } else {
-            int qntPoliticosGovernistas = contaPoliticosGovernistas(listaDePresentes);
-
-            if (status == StatusGovernistas.GOVERNISTA) {
-                if (qntPoliticosGovernistas >= qntPoliticosPresentes / 2 + 1)
-                    resultado = true;
-            } else { // StatusGovernistas.OPOSICAO
-                if (qntPoliticosGovernistas < qntPoliticosPresentes / 2 + 1)
-                    resultado = true;
-            }
-        }
-
-        return resultado;
+        return proposta.votarPlenario(qntPoliticosFavoraveis, qntPoliticosPresentes, status);
     }
 
     private int contaPoliticosInteressados(String[] listaDePresentes, PropostaLegislativa projeto) {
@@ -269,30 +229,6 @@ public class ProjetoController {
                     qntPoliticosInteressados++;
         }
         return qntPoliticosInteressados;
-    }
-
-    private boolean votaMaioriaQualificada(StatusGovernistas status, PropostaLegislativa proposta, String[] listaDePresentes) {
-        boolean resultado = false;
-
-        int qntPoliticosGovernistas = contaPoliticosGovernistas(listaDePresentes);
-
-        int qntPoliticosPresentes = listaDePresentes.length;
-
-        if (status == StatusGovernistas.LIVRE) {
-            int qntPoliticosInteressados = contaPoliticosInteressados(listaDePresentes, proposta);
-
-            if (qntPoliticosInteressados >= 3 * qntPoliticosPresentes / 5 + 1)
-                resultado = true;
-
-        } else if (status == StatusGovernistas.GOVERNISTA) {
-            if (qntPoliticosGovernistas >= 3 * qntPoliticosPresentes / 5 + 1)
-                resultado = true;
-        } else {// StatusGovernistas.OPOSICAO
-            if (qntPoliticosGovernistas < 3 * qntPoliticosPresentes / 5 + 1)
-                resultado = true;
-        }
-
-        return resultado;
     }
 
     private int contaPoliticosGovernistas(String[] listaDePresentes) {
@@ -355,7 +291,7 @@ public class ProjetoController {
 
         StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
 
-        boolean resultado = votacaoPlenario(status, proposta, presentes);
+        boolean resultado = votarPlenario(status, proposta, presentes);
 
         avaliaResultado(proposta, resultado);
 

@@ -1,5 +1,6 @@
 package entities;
 
+import enums.StatusGovernistas;
 import enums.TipoDeProjetos;
 
 public class PLP extends Projeto {
@@ -16,6 +17,19 @@ public class PLP extends Projeto {
     public void verificaQuorumMinimo(int qntDeputadosPresentes, int qntTotalDeputado) {
         if (qntDeputadosPresentes < qntTotalDeputado / 2 + 1)
             throw new IllegalArgumentException("Erro ao votar proposta: quorum invalido");
+    }
+
+    @Override
+    public boolean votarPlenario(int qntPoliticosFavoraveis, int qntPoliticosPresentes, StatusGovernistas status) {
+        boolean resultado = false;
+
+        if (qntPoliticosFavoraveis >= qntPoliticosPresentes / 2 + 1)
+            resultado = true;
+
+        if (status == StatusGovernistas.OPOSICAO)
+            resultado = !resultado;
+
+        return resultado;
     }
 
     @Override

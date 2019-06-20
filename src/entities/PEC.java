@@ -1,5 +1,6 @@
 package entities;
 
+import enums.StatusGovernistas;
 import enums.TipoDeProjetos;
 
 public class PEC extends Projeto {
@@ -16,6 +17,19 @@ public class PEC extends Projeto {
     public void verificaQuorumMinimo(int qntDeputadosPresentes, int qntTotalDeputado) {
         if (qntDeputadosPresentes < 3 * qntTotalDeputado / 5 + 1)
             throw new IllegalArgumentException("Erro ao votar proposta: quorum invalido");
+    }
+
+    @Override
+    public boolean votarPlenario(int qntPoliticosFavoraveis, int qntPoliticosPresentes, StatusGovernistas status) {
+        boolean resultado = false;
+
+        if (qntPoliticosFavoraveis >= 3 * qntPoliticosPresentes / 5 + 1)
+            resultado = true;
+
+        if (status == StatusGovernistas.OPOSICAO)
+            resultado = !resultado;
+
+        return resultado;
     }
 
     @Override

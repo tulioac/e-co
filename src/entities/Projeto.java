@@ -90,7 +90,7 @@ public abstract class Projeto implements PropostaLegislativa {
         return this.dniAutor;
     }
 
-    public boolean votaComissao(int qntPoliticosFavoraveis, int qntDePoliticosDaComissao, StatusGovernistas status) {
+    public boolean votarComissao(int qntPoliticosFavoraveis, int qntDePoliticosDaComissao, StatusGovernistas status) {
         boolean resultado = false;
 
         if (qntPoliticosFavoraveis >= qntDePoliticosDaComissao / 2 + 1)
@@ -111,6 +111,8 @@ public abstract class Projeto implements PropostaLegislativa {
     }
 
     public abstract void verificaQuorumMinimo(int qntDeputadosPresentes, int qntTotalDeputado);
+
+    public abstract boolean votarPlenario(int qntPoliticosFavoraveis, int qntPoliticosPresentes, StatusGovernistas status);
 
     @Override
     public String toString() {

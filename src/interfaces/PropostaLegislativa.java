@@ -98,9 +98,11 @@ public interface PropostaLegislativa {
      */
     public String toString();
 
-    public boolean votaComissao(int qntPoliticosFavoraveis, int qntDePoliticosDaComissao, StatusGovernistas status);
+    public boolean votarComissao(int qntPoliticosFavoraveis, int qntDePoliticosDaComissao, StatusGovernistas status);
 
     public void alteraNovoLocal(String proximoLocal, PropostaLegislativa proposta);
 
     public void verificaQuorumMinimo(int qntDeputadosPresentes, int qntTotalDeputado);
+
+    public boolean votarPlenario(int qntPoliticosFavoraveis, int qntPoliticosPresentes, StatusGovernistas status);
 }
