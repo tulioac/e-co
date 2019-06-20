@@ -52,9 +52,9 @@ public class ProjetoController implements Serializable {
      * Constrói um Controlador de Projetos que inicializa um mapa que guarda
      * as propostas legislativas do sistema
      *
-     * @param pessoaService instancia de PessoaService
+     * @param pessoaService   instancia de PessoaService
      * @param comissaoService instancia de ComissaoService
-     * @param partidoService instancia de PartidoService
+     * @param partidoService  instancia de PartidoService
      */
     public ProjetoController(PessoaService pessoaService, ComissaoService comissaoService, PartidoBaseService partidoService) {
         this.pessoaService = pessoaService;
@@ -68,7 +68,7 @@ public class ProjetoController implements Serializable {
      * de projetos de um ano específico e de um tipo específico.
      *
      * @param tipoProjeto tipo do projeto
-     * @param ano ano do projeto
+     * @param ano         ano do projeto
      * @return quantidade de projetos de um ano especifico
      */
     private int contaProjetoEmAno(TipoProjeto tipoProjeto, int ano) {
@@ -86,7 +86,7 @@ public class ProjetoController implements Serializable {
      * gerado para um projeto
      *
      * @param tipoProjeto tipo do projeto
-     * @param ano ano do projeto
+     * @param ano         ano do projeto
      * @return codigo gerado para o projeto
      */
     private String criaCodigo(TipoProjeto tipoProjeto, int ano) {
@@ -99,7 +99,7 @@ public class ProjetoController implements Serializable {
      * Esse método verifica o documento nacional de identificação.
      *
      * @param dni documento nacional de identificação
-     * @throws NullPointerException pessoa inexistente
+     * @throws NullPointerException     pessoa inexistente
      * @throws IllegalArgumentException pessoa nao é deputado
      */
     private void verificaDni(String dni) {
@@ -113,11 +113,11 @@ public class ProjetoController implements Serializable {
     /**
      * Esse método valida as entradas de projeto controller
      *
-     * @param dni dni
-     * @param ano ano do projeto
-     * @param ementa ementa do projeto
+     * @param dni        dni
+     * @param ano        ano do projeto
+     * @param ementa     ementa do projeto
      * @param interesses interesses do projeto
-     * @param url url do projeto
+     * @param url        url do projeto
      */
     private void validaEntradasDoProjeto(String dni, int ano, String ementa, String interesses, String url) {
         Validador v = new Validador();
@@ -133,11 +133,11 @@ public class ProjetoController implements Serializable {
     /**
      * Esse método cadastra um novo projeto de lei e retorna o seu código.
      *
-     * @param dni dni do autor
-     * @param ano ano do projeto
-     * @param ementa ementa do projeto
+     * @param dni        dni do autor
+     * @param ano        ano do projeto
+     * @param ementa     ementa do projeto
      * @param interesses interesses do projeto
-     * @param url url do projeto
+     * @param url        url do projeto
      * @param conclusivo conclusividade do projeto
      * @return string que representa codigo do projeto de lei
      */
@@ -154,12 +154,12 @@ public class ProjetoController implements Serializable {
     /**
      * Esse método cadastra um novo projeto de lei complementar e retorna seu código.
      *
-     * @param dni dni do autor
-     * @param ano ano do projeto
-     * @param ementa ementa do projeto
+     * @param dni        dni do autor
+     * @param ano        ano do projeto
+     * @param ementa     ementa do projeto
      * @param interesses interesses do projeto
-     * @param url url do projeto
-     * @param artigos artigos do projeto
+     * @param url        url do projeto
+     * @param artigos    artigos do projeto
      * @return string que representa código do projeto de lei complementar
      */
     public String cadastraPLP(String dni, int ano, String ementa, String interesses, String url, String artigos) {
@@ -175,12 +175,12 @@ public class ProjetoController implements Serializable {
     /**
      * Esse método cadastra um novo projeto de emenda constitucional e retorna o seu código.
      *
-     * @param dni dni do autor
-     * @param ano ano do projeto
-     * @param ementa ementa do projeto
+     * @param dni        dni do autor
+     * @param ano        ano do projeto
+     * @param ementa     ementa do projeto
      * @param interesses interesses do projeto
-     * @param url url do projeto
-     * @param artigos artigos do projeto
+     * @param url        url do projeto
+     * @param artigos    artigos do projeto
      * @return string que representa o codigo do projeto de emenda constitucional
      */
     public String cadastraPEC(String dni, int ano, String ementa, String interesses, String url, String artigos) {
@@ -210,8 +210,8 @@ public class ProjetoController implements Serializable {
      * Esse método avalia o resultado da votação e encaminha ou encerra tramitação.
      *
      * @param proximoLocal proximo local do projeto
-     * @param proposta projeto
-     * @param resultado resultado da votacao atual
+     * @param proposta     projeto
+     * @param resultado    resultado da votacao atual
      */
     private void avaliaResultado(String proximoLocal, PropostaLegislativa proposta, boolean resultado) {
         Pessoa autorDaProposta = pessoaService.getPessoaPeloDni(proposta.getAutor());
@@ -224,7 +224,7 @@ public class ProjetoController implements Serializable {
      * retorna a quantidade de politicos interessados
      *
      * @param comissao comissao
-     * @param projeto projeto
+     * @param projeto  projeto
      * @return inteiro que representa quantidade de politicos interessados na proposta
      */
     private int contaPoliticosInteressados(Comissao comissao, PropostaLegislativa projeto) {
@@ -261,12 +261,12 @@ public class ProjetoController implements Serializable {
      * Esse método vota o projeto em uma comissao com base em um status governista
      * e retorna o resultado da votação
      *
-     * @param status status do projeto na votação
+     * @param status   status do projeto na votação
      * @param comissao comissão
      * @param proposta proposta
      * @return true se aprovado
      */
-      private boolean votarComissao(StatusGovernista status, Comissao comissao, PropostaLegislativa proposta) {
+    private boolean votarComissao(StatusGovernista status, Comissao comissao, PropostaLegislativa proposta) {
         int qntDePoliticosDaComissao = comissao.getIntegrantes().size();
 
         int qntPoliticosFavoraveis;
@@ -283,9 +283,9 @@ public class ProjetoController implements Serializable {
      * Esse método vota o projeto na comissão e retorna o resultado
      * da votação
      *
-     * @param codigo codigo do projeto
+     * @param codigo           codigo do projeto
      * @param statusGovernista status do projeto
-     * @param proximoLocal proximo local de votação do projeto
+     * @param proximoLocal     proximo local de votação do projeto
      * @return resultado da votação
      */
     public boolean votarComissao(String codigo, String statusGovernista, String proximoLocal) {
@@ -327,20 +327,20 @@ public class ProjetoController implements Serializable {
      * Esse método verifica se existe quórum mínimo para votação do projeto.
      *
      * @param presentes politicos presentes na votação
-     * @param proposta proposta
+     * @param proposta  proposta
      */
     private void verificaQuorumMinimo(String presentes, PropostaLegislativa proposta) {
         int qntDeputadosPresentes = presentes.split(",").length;
         int qntTotalDeputado = pessoaService.contaDeputados();
-        
+
         proposta.verificaQuorumMinimo(qntDeputadosPresentes, qntTotalDeputado);
     }
 
     /**
      * Esse método vota o projeto no plenário e retorna se foi aprovado ou não.
      *
-     * @param status status do projeto
-     * @param proposta projeto
+     * @param status    status do projeto
+     * @param proposta  projeto
      * @param presentes presentes na votação
      * @return true se aprovado
      */
@@ -364,7 +364,7 @@ public class ProjetoController implements Serializable {
      * a quantidade de politicos interessados.
      *
      * @param listaDePresentes presentes na votação
-     * @param projeto projeto
+     * @param projeto          projeto
      * @return quantidade de politicos interessados no projeto
      */
     private int contaPoliticosInteressados(String[] listaDePresentes, PropostaLegislativa projeto) {
@@ -399,7 +399,7 @@ public class ProjetoController implements Serializable {
     /**
      * Esse método avalia o resultado da votação e avança ou encerra tramitação
      *
-     * @param proposta projeto
+     * @param proposta  projeto
      * @param resultado resultado
      */
     private void avaliaResultado(PropostaLegislativa proposta, boolean resultado) {
@@ -411,9 +411,9 @@ public class ProjetoController implements Serializable {
     /**
      * Esse método vota o projeto no plenário e retorna se foi aprovado ou não.
      *
-     * @param codigo código do projeto
+     * @param codigo           código do projeto
      * @param statusGovernista status do projeto
-     * @param presentes presentes na votação
+     * @param presentes        presentes na votação
      * @return true se for aprovado
      */
     public boolean votarPlenario(String codigo, String statusGovernista, String presentes) {

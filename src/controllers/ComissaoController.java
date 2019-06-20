@@ -98,6 +98,7 @@ public class ComissaoController implements Serializable {
 
     /**
      * Retorna o conjunto de todas as Comissões Legislativas cadastradas no sistema.
+     *
      * @return Set de comissões legislativas.
      */
     public Set<Comissao> getComissoes() {

@@ -2,6 +2,7 @@ package entities;
 
 import enums.StatusGovernista;
 import enums.TipoProjeto;
+
 import java.io.Serializable;
 
 /**
@@ -56,7 +57,7 @@ public class PL extends Projeto implements Serializable {
     }
 
     @Override
-    public void avaliaResultado(String proximoLocal, boolean resultado, Pessoa autorDaProposta)  {
+    public void avaliaResultado(String proximoLocal, boolean resultado, Pessoa autorDaProposta) {
         if (conclusivo && !resultado)
             this.encerraVotacao();
 

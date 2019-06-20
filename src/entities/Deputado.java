@@ -1,12 +1,11 @@
 package entities;
 
+import enums.CargosPoliticos;
 import interfaces.CargoPolitico;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import enums.CargosPoliticos;
 
 /**
  * Essa classe representa um Deputado.

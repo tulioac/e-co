@@ -27,7 +27,8 @@ public class Comissao implements Serializable {
 
     /**
      * Constroi uma comissão a partir de um tema e de um conjunto de Pessoas.
-     *  @param tema        tema da comissão
+     *
+     * @param tema        tema da comissão
      * @param integrantes conjunto de Pessoas integrantes da comissão
      */
     public Comissao(String tema, Set<String> integrantes) {
@@ -73,6 +74,7 @@ public class Comissao implements Serializable {
 
     /**
      * Retorna o tema da Comissão Legislativa
+     *
      * @return string contendo nome da comissão
      */
     public String getTema() {
@@ -81,6 +83,7 @@ public class Comissao implements Serializable {
 
     /**
      * Retorna os integrantes de uma Comissão Legislativa
+     *
      * @return Set de integrantes da comissão
      */
     public Set<String> getIntegrantes() {
