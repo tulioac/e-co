@@ -99,4 +99,6 @@ public interface PropostaLegislativa {
     public String toString();
 
     public boolean votaComissao(int qntPoliticosFavoraveis, int qntDePoliticosDaComissao, StatusGovernistas status);
+
+    public void alteraNovoLocal(String proximoLocal, PropostaLegislativa proposta);
 }

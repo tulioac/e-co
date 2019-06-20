@@ -102,6 +102,14 @@ public abstract class Projeto implements PropostaLegislativa {
         return resultado;
     }
 
+    public void alteraNovoLocal(String proximoLocal, PropostaLegislativa proposta) {
+        if (proximoLocal.equals("plenario")) {
+            this.setNovoLocalDeVotacao("Plenario - 1o turno");
+        } else {
+            this.setNovoLocalDeVotacao(proximoLocal);
+        }
+    }
+
 
     @Override
     public String toString() {

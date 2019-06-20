@@ -171,32 +171,26 @@ public class ProjetoController {
         if (proposta.getLocalDeVotacao().equals("Plenario - 1o turno") || proposta.getLocalDeVotacao().equals("Plenario - 2o turno"))
             throw new IllegalArgumentException("Erro ao votar proposta: proposta encaminhada ao plenario");
 
-        if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString())) {
+        if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()))
             throw new IllegalArgumentException("Erro ao votar proposta: tramitacao encerrada");
-        }
+
+        Comissao comissao;
 
         if (!(this.comissaoService.containsComissao(proposta.getLocalDeVotacao())))
             throw new NullPointerException("Erro ao votar proposta: " + proposta.getLocalDeVotacao() + " nao cadastrada");
+        else {
+            comissao = this.comissaoService.getComissao(proposta.getLocalDeVotacao());
+        }
 
         StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
 
-        Comissao comissao = this.comissaoService.getComissao(proposta.getLocalDeVotacao());
-
         boolean resultado = this.votarComissao(status, comissao, proposta);
 
-        alteraNovoLocal(proximoLocal, proposta);
+        proposta.alteraNovoLocal(proximoLocal, proposta);
 
         avaliaResultado(proximoLocal, proposta, resultado);
 
         return resultado;
-    }
-
-    private void alteraNovoLocal(String proximoLocal, PropostaLegislativa proposta) {
-        if (proximoLocal.equals("plenario")) {
-            proposta.setNovoLocalDeVotacao("Plenario - 1o turno");
-        } else {
-            proposta.setNovoLocalDeVotacao(proximoLocal);
-        }
     }
 
     private void verificaQuorumMinimo(String presentes, TipoDeProjetos tipoDoProjeto) {
