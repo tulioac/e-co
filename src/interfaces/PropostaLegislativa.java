@@ -1,6 +1,7 @@
 package interfaces;
 
 import enums.SituacaoVotacao;
+import enums.StatusGovernistas;
 import enums.TipoDeProjetos;
 
 /**
@@ -96,4 +97,6 @@ public interface PropostaLegislativa {
      * @return String contendo a representação em String do objeto
      */
     public String toString();
+
+    public boolean votaComissao(int qntPoliticosFavoraveis, int qntDePoliticosDaComissao, StatusGovernistas status);
 }

@@ -145,29 +145,17 @@ public class ProjetoController {
         return qntPoliticosGovernistas;
     }
 
-    private boolean votaComissao(StatusGovernistas status, Comissao comissao, PropostaLegislativa projeto) {
-        boolean resultado = false;
-
+    private boolean votarComissao(StatusGovernistas status, Comissao comissao, PropostaLegislativa proposta) {
         int qntDePoliticosDaComissao = comissao.getIntegrantes().size();
 
-        if (status == StatusGovernistas.LIVRE) {
-            int qntPoliticosInteressados = contaPoliticosInteressados(comissao, projeto);
+        int qntPoliticosFavoraveis;
 
-            if (qntPoliticosInteressados >= (qntDePoliticosDaComissao / 2 + 1))
-                resultado = true;
+        if (status == StatusGovernistas.LIVRE)
+            qntPoliticosFavoraveis = contaPoliticosInteressados(comissao, proposta);
+        else
+            qntPoliticosFavoraveis = contaPoliticosGovernistas(comissao);
 
-        } else {
-            int qntPoliticosGovernistas = contaPoliticosGovernistas(comissao);
-
-            if (status == StatusGovernistas.GOVERNISTA) {
-                if (qntPoliticosGovernistas >= qntDePoliticosDaComissao / 2 + 1)
-                    resultado = true;
-
-            } else // StatusGovernistas.OPOSICAO
-                if (qntPoliticosGovernistas < qntDePoliticosDaComissao / 2 + 1)
-                    resultado = true;
-        }
-        return resultado;
+        return proposta.votaComissao(qntPoliticosFavoraveis, qntDePoliticosDaComissao, status);
     }
 
     public boolean votarComissao(String codigo, String statusGovernista, String proximoLocal) {
@@ -192,7 +180,9 @@ public class ProjetoController {
 
         StatusGovernistas status = StatusGovernistas.valueOf(statusGovernista);
 
-        boolean resultado = this.votaComissao(status, this.comissaoService.getComissao(proposta.getLocalDeVotacao()), proposta);
+        Comissao comissao = this.comissaoService.getComissao(proposta.getLocalDeVotacao());
+
+        boolean resultado = this.votarComissao(status, comissao, proposta);
 
         alteraNovoLocal(proximoLocal, proposta);
 

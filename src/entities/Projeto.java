@@ -1,6 +1,7 @@
 package entities;
 
 import enums.SituacaoVotacao;
+import enums.StatusGovernistas;
 import enums.TipoDeProjetos;
 import interfaces.PropostaLegislativa;
 
@@ -88,6 +89,19 @@ public abstract class Projeto implements PropostaLegislativa {
     public String getAutor(){
         return this.dniAutor;
     }
+
+    public boolean votaComissao(int qntPoliticosFavoraveis, int qntDePoliticosDaComissao, StatusGovernistas status) {
+        boolean resultado = false;
+
+        if (qntPoliticosFavoraveis >= qntDePoliticosDaComissao / 2 + 1)
+            resultado = true;
+
+        if (status == StatusGovernistas.OPOSICAO)
+            resultado = !resultado;
+
+        return resultado;
+    }
+
 
     @Override
     public String toString() {
