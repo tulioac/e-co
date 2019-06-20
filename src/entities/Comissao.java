@@ -2,6 +2,7 @@ package entities;
 
 import util.Validador;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Set;
  * @author Tulio Araujo Cunha
  * @author Guilherme de Melo Carneiro
  */
-public class Comissao {
+public class Comissao implements Serializable {
 
     /**
      * Armazena o tema da comissão.
@@ -22,15 +23,14 @@ public class Comissao {
     /**
      * Armazena o conjunto de integrantes da comissão.
      */
-    private Set<Pessoa> integrantes;
+    private Set<String> integrantes;
 
     /**
      * Constroi uma comissão a partir de um tema e de um conjunto de Pessoas.
-     *
-     * @param tema        tema da comissão
+     *  @param tema        tema da comissão
      * @param integrantes conjunto de Pessoas integrantes da comissão
      */
-    public Comissao(String tema, Set<Pessoa> integrantes) {
+    public Comissao(String tema, Set<String> integrantes) {
         Validador v = new Validador();
         v.validaString(tema, "Erro ao cadastrar comissao: tema nao pode ser vazio ou nulo");
         v.validaNull(integrantes, "Erro ao cadastrar comissao: lista de politicos nao pode ser vazio ou nulo");
@@ -67,16 +67,23 @@ public class Comissao {
         if (tema == null) {
             if (other.tema != null)
                 return false;
-        } else if (!tema.equals(other.tema))
-            return false;
+        } else return tema.equals(other.tema);
         return true;
     }
 
+    /**
+     * Retorna o tema da Comissão Legislativa
+     * @return string contendo nome da comissão
+     */
     public String getTema() {
         return this.tema;
     }
 
-    public Set<Pessoa> getIntegrantes() {
+    /**
+     * Retorna os integrantes de uma Comissão Legislativa
+     * @return Set de integrantes da comissão
+     */
+    public Set<String> getIntegrantes() {
         return this.integrantes;
     }
 

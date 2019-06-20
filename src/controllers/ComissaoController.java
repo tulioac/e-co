@@ -1,14 +1,11 @@
 package controllers;
 
 import entities.Comissao;
-import entities.Pessoa;
 import services.PessoaService;
 import util.Validador;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * Essa classe usa o padrão Controller contendo métodos que operam sobre a
@@ -19,8 +16,12 @@ import java.util.Set;
  * @author Tulio Araujo Cunha
  * @author Guilherme de Melo Carneiro
  */
-public class ComissaoController {
+public class ComissaoController implements Serializable {
 
+    /**
+     * Armazena Id de serialização de ComissaoController
+     */
+    private static final long serialVersionUID = 5812622990246783000L;
     /**
      * Service responsável por fornecer informações sobre os objetos Pessoa
      * cadastrados no sistema.
@@ -53,8 +54,8 @@ public class ComissaoController {
      * @throws IllegalArgumentException se alguma dni não for de um político.
      */
     private String[] validaDnis(String politicos) {
-        String[] dnis = politicos.split(",");
         Validador v = new Validador();
+        String[] dnis = politicos.split(",");
 
         for (String dniPolitico : dnis) {
             v.validaDni(dniPolitico, "Erro ao cadastrar comissao: dni invalido");
@@ -85,20 +86,21 @@ public class ComissaoController {
         v.validaString(tema, "Erro ao cadastrar comissao: tema nao pode ser vazio ou nulo");
         v.validaString(politicos, "Erro ao cadastrar comissao: lista de politicos nao pode ser vazio ou nulo");
 
-        if (this.comissoes.containsKey(tema)) {
+        if (this.comissoes.containsKey(tema))
             throw new IllegalArgumentException("Erro ao cadastrar comissao: tema existente");
-        }
 
-        String[] dnisValidadas = validaDnis(politicos);
 
-        Set<Pessoa> integrantesComissao = new HashSet<>();
-        for (String dniValida : dnisValidadas) {
-            integrantesComissao.add(this.pessoaService.getPessoaPeloDni(dniValida));
-        }
-        this.comissoes.put(tema, new Comissao(tema, integrantesComissao));
+        String[] dnis = validaDnis(politicos);
+        Set<String> integrantes = new HashSet<>(Arrays.asList(dnis));
+
+        this.comissoes.put(tema, new Comissao(tema, integrantes));
     }
 
+    /**
+     * Retorna o conjunto de todas as Comissões Legislativas cadastradas no sistema.
+     * @return Set de comissões legislativas.
+     */
     public Set<Comissao> getComissoes() {
-        return new HashSet<Comissao>(this.comissoes.values());
+        return new HashSet<>(this.comissoes.values());
     }
 }

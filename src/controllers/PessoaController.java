@@ -4,7 +4,12 @@ import entities.Pessoa;
 import enums.CargosPoliticos;
 import util.Validador;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Essa classe usa o padrão Controller contendo métodos que operam sobre a
@@ -15,7 +20,11 @@ import java.util.*;
  * @author Tulio Araujo Cunha
  * @author Guilherme de Melo Carneiro
  */
-public class PessoaController {
+public class PessoaController implements Serializable {
+    /**
+     * Armazena Id de serialização de PessoaController
+     */
+    private static final long serialVersionUID = 2198811903520135676L;
     /**
      * Armazena um mapa de pessoas em que a chave e o documento de identificação e
      * aponta para um objeto do tipo Pessoa.
@@ -127,7 +136,11 @@ public class PessoaController {
         return this.pessoas.get(dni).toString();
     }
 
+    /**
+     * Retorna o conjunto de pessoas cadastradas no sistema
+     * @return Set de pessoas
+     */
     public Set<Pessoa> getPessoas() {
-        return new HashSet<Pessoa>(this.pessoas.values());
+        return new HashSet<>(this.pessoas.values());
     }
 }

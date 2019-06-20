@@ -4,6 +4,7 @@ import controllers.PessoaController;
 import entities.Pessoa;
 import enums.CargosPoliticos;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,8 +17,11 @@ import java.util.Set;
  * @author Tulio Araujo Cunha
  * @author Guilherme de Melo Carneiro
  */
-public class PessoaService {
-
+public class PessoaService implements Serializable {
+    /**
+     * Armazena Id de serialização do objeto PessoaService
+     */
+    private static final long serialVersionUID = 3322829397196919614L;
     /**
      * Armazena um controlador de Pessoas.
      */
@@ -39,8 +43,8 @@ public class PessoaService {
      * @return Set de Pessoa contendo todas as pessoas que foram cadastradas no
      * sistema até o momento
      */
-    public Set<Pessoa> getPessoas() {
-        return new HashSet<Pessoa>(this.pessoas.getPessoas());
+    private Set<Pessoa> getPessoas() {
+        return new HashSet<>(this.pessoas.getPessoas());
     }
 
     /**
@@ -85,7 +89,7 @@ public class PessoaService {
 
     /**
      * Retorna o número de deputados já cadastrados no sistema.
-     * 
+     *
      * @return número de deputados cadastrados no sistema
      */
     public int contaDeputados() {
