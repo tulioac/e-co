@@ -1,5 +1,6 @@
 package interfaces;
 
+import entities.Pessoa;
 import enums.SituacaoVotacao;
 import enums.StatusGovernista;
 import enums.TipoProjeto;
@@ -92,4 +93,8 @@ public interface PropostaLegislativa {
     public void verificaQuorumMinimo(int qntDeputadosPresentes, int qntTotalDeputado);
 
     public boolean votarPlenario(int qntPoliticosFavoraveis, int qntPoliticosPresentes, StatusGovernista status);
+
+    public void avaliaResultado(String proximoLocal, boolean resultado, Pessoa autorDaProposta);
+
+    public void avaliaResultado(boolean resultado, Pessoa autorDaProposta);
 }

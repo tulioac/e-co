@@ -203,6 +203,26 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
 
     public abstract boolean votarPlenario(int qntPoliticosFavoraveis, int qntPoliticosPresentes, StatusGovernista status);
 
+    public void avaliaResultado(String proximoLocal, boolean resultado, Pessoa autorDaProposta) {
+        if (proximoLocal.equals("-")){
+            if (resultado) {
+                this.aprovaVotacao();
+
+                autorDaProposta.aumentaLeis();
+            } else {
+                this.encerraVotacao();
+            }
+        }
+
+        if (resultado)
+            this.alteraSituacaoDoLocalAnterior(SituacaoVotacao.APROVADO);
+        else
+            this.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
+    }
+
+    public abstract void avaliaResultado(boolean resultado, Pessoa autorDaProposta);
+
+
     /**
      * Retorna uma representaçao em String do projeto
      *

@@ -54,6 +54,26 @@ public class PLP extends Projeto implements Serializable {
     }
 
     @Override
+    public void avaliaResultado(boolean resultado, Pessoa autorDaProposta) {
+        if (this.getLocalDeVotacao().equals("Plenario - 1o turno")) {
+            if (resultado) {
+                this.setNovoLocalDeVotacao("Plenario - 2o turno");
+            } else {
+                this.encerraVotacao();
+            }
+
+        } else if (this.getLocalDeVotacao().equals("Plenario - 2o turno")) {
+            if (resultado) {
+                this.aprovaVotacao();
+
+                autorDaProposta.aumentaLeis();
+            } else {
+                this.encerraVotacao();
+            }
+        }
+    }
+
+    @Override
     public String toString() {
         return "Projeto de Lei Complementar - " + super.toString()
                 + " - " + this.getArtigos() + " - " + this.exibeSituacaoAtual();

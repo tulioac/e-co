@@ -214,23 +214,9 @@ public class ProjetoController implements Serializable {
      * @param resultado resultado da votacao atual
      */
     private void avaliaResultado(String proximoLocal, PropostaLegislativa proposta, boolean resultado) {
-        if (proposta.toString().contains("Conclusiva") && !resultado)
-            proposta.encerraVotacao();
+        Pessoa autorDaProposta = pessoaService.getPessoaPeloDni(proposta.getAutor());
 
-        if (proximoLocal.equals("-")) {
-            if (resultado) {
-                proposta.aprovaVotacao();
-                String dniAutor = proposta.getAutor();
-
-                pessoaService.getPessoaPeloDni(dniAutor).aumentaLeis();
-            } else
-                proposta.encerraVotacao();
-        }
-
-        if (resultado)
-            proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.APROVADO);
-        else
-            proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
+        proposta.avaliaResultado(proximoLocal, resultado, autorDaProposta);
     }
 
     /**
@@ -292,7 +278,6 @@ public class ProjetoController implements Serializable {
 
         return proposta.votarComissao(qntPoliticosFavoraveis, qntDePoliticosDaComissao, status);
     }
-
 
     /**
      * Esse método vota o projeto na comissão e retorna o resultado
@@ -418,35 +403,9 @@ public class ProjetoController implements Serializable {
      * @param resultado resultado
      */
     private void avaliaResultado(PropostaLegislativa proposta, boolean resultado) {
-        TipoProjeto tipoDaProposta = proposta.getTipoDoProjeto();
+        Pessoa autorDaProposta = pessoaService.getPessoaPeloDni(proposta.getAutor());
 
-        if (tipoDaProposta == TipoProjeto.PL) {
-            if (resultado) {
-                proposta.aprovaVotacao();
-                String dniAutor = proposta.getAutor();
-
-                pessoaService.getPessoaPeloDni(dniAutor).aumentaLeis();
-            } else {
-                proposta.encerraVotacao();
-            }
-        } else {
-            if (proposta.getLocalDeVotacao().equals("Plenario - 1o turno")) {
-                if (resultado) {
-                    proposta.setNovoLocalDeVotacao("Plenario - 2o turno");
-                } else {
-                    proposta.encerraVotacao();
-                }
-            } else if (proposta.getLocalDeVotacao().equals("Plenario - 2o turno")) {
-                if (resultado) {
-                    proposta.aprovaVotacao();
-                    String dniAutor = proposta.getAutor();
-
-                    pessoaService.getPessoaPeloDni(dniAutor).aumentaLeis();
-                } else {
-                    proposta.encerraVotacao();
-                }
-            }
-        }
+        proposta.avaliaResultado(resultado, autorDaProposta);
     }
 
     /**
