@@ -5,11 +5,7 @@ import enums.CargosPoliticos;
 import util.Validador;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Essa classe usa o padrão Controller contendo métodos que operam sobre a
@@ -138,6 +134,7 @@ public class PessoaController implements Serializable {
 
     /**
      * Retorna o conjunto de pessoas cadastradas no sistema
+     *
      * @return Set de pessoas
      */
     public Set<Pessoa> getPessoas() {

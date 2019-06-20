@@ -1,11 +1,11 @@
 package entities;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import enums.CargosPoliticos;
 import interfaces.CargoPolitico;
 import util.Validador;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Essa classe representa uma Pessoa.

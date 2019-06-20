@@ -91,6 +91,15 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
     }
 
     /**
+     * Esse método altera o tipo do projeto
+     *
+     * @param tipoDoProjeto tipo do projeto
+     */
+    public void setTipoDoProjeto(TipoProjeto tipoDoProjeto) {
+        this.tipoDoProjeto = tipoDoProjeto;
+    }
+
+    /**
      * Esse método retorna uma string contendo informaçoes acerca do estado atual do projeto.
      *
      * @return string no formato Situaçao do projeto seguida pelo local onde o projeto foi votado.
@@ -204,7 +213,7 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
     public abstract boolean votarPlenario(int qntPoliticosFavoraveis, int qntPoliticosPresentes, StatusGovernista status);
 
     public void avaliaResultado(String proximoLocal, boolean resultado, Pessoa autorDaProposta) {
-        if (proximoLocal.equals("-")){
+        if (proximoLocal.equals("-")) {
             if (resultado) {
                 this.aprovaVotacao();
 
@@ -221,7 +230,6 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
     }
 
     public abstract void avaliaResultado(boolean resultado, Pessoa autorDaProposta);
-
 
     /**
      * Retorna uma representaçao em String do projeto
@@ -264,13 +272,5 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
         if (codigo == null) {
             return other.codigo == null;
         } else return codigo.equals(other.codigo);
-    }
-
-    /**
-     * Esse método altera o tipo do projeto
-     * @param tipoDoProjeto tipo do projeto
-     */
-    public void setTipoDoProjeto(TipoProjeto tipoDoProjeto) {
-        this.tipoDoProjeto = tipoDoProjeto;
     }
 }
