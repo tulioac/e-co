@@ -21,6 +21,12 @@ public class PL extends Projeto {
     }
 
     @Override
+    public void verificaQuorumMinimo(int qntDeputadosPresentes, int qntTotalDeputado) {
+        if (qntDeputadosPresentes < qntTotalDeputado / 2 + 1)
+            throw new IllegalArgumentException("Erro ao votar proposta: quorum invalido");
+    }
+
+    @Override
     public String toString() {
         StringBuilder representacaoDeProjeto = new StringBuilder("Projeto de Lei - " + super.toString() + " - ");
 

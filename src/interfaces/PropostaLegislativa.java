@@ -101,4 +101,6 @@ public interface PropostaLegislativa {
     public boolean votaComissao(int qntPoliticosFavoraveis, int qntDePoliticosDaComissao, StatusGovernistas status);
 
     public void alteraNovoLocal(String proximoLocal, PropostaLegislativa proposta);
+
+    public void verificaQuorumMinimo(int qntDeputadosPresentes, int qntTotalDeputado);
 }

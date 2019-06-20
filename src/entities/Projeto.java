@@ -110,6 +110,7 @@ public abstract class Projeto implements PropostaLegislativa {
         }
     }
 
+    public abstract void verificaQuorumMinimo(int qntDeputadosPresentes, int qntTotalDeputado);
 
     @Override
     public String toString() {

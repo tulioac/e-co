@@ -13,6 +13,12 @@ public class PEC extends Projeto {
     }
 
     @Override
+    public void verificaQuorumMinimo(int qntDeputadosPresentes, int qntTotalDeputado) {
+        if (qntDeputadosPresentes < 3 * qntTotalDeputado / 5 + 1)
+            throw new IllegalArgumentException("Erro ao votar proposta: quorum invalido");
+    }
+
+    @Override
     public String toString() {
         StringBuilder representacaoDeProjeto = new StringBuilder("Projeto de Emenda Constitucional - " + super.toString() + " - " + this.getArtigos() + " - " + this.exibeSituacaoAtual());
 
@@ -22,4 +28,6 @@ public class PEC extends Projeto {
     private String getArtigos() {
         return this.artigos.replace(",", ", ");
     }
+
+
 }

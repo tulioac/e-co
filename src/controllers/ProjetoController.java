@@ -193,17 +193,12 @@ public class ProjetoController {
         return resultado;
     }
 
-    private void verificaQuorumMinimo(String presentes, TipoDeProjetos tipoDoProjeto) {
+    private void verificaQuorumMinimo(String presentes, PropostaLegislativa proposta) {
         int qntDeputadosPresentes = presentes.split(",").length;
 
         int qntTotalDeputado = pessoaService.contaDeputados();
 
-        if (tipoDoProjeto == TipoDeProjetos.PEC) {
-            if (qntDeputadosPresentes < 3 * qntTotalDeputado / 5 + 1)
-                throw new IllegalArgumentException("Erro ao votar proposta: quorum invalido");
-
-        } else if (qntDeputadosPresentes < qntTotalDeputado / 2 + 1)
-            throw new IllegalArgumentException("Erro ao votar proposta: quorum invalido");
+        proposta.verificaQuorumMinimo(qntDeputadosPresentes, qntTotalDeputado);
     }
 
     private boolean votacaoPlenario(StatusGovernistas status, PropostaLegislativa proposta, String presentes) {
@@ -350,11 +345,10 @@ public class ProjetoController {
 
         PropostaLegislativa proposta = this.propostas.get(codigo);
 
-
         if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()) || proposta.getSituacaoAtual().equals(SituacaoVotacao.APROVADO.toString()))
             throw new IllegalArgumentException("Erro ao votar proposta: tramitacao encerrada");
 
-        verificaQuorumMinimo(presentes, proposta.getTipoDoProjeto());
+        this.verificaQuorumMinimo(presentes, proposta);
 
         if (!(proposta.getLocalDeVotacao().equals("Plenario - 1o turno")) && !((proposta.getLocalDeVotacao().equals("Plenario - 2o turno"))))
             throw new IllegalArgumentException("Erro ao votar proposta: tramitacao em comissao");
