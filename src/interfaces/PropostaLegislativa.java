@@ -1,7 +1,8 @@
 package interfaces;
 
 import enums.SituacaoVotacao;
-import enums.TipoProjeto;
+import enums.StatusGovernistas;
+import enums.TipoDeProjetos;
 
 /**
  * Essa interface representa as possibilidades de propostas legislativas
@@ -83,4 +84,12 @@ public interface PropostaLegislativa {
      * @return String contendo a representação em String do objeto.
      */
     public String toString();
+
+    public boolean votarComissao(int qntPoliticosFavoraveis, int qntDePoliticosDaComissao, StatusGovernistas status);
+
+    public void alteraNovoLocal(String proximoLocal, PropostaLegislativa proposta);
+
+    public void verificaQuorumMinimo(int qntDeputadosPresentes, int qntTotalDeputado);
+
+    public boolean votarPlenario(int qntPoliticosFavoraveis, int qntPoliticosPresentes, StatusGovernistas status);
 }

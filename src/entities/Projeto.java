@@ -1,7 +1,8 @@
 package entities;
 
 import enums.SituacaoVotacao;
-import enums.TipoProjeto;
+import enums.StatusGovernistas;
+import enums.TipoDeProjetos;
 import interfaces.PropostaLegislativa;
 
 import java.io.Serializable;
@@ -177,6 +178,30 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
     public String getAutor() {
         return this.dniAutor;
     }
+
+    public boolean votarComissao(int qntPoliticosFavoraveis, int qntDePoliticosDaComissao, StatusGovernistas status) {
+        boolean resultado = false;
+
+        if (qntPoliticosFavoraveis >= qntDePoliticosDaComissao / 2 + 1)
+            resultado = true;
+
+        if (status == StatusGovernistas.OPOSICAO)
+            resultado = !resultado;
+
+        return resultado;
+    }
+
+    public void alteraNovoLocal(String proximoLocal, PropostaLegislativa proposta) {
+        if (proximoLocal.equals("plenario")) {
+            this.setNovoLocalDeVotacao("Plenario - 1o turno");
+        } else {
+            this.setNovoLocalDeVotacao(proximoLocal);
+        }
+    }
+
+    public abstract void verificaQuorumMinimo(int qntDeputadosPresentes, int qntTotalDeputado);
+
+    public abstract boolean votarPlenario(int qntPoliticosFavoraveis, int qntPoliticosPresentes, StatusGovernistas status);
 
     /**
      * Retorna uma representaçao em String do projeto

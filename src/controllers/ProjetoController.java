@@ -280,30 +280,19 @@ public class ProjetoController implements Serializable {
      * @param projeto projeto
      * @return true se aprovado
      */
-    private boolean votaComissao(StatusGovernista status, Comissao comissao, PropostaLegislativa projeto) {
-        boolean resultado = false;
-
+      private boolean votarComissao(StatusGovernistas status, Comissao comissao, PropostaLegislativa proposta) {
         int qntDePoliticosDaComissao = comissao.getIntegrantes().size();
 
-        if (status == StatusGovernista.LIVRE) {
-            int qntPoliticosInteressados = contaPoliticosInteressados(comissao, projeto);
+        int qntPoliticosFavoraveis;
 
-            if (qntPoliticosInteressados >= (qntDePoliticosDaComissao / 2 + 1))
-                resultado = true;
+        if (status == StatusGovernistas.LIVRE)
+            qntPoliticosFavoraveis = contaPoliticosInteressados(comissao, proposta);
+        else
+            qntPoliticosFavoraveis = contaPoliticosGovernistas(comissao);
 
-        } else {
-            int qntPoliticosGovernistas = contaPoliticosGovernistas(comissao);
-
-            if (status == StatusGovernista.GOVERNISTA) {
-                if (qntPoliticosGovernistas >= qntDePoliticosDaComissao / 2 + 1)
-                    resultado = true;
-
-            } else // StatusGovernista.OPOSICAO
-                if (qntPoliticosGovernistas < qntDePoliticosDaComissao / 2 + 1)
-                    resultado = true;
-        }
-        return resultado;
+        return proposta.votarComissao(qntPoliticosFavoraveis, qntDePoliticosDaComissao, status);
     }
+
 
     /**
      * Esse método vota o projeto na comissão e retorna o resultado
@@ -327,18 +316,22 @@ public class ProjetoController implements Serializable {
         if (proposta.getLocalDeVotacao().equals("Plenario - 1o turno") || proposta.getLocalDeVotacao().equals("Plenario - 2o turno"))
             throw new IllegalArgumentException("Erro ao votar proposta: proposta encaminhada ao plenario");
 
-        if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString())) {
+        if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()))
             throw new IllegalArgumentException("Erro ao votar proposta: tramitacao encerrada");
-        }
+
+        Comissao comissao;
 
         if (!(this.comissaoService.containsComissao(proposta.getLocalDeVotacao())))
             throw new NullPointerException("Erro ao votar proposta: " + proposta.getLocalDeVotacao() + " nao cadastrada");
+        else {
+            comissao = this.comissaoService.getComissao(proposta.getLocalDeVotacao());
+        }
 
         StatusGovernista status = StatusGovernista.valueOf(statusGovernista);
 
-        boolean resultado = this.votaComissao(status, this.comissaoService.getComissao(proposta.getLocalDeVotacao()), proposta);
+        boolean resultado = this.votarComissao(status, comissao, proposta);
 
-        alteraNovoLocal(proximoLocal, proposta);
+        proposta.alteraNovoLocal(proximoLocal, proposta);
 
         avaliaResultado(proximoLocal, proposta, resultado);
 
@@ -346,36 +339,16 @@ public class ProjetoController implements Serializable {
     }
 
     /**
-     * Esse método altera o local de votação do projeto
-     *
-     * @param proximoLocal proximo local de votação do projeto
-     * @param proposta projeto
-     */
-    private void alteraNovoLocal(String proximoLocal, PropostaLegislativa proposta) {
-        if (proximoLocal.equals("plenario")) {
-            proposta.setNovoLocalDeVotacao("Plenario - 1o turno");
-        } else {
-            proposta.setNovoLocalDeVotacao(proximoLocal);
-        }
-    }
-
-    /**
-     * Esse método verifica se existe quórum mínimo para votação do projeto
+     * Esse método verifica se existe quórum mínimo para votação do projeto.
      *
      * @param presentes politicos presentes na votação
      * @param tipoDoProjeto tipo do projeto
      */
     private void verificaQuorumMinimo(String presentes, TipoProjeto tipoDoProjeto) {
         int qntDeputadosPresentes = presentes.split(",").length;
-
         int qntTotalDeputado = pessoaService.contaDeputados();
-
-        if (tipoDoProjeto == TipoProjeto.PEC) {
-            if (qntDeputadosPresentes < qntTotalDeputado * 3 / 5 + 1)
-                throw new IllegalArgumentException("Erro ao votar proposta: quorum invalido");
-
-        } else if (qntDeputadosPresentes < qntTotalDeputado / 2 + 1)
-            throw new IllegalArgumentException("Erro ao votar proposta: quorum invalido");
+        
+        proposta.verificaQuorumMinimo(qntDeputadosPresentes, qntTotalDeputado);
     }
 
     /**
@@ -386,78 +359,22 @@ public class ProjetoController implements Serializable {
      * @param presentes presentes na votação
      * @return true se aprovado
      */
-    private boolean votacaoPlenario(StatusGovernista status, PropostaLegislativa proposta, String presentes) {
-        TipoProjeto tipoDaProposta = proposta.getTipoDoProjeto();
+    private boolean votarPlenario(StatusGovernistas status, PropostaLegislativa proposta, String presentes) {
+        TipoDeProjetos tipoDaProposta = proposta.getTipoDoProjeto();
         String[] listaDePresentes = presentes.split(",");
 
         boolean resultado = false;
 
-        if (tipoDaProposta == TipoProjeto.PL) {
-            resultado = votaMaioriaSimples(status, proposta, listaDePresentes);
-        } else if (tipoDaProposta == TipoProjeto.PLP) {
-            resultado = votaMaioriaAbsoluta(status, proposta, listaDePresentes);
-        } else {  // TipoProjeto.PEC
-            resultado = votaMaioriaQualificada(status, proposta, listaDePresentes);
-        }
+        int qntPoliticosFavoraveis;
 
-        return resultado;
-    }
-
-    /**
-     * Esse método vota o projeto com a regra da maioria simples e retorna o resultado
-     *
-     * @param status status do projeto
-     * @param proposta projeto
-     * @param listaDePresentes presentes na votação
-     * @return true se aprovado
-     */
-    private boolean votaMaioriaSimples(StatusGovernista status, PropostaLegislativa proposta, String[] listaDePresentes) {
-        boolean resultado = false;
-
-        int qntPoliticosGovernistas = contaPoliticosGovernistas(listaDePresentes);
-
-        if (status == StatusGovernista.GOVERNISTA) {
-            if (qntPoliticosGovernistas >= listaDePresentes.length / 2 + 1)
-                resultado = true;
-        } else { // StatusGovernista.OPOSICAO
-            if (listaDePresentes.length - qntPoliticosGovernistas >= listaDePresentes.length / 2 + 1)
-                resultado = true;
-        }
-
-        return resultado;
-    }
-
-    /**
-     * Esse método vota a proposta com a regra da maioria absoluta e retorna resultado
-     *
-     * @param status status do projeto
-     * @param proposta projeto
-     * @param listaDePresentes politicos presentes na votação
-     * @return true se aprovado
-     */
-    private boolean votaMaioriaAbsoluta(StatusGovernista status, PropostaLegislativa proposta, String[] listaDePresentes) {
-        boolean resultado = false;
+        if (status == StatusGovernistas.LIVRE)
+            qntPoliticosFavoraveis = contaPoliticosInteressados(listaDePresentes, proposta);
+        else
+            qntPoliticosFavoraveis = contaPoliticosGovernistas(listaDePresentes);
 
         int qntPoliticosPresentes = listaDePresentes.length;
 
-        if (status == StatusGovernista.LIVRE) {
-            int qntPoliticosInteressados = contaPoliticosInteressados(listaDePresentes, proposta);
-
-            if (qntPoliticosInteressados >= qntPoliticosPresentes / 2 + 1)
-                resultado = true;
-        } else {
-            int qntPoliticosGovernistas = contaPoliticosGovernistas(listaDePresentes);
-
-            if (status == StatusGovernista.GOVERNISTA) {
-                if (qntPoliticosGovernistas >= qntPoliticosPresentes / 2 + 1)
-                    resultado = true;
-            } else { // StatusGovernista.OPOSICAO
-                if (qntPoliticosGovernistas < qntPoliticosPresentes / 2 + 1)
-                    resultado = true;
-            }
-        }
-
-        return resultado;
+        return proposta.votarPlenario(qntPoliticosFavoraveis, qntPoliticosPresentes, status);
     }
 
     /**
@@ -478,38 +395,6 @@ public class ProjetoController implements Serializable {
                     qntPoliticosInteressados++;
         }
         return qntPoliticosInteressados;
-    }
-
-    /**
-     * Esse método vota projeto com maioria qualificada e retorna resultado.
-     *
-     * @param status status do projeto
-     * @param proposta projeto
-     * @param listaDePresentes presentes na votação
-     * @return true se aprovado
-     */
-    private boolean votaMaioriaQualificada(StatusGovernista status, PropostaLegislativa proposta, String[] listaDePresentes) {
-        boolean resultado = false;
-
-        int qntPoliticosGovernistas = contaPoliticosGovernistas(listaDePresentes);
-
-        int qntPoliticosPresentes = listaDePresentes.length;
-
-        if (status == StatusGovernista.LIVRE) {
-            int qntPoliticosInteressados = contaPoliticosInteressados(listaDePresentes, proposta);
-
-            if (qntPoliticosInteressados >= 3 * qntPoliticosPresentes / 5 + 1)
-                resultado = true;
-
-        } else if (status == StatusGovernista.GOVERNISTA) {
-            if (qntPoliticosGovernistas >= 3 * qntPoliticosPresentes / 5 + 1)
-                resultado = true;
-        } else {// StatusGovernista.OPOSICAO
-            if (qntPoliticosGovernistas < 3 * qntPoliticosPresentes / 5 + 1)
-                resultado = true;
-        }
-
-        return resultado;
     }
 
     /**
@@ -556,7 +441,6 @@ public class ProjetoController implements Serializable {
                 }
             } else if (proposta.getLocalDeVotacao().equals("Plenario - 2o turno")) {
                 if (resultado) {
-                    //proposta.alteraSituacaoDoLocalAnterior(SituacaoVotacao.APROVADO);
                     proposta.aprovaVotacao();
                     String dniAutor = proposta.getAutor();
 
@@ -582,18 +466,17 @@ public class ProjetoController implements Serializable {
 
         PropostaLegislativa proposta = this.propostas.get(codigo);
 
-
         if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()) || proposta.getSituacaoAtual().equals(SituacaoVotacao.APROVADO.toString()))
             throw new IllegalArgumentException("Erro ao votar proposta: tramitacao encerrada");
 
-        verificaQuorumMinimo(presentes, proposta.getTipoDoProjeto());
+        this.verificaQuorumMinimo(presentes, proposta);
 
         if (!(proposta.getLocalDeVotacao().equals("Plenario - 1o turno")) && !((proposta.getLocalDeVotacao().equals("Plenario - 2o turno"))))
             throw new IllegalArgumentException("Erro ao votar proposta: tramitacao em comissao");
 
         StatusGovernista status = StatusGovernista.valueOf(statusGovernista);
 
-        boolean resultado = votacaoPlenario(status, proposta, presentes);
+        boolean resultado = votarPlenario(status, proposta, presentes);
 
         avaliaResultado(proposta, resultado);
 
