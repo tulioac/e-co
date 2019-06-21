@@ -47,10 +47,7 @@ public class PLP extends Projeto implements Serializable {
         if (qntPoliticosFavoraveis >= qntPoliticosPresentes / 2 + 1)
             resultado = true;
 
-        if (status == StatusGovernista.OPOSICAO)
-            resultado = !resultado;
-
-        return resultado;
+        return (status == StatusGovernista.OPOSICAO) ? !resultado : resultado;
     }
 
     @Override
