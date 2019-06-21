@@ -47,10 +47,7 @@ public class PEC extends Projeto implements Serializable {
         if (qntPoliticosFavoraveis >= 3 * qntPoliticosPresentes / 5 + 1)
             resultado = true;
 
-        if (status == StatusGovernista.OPOSICAO)
-            resultado = !resultado;
-
-        return resultado;
+        return (status == StatusGovernista.OPOSICAO) ? !resultado : resultado;
     }
 
     @Override
