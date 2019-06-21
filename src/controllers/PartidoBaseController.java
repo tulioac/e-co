@@ -67,6 +67,7 @@ public class PartidoBaseController implements Serializable {
 
     /**
      * Retorna o conjunto de partidos de base cadastrados no sistema
+     *
      * @return Set de partidos
      */
     public Set<Partido> getPartidos() {

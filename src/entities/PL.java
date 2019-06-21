@@ -1,5 +1,6 @@
 package entities;
 
+import enums.StatusGovernista;
 import enums.TipoProjeto;
 
 import java.io.Serializable;
@@ -34,6 +35,46 @@ public class PL extends Projeto implements Serializable {
      *
      * @return string no formato Projeto de lei - codigo - dni do autor do projeto - ementa.
      */
+    @Override
+    public void verificaQuorumMinimo(int qntDeputadosPresentes, int qntTotalDeputado) {
+        if (qntDeputadosPresentes < qntTotalDeputado / 2 + 1)
+            throw new IllegalArgumentException("Erro ao votar proposta: quorum invalido");
+    }
+
+    @Override
+    public boolean votarPlenario(int qntPoliticosFavoraveis, int qntPoliticosPresentes, StatusGovernista status) {
+        boolean resultado = false;
+
+        if (status == StatusGovernista.OPOSICAO) {
+            if (qntPoliticosPresentes - qntPoliticosFavoraveis >= qntPoliticosPresentes / 2 + 1)
+                resultado = true;
+        } else {
+            if (qntPoliticosFavoraveis >= qntPoliticosPresentes / 2 + 1)
+                resultado = true;
+        }
+
+        return resultado;
+    }
+
+    @Override
+    public void avaliaResultado(String proximoLocal, boolean resultado, Pessoa autorDaProposta) {
+        if (conclusivo && !resultado)
+            this.encerraVotacao();
+
+        super.avaliaResultado(proximoLocal, resultado, autorDaProposta);
+    }
+
+    @Override
+    public void avaliaResultado(boolean resultado, Pessoa autorDaProposta) {
+        if (resultado) {
+            this.aprovaVotacao();
+
+            autorDaProposta.aumentaLeis();
+        } else {
+            this.encerraVotacao();
+        }
+    }
+
     @Override
     public String toString() {
         StringBuilder representacaoDeProjeto = new StringBuilder("Projeto de Lei - " + super.toString() + " - ");

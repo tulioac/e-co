@@ -1,6 +1,7 @@
 package entities;
 
 import enums.SituacaoVotacao;
+import enums.StatusGovernista;
 import enums.TipoProjeto;
 import interfaces.PropostaLegislativa;
 
@@ -87,6 +88,15 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      */
     public TipoProjeto getTipoDoProjeto() {
         return this.tipoDoProjeto;
+    }
+
+    /**
+     * Esse método altera o tipo do projeto
+     *
+     * @param tipoDoProjeto tipo do projeto
+     */
+    public void setTipoDoProjeto(TipoProjeto tipoDoProjeto) {
+        this.tipoDoProjeto = tipoDoProjeto;
     }
 
     /**
@@ -178,6 +188,49 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
         return this.dniAutor;
     }
 
+    public boolean votarComissao(int qntPoliticosFavoraveis, int qntDePoliticosDaComissao, StatusGovernista status) {
+        boolean resultado = false;
+
+        if (qntPoliticosFavoraveis >= qntDePoliticosDaComissao / 2 + 1)
+            resultado = true;
+
+        if (status == StatusGovernista.OPOSICAO)
+            resultado = !resultado;
+
+        return resultado;
+    }
+
+    public void alteraNovoLocal(String proximoLocal, PropostaLegislativa proposta) {
+        if (proximoLocal.equals("plenario")) {
+            this.setNovoLocalDeVotacao("Plenario - 1o turno");
+        } else {
+            this.setNovoLocalDeVotacao(proximoLocal);
+        }
+    }
+
+    public abstract void verificaQuorumMinimo(int qntDeputadosPresentes, int qntTotalDeputado);
+
+    public abstract boolean votarPlenario(int qntPoliticosFavoraveis, int qntPoliticosPresentes, StatusGovernista status);
+
+    public void avaliaResultado(String proximoLocal, boolean resultado, Pessoa autorDaProposta) {
+        if (proximoLocal.equals("-")) {
+            if (resultado) {
+                this.aprovaVotacao();
+
+                autorDaProposta.aumentaLeis();
+            } else {
+                this.encerraVotacao();
+            }
+        }
+
+        if (resultado)
+            this.alteraSituacaoDoLocalAnterior(SituacaoVotacao.APROVADO);
+        else
+            this.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
+    }
+
+    public abstract void avaliaResultado(boolean resultado, Pessoa autorDaProposta);
+
     /**
      * Retorna uma representaçao em String do projeto
      *
@@ -219,13 +272,5 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
         if (codigo == null) {
             return other.codigo == null;
         } else return codigo.equals(other.codigo);
-    }
-
-    /**
-     * Esse método altera o tipo do projeto
-     * @param tipoDoProjeto tipo do projeto
-     */
-    public void setTipoDoProjeto(TipoProjeto tipoDoProjeto) {
-        this.tipoDoProjeto = tipoDoProjeto;
     }
 }

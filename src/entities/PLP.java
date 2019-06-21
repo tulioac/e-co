@@ -1,5 +1,6 @@
 package entities;
 
+import enums.StatusGovernista;
 import enums.TipoProjeto;
 
 import java.io.Serializable;
@@ -33,6 +34,42 @@ public class PLP extends Projeto implements Serializable {
      *
      * @return string no formato Projeto de Emenda Constitucional - codigo - dni do autor do projeto - ementa - artigos - situacao.
      */
+    @Override
+    public void verificaQuorumMinimo(int qntDeputadosPresentes, int qntTotalDeputado) {
+        if (qntDeputadosPresentes < qntTotalDeputado / 2 + 1)
+            throw new IllegalArgumentException("Erro ao votar proposta: quorum invalido");
+    }
+
+    @Override
+    public boolean votarPlenario(int qntPoliticosFavoraveis, int qntPoliticosPresentes, StatusGovernista status) {
+        boolean resultado = false;
+
+        if (qntPoliticosFavoraveis >= qntPoliticosPresentes / 2 + 1)
+            resultado = true;
+
+        return (status == StatusGovernista.OPOSICAO) ? !resultado : resultado;
+    }
+
+    @Override
+    public void avaliaResultado(boolean resultado, Pessoa autorDaProposta) {
+        if (this.getLocalDeVotacao().equals("Plenario - 1o turno")) {
+            if (resultado) {
+                this.setNovoLocalDeVotacao("Plenario - 2o turno");
+            } else {
+                this.encerraVotacao();
+            }
+
+        } else if (this.getLocalDeVotacao().equals("Plenario - 2o turno")) {
+            if (resultado) {
+                this.aprovaVotacao();
+
+                autorDaProposta.aumentaLeis();
+            } else {
+                this.encerraVotacao();
+            }
+        }
+    }
+
     @Override
     public String toString() {
         return "Projeto de Lei Complementar - " + super.toString()
