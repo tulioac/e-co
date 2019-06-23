@@ -40,6 +40,13 @@ public class PEC extends Projeto implements Serializable {
             throw new IllegalArgumentException("Erro ao votar proposta: quorum invalido");
     }
 
+    /**
+     * Esse método realiza a votação do plenário.
+     *
+     * @param qntPoliticosFavoraveis a quantidade de políticos favoráveis a votação.
+     * @param qntPoliticosPresentes  a quantidade políticos presentes na votação.
+     * @param status                 o status da votação.
+     */
     @Override
     public boolean votarPlenario(int qntPoliticosFavoraveis, int qntPoliticosPresentes, StatusGovernista status) {
         boolean resultado = false;
@@ -50,6 +57,13 @@ public class PEC extends Projeto implements Serializable {
         return (status == StatusGovernista.OPOSICAO) ? !resultado : resultado;
     }
 
+    /**
+     * Esse método avalia o resultado da votação do Plenário. Sendo possível encerrá-la ou aprová-la e aumentando
+     * a quantidade de leis criadas pelo autor. Sendo necessário aprovar no 1º e 2º turno.
+     *
+     * @param resultado       o resultado da votação.
+     * @param autorDaProposta o deputado autor da proposta.
+     */
     @Override
     public void avaliaResultado(boolean resultado, Pessoa autorDaProposta) {
         if (this.getLocalDeVotacao().equals("Plenario - 1o turno")) {
@@ -70,6 +84,12 @@ public class PEC extends Projeto implements Serializable {
         }
     }
 
+    /**
+     * Retorna uma representaçao em String do projeto. No formato:
+     * Projeto de Lei Complementar - codigo - dniAutor - ementa - artigos - status de votacão atual (local de votação atual)
+     *
+     * @return string no formato codigo - dni do autor do projeto - ementa.
+     */
     @Override
     public String toString() {
         return "Projeto de Emenda Constitucional - " + super.toString()
@@ -84,5 +104,4 @@ public class PEC extends Projeto implements Serializable {
     private String getArtigos() {
         return this.artigos.replace(",", ", ");
     }
-
 }

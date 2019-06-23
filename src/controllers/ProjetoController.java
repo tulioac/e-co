@@ -316,7 +316,7 @@ public class ProjetoController implements Serializable {
 
         boolean resultado = this.votarComissao(status, comissao, proposta);
 
-        proposta.alteraNovoLocal(proximoLocal, proposta);
+        proposta.alteraNovoLocal(proximoLocal);
 
         avaliaResultado(proximoLocal, proposta, resultado);
 
@@ -439,6 +439,11 @@ public class ProjetoController implements Serializable {
         return resultado;
     }
 
+    /**
+     * Esse método exibe toda a tramitação de um projeto, mostrando os locais de votação e seus respectivos resultados.
+     *
+     * @param codigo o código do projeto que se deseja exibir a tramitação.
+     */
     public String exibirTramitacao(String codigo) {
 //        if (!(this.propostas.containsKey(codigo)))
 //            throw new NullPointerException("Erro ao exibir projeto: codigo nao cadastrado");
