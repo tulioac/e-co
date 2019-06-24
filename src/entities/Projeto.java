@@ -188,6 +188,13 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
         return this.dniAutor;
     }
 
+    /**
+     * Esse método realiza a votação de uma comissão de acordo com a quantidade de políticos a favor e a quantidade total de políticos da comissão.
+     *
+     * @param qntDePoliticosDaComissao a quantidade de políticos da comissão.
+     * @param qntPoliticosFavoraveis   a quantidade de políticos a favor.
+     * @param status                   o status da votação.
+     */
     public boolean votarComissao(int qntPoliticosFavoraveis, int qntDePoliticosDaComissao, StatusGovernista status) {
         boolean resultado = false;
 
@@ -200,7 +207,12 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
         return resultado;
     }
 
-    public void alteraNovoLocal(String proximoLocal, PropostaLegislativa proposta) {
+    /**
+     * Esse método altera o próximo local de votação da comissão. Fazendo a análise para caso o mesmo vá para o plenário e o encaminha para o primeiro turno.
+     *
+     * @param proximoLocal o próximo local de votação.
+     */
+    public void alteraNovoLocal(String proximoLocal) {
         if (proximoLocal.equals("plenario")) {
             this.setNovoLocalDeVotacao("Plenario - 1o turno");
         } else {
@@ -208,10 +220,31 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
         }
     }
 
+    /**
+     * Esse método verifica se existe o quórum mínimo para que seja possível realizar a votação. Possuindo diferentes cálculos para os tipos de projeto.
+     *
+     * @param qntDeputadosPresentes a quantidade de deputados presentes.
+     * @param qntTotalDeputado      a quantidade total de deputados cadastrados.
+     */
     public abstract void verificaQuorumMinimo(int qntDeputadosPresentes, int qntTotalDeputado);
 
+    /**
+     * Esse método realiza a votação do plenário de acordo com o tipo de proposta desejada.
+     *
+     * @param qntPoliticosFavoraveis a quantidade de políticos favoráveis a votação.
+     * @param qntPoliticosPresentes  a quantidade políticos presentes na votação.
+     * @param status                 o status da votação.
+     */
     public abstract boolean votarPlenario(int qntPoliticosFavoraveis, int qntPoliticosPresentes, StatusGovernista status);
 
+    /**
+     * Esse método avalia o resultado da votação da Comissão. Sendo possível encerrá-la ou aprová-la e aumentando
+     * a quantidade de leis criadas pelo autor.
+     *
+     * @param proximoLocal    o próximo local de votação.
+     * @param resultado       o resultado da votação.
+     * @param autorDaProposta o deputado autor da proposta.
+     */
     public void avaliaResultado(String proximoLocal, boolean resultado, Pessoa autorDaProposta) {
         if (proximoLocal.equals("-")) {
             if (resultado) {
@@ -229,10 +262,16 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
             this.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
     }
 
+    /**
+     * Esse método avalia o resultado da votação do Plenário. Designando para o respectivo tipo de proposta a avaliação.
+     *
+     * @param resultado       o resultado da votação.
+     * @param autorDaProposta o deputado autor da proposta.
+     */
     public abstract void avaliaResultado(boolean resultado, Pessoa autorDaProposta);
 
     /**
-     * Retorna uma representaçao em String do projeto
+     * Retorna uma representaçao em String do projeto.
      *
      * @return string no formato codigo - dni do autor do projeto - ementa.
      */

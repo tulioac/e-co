@@ -41,6 +41,13 @@ public class PL extends Projeto implements Serializable {
             throw new IllegalArgumentException("Erro ao votar proposta: quorum invalido");
     }
 
+    /**
+     * Esse método realiza a votação do plenário.
+     *
+     * @param qntPoliticosFavoraveis a quantidade de políticos favoráveis a votação.
+     * @param qntPoliticosPresentes  a quantidade políticos presentes na votação.
+     * @param status                 o status da votação.
+     */
     @Override
     public boolean votarPlenario(int qntPoliticosFavoraveis, int qntPoliticosPresentes, StatusGovernista status) {
         boolean resultado = false;
@@ -56,6 +63,14 @@ public class PL extends Projeto implements Serializable {
         return resultado;
     }
 
+    /**
+     * Esse método avalia o resultado da votação da Comissão. Sendo possível encerrá-la ou aprová-la e aumentando
+     * a quantidade de leis criadas pelo autor. E finalizando-a caso seja recusada e a PL seja conclusiva.
+     *
+     * @param proximoLocal    o próximo local de votação.
+     * @param resultado       o resultado da votação.
+     * @param autorDaProposta o deputado autor da proposta.
+     */
     @Override
     public void avaliaResultado(String proximoLocal, boolean resultado, Pessoa autorDaProposta) {
         if (conclusivo && !resultado)
@@ -64,6 +79,13 @@ public class PL extends Projeto implements Serializable {
         super.avaliaResultado(proximoLocal, resultado, autorDaProposta);
     }
 
+    /**
+     * Esse método avalia o resultado da votação do Plenário. Sendo possível encerrá-la ou aprová-la e aumentando
+     * a quantidade de leis criadas pelo autor.
+     *
+     * @param resultado       o resultado da votação.
+     * @param autorDaProposta o deputado autor da proposta.
+     */
     @Override
     public void avaliaResultado(boolean resultado, Pessoa autorDaProposta) {
         if (resultado) {
@@ -75,6 +97,15 @@ public class PL extends Projeto implements Serializable {
         }
     }
 
+    /**
+     * Retorna uma representaçao em String do projeto. No formato:
+     * Projeto de Lei - codigo - dniAutor - ementa - status de votacão atual (local de votação atual)
+     * ou
+     * Projeto de Lei - codigo - dniAutor - ementa - Conclusiva - status de votacão atual (local de votação atual)
+     * caso seja conclusiva.
+     *
+     * @return string no formato codigo - dni do autor do projeto - ementa.
+     */
     @Override
     public String toString() {
         StringBuilder representacaoDeProjeto = new StringBuilder("Projeto de Lei - " + super.toString() + " - ");
