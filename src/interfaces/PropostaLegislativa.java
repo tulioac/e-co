@@ -1,5 +1,7 @@
 package interfaces;
 
+import java.util.List;
+
 import entities.Pessoa;
 import enums.SituacaoVotacao;
 import enums.StatusGovernista;
@@ -22,6 +24,10 @@ public interface PropostaLegislativa {
      */
     public String exibeSituacaoAtual();
 
+    public String getCodigo();
+    
+    public List<String[]> getVotacoes();
+    
     /**
      * Retorna o ano em que foi criada a proposta legislativa.
      *

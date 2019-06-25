@@ -115,6 +115,22 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
     }
 
     /**
+     * 
+     * @return
+     */
+    public List<String[]> getVotacoes() {
+    	return this.votacoes;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public String getCodigo() {
+    	return this.codigo;
+    }
+    
+    /**
      * Retorna o ano de criaçao do projeto.
      *
      * @return inteiro que representa o ano de criacao do projeto.
