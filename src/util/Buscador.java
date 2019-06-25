@@ -22,6 +22,7 @@ public class Buscador {
 	public PropostaLegislativa buscaMaisRelacionado(String[] interessesUsuario) {
 		//- Transforma o Set de PropostasLegislativas em ArrayList
 		//- Confere os interesses em comum do usuário com o das PropostasLegislativas
+		//- Confere se o status da PropostaLegislativa é EM_TRAMITACAO
 		//- Caso haja uma proposta com mais interesses em comum, a retorna
 		//- Caso não haja nenhuma proposta com pelo menos um interesse em comum retorna ""
 		//- Caso dê empate entre mais de uma proposta em número de interesses em comum,
@@ -33,6 +34,8 @@ public class Buscador {
 		//- Se ainda for igual retorna o que tiver sido cadastrado primeiro. Vê isso através
 		//do código da proposta.
 		//- Retorna a proposta mais relacionada.
+		
+		
 	}
 	
 }

@@ -5,7 +5,7 @@ import java.util.Comparator;
 import enums.TipoProjeto;
 import interfaces.PropostaLegislativa;
 
-public class ComparatorConstitucional implements Comparator<PropostaLegislativa>  {
+public class ComparatorConstitucionalPropostaLegislativa implements Comparator<PropostaLegislativa>  {
 
 	@Override
 	public int compare(PropostaLegislativa o1, PropostaLegislativa o2) {
