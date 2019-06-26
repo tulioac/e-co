@@ -1,16 +1,16 @@
 package controllers;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import services.ComissaoService;
 import services.PartidoBaseService;
 import services.PessoaService;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 class ProjetoControllerTest {
-    private ProjetoController pc2;
+    private ProjetoController pc;
     private PessoaService ps;
     private PessoaController p;
     private ComissaoService cs;
@@ -20,79 +20,51 @@ class ProjetoControllerTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        p = new PessoaController();
-        ps = new PessoaService(p);
-        cc = new ComissaoController(ps);
-        cs = new ComissaoService(cc);
-        pbc = new PartidoBaseController();
-        pas = new PartidoBaseService(pbc);
-        pc2 = new ProjetoController(ps, cs, pas);
-        p.cadastrarPessoa("mirella", "123456789-1", "PB", "aaaaa, bbbbb", "PT");
-        p.cadastrarDeputado("123456789-1", "01011988");
-    }
-
-
-    @Test
-    void testaCadastraPLDniVazio() {
-        assertThrows(IllegalArgumentException.class,
-                () -> pc2.cadastraPL("", 2011, "Ementa PL conc", "saude,educacao basica", "http://example.com/semana_saude", true));
-        assertThrows(IllegalArgumentException.class,
-                () -> pc2.cadastraPL(" ", 2016, "Ementa PL conc", "saude", "http://example.com/semana_saude", true));
+        this.p = new PessoaController();
+        this.ps = new PessoaService(p);
+        this.cc = new ComissaoController(ps);
+        this.cs = new ComissaoService(cc);
+        this.pbc = new PartidoBaseController();
+        this.pas = new PartidoBaseService(pbc);
+        this.pc = new ProjetoController(ps, cs, pas);
+        this.p.cadastrarPessoa("mirella", "123456789-1", "PB", "aaaaa, bbbbb", "PT");
+        this.p.cadastrarDeputado("123456789-1", "01011988");
     }
 
     @Test
-    void testaCadastraPLDniNulo() {
-        assertThrows(NullPointerException.class,
-                () -> pc2.cadastraPL(null, 2011, "Ementa PL conc", "saude,educacao basica", "http://example.com/semana_saude", true));
-        assertThrows(NullPointerException.class,
-                () -> pc2.cadastraPL(null, 2016, "Ementa PL conc", "saude", "http://example.com/semana_saude", true));
+    void testaCadastrarPL() {
+        this.p.cadastrarPessoa("Tulio", "312534654-5", "PB", "saude", "POT");
+        this.p.cadastrarDeputado("312534654-5", "25061998");
+        this.pc.cadastraPL("312534654-5", 2013, "Ementa PC Conclusiva", "saude, educacao", "wwww.ementa.com.br", true);
+        assertEquals("Projeto de Lei - PL 1/2013 - 312534654-5 - Ementa PC Conclusiva - Conclusiva - EM VOTACAO (CCJC)", this.pc.exibirProjeto("PL 1/2013"));
     }
 
     @Test
-    void testaCadastraPLDniInvalido() {
-        assertThrows(IllegalArgumentException.class,
-                () -> pc2.cadastraPL("123123123123132", 2011, "Ementa PL conc", "saude,educacao basica", "http://example.com/semana_saude", true));
-        assertThrows(IllegalArgumentException.class,
-                () -> pc2.cadastraPL("1-1-1-1-1",  2011, "Ementa PL conc", "saude,educacao basica", "http://example.com/semana_saude", true));
-        assertThrows(IllegalArgumentException.class,
-                () -> pc2.cadastraPL("123123123123132",  2011, "Ementa PL conc", "saude,educacao basica", "http://example.com/semana_saude", true));
+    void testaCadastrarPLVaziaOuNula() {
+        this.p.cadastrarPessoa("Tulio", "312534654-5", "PB", "saude", "POT");
+        this.p.cadastrarDeputado("312534654-5", "25061998");
+
+        assertThrows(NullPointerException.class, () -> this.pc.cadastraPL(null, 2013, "Ementa PC Conclusiva", "saude, educacao", "wwww.ementa.com.br", true));
+        assertThrows(NullPointerException.class, () -> this.pc.cadastraPL("312534654-5", 2013, null, "saude, educacao", "wwww.ementa.com.br", true));
+        assertThrows(NullPointerException.class, () -> this.pc.cadastraPL("312534654-5", 2013, "Ementa PC Conclusiva", null, "wwww.ementa.com.br", true));
+        assertThrows(NullPointerException.class, () -> this.pc.cadastraPL("312534654-5", 2013, "Ementa PC Conclusiva", "saude, educacao", null, true));
+
+        assertThrows(IllegalArgumentException.class, () -> this.pc.cadastraPL("", 2013, "Ementa PC Conclusiva", "saude, educacao", "wwww.ementa.com.br", true));
+        assertThrows(IllegalArgumentException.class, () -> this.pc.cadastraPL("312534654-5", 1500, "Ementa PC Conclusiva", "saude, educacao", "wwww.ementa.com.br", true));
+        assertThrows(IllegalArgumentException.class, () -> this.pc.cadastraPL("312534654-5", 2013, "", "saude, educacao", "wwww.ementa.com.br", true));
+        assertThrows(IllegalArgumentException.class, () -> this.pc.cadastraPL("312534654-5", 2013, "Ementa PC Conclusiva", "", "wwww.ementa.com.br", true));
+        assertThrows(IllegalArgumentException.class, () -> this.pc.cadastraPL("312534654-5", 2013, "Ementa PC Conclusiva", "saude, educacao", "", true));
     }
 
     @Test
-    void testaCadastraPLAno() {
-        assertThrows(IllegalArgumentException.class,
-                () -> pc2.cadastraPL("123456789-1", 1987, "Ementa PL conc", "saude,educacao basica", "http://example.com/semana_saude", true));
-        assertThrows(IllegalArgumentException.class,
-                () -> pc2.cadastraPL("123456789-1", 2023, "Ementa PL conc", "saude,educacao basica", "http://example.com/semana_saude", true));
+    void testaCadastrarPLSemCadastrarPessoa() {
+        assertThrows(NullPointerException.class, () -> this.pc.cadastraPL("312534654-5", 2013, "Ementa PC Conclusiva", "saude, educacao", "wwww.ementa.com.br", true));
     }
 
     @Test
-    void testaCadastraPLEmentaVazia() {
-        assertThrows(IllegalArgumentException.class,
-                () -> pc2.cadastraPL("123456789-1", 1999, "", "saude,educacao basica", "http://example.com/semana_saude", true));
-        assertThrows(IllegalArgumentException.class,
-                () -> pc2.cadastraPL("123456789-1", 1999, " ", "saude,educacao basica", "http://example.com/semana_saude", true));
-    }
+    void testaCadastrarPLSemPessoaSerDeputado() {
+        this.p.cadastrarPessoa("Tulio", "312534654-5", "PB", "saude", "POT");
 
-    @Test
-    void testaCadastraPLEmentaNula() {
-        assertThrows(NullPointerException.class,
-                () -> pc2.cadastraPL("123456789-1", 1999, null, "saude,educacao basica", "http://example.com/semana_saude", true));
-        assertThrows(NullPointerException.class,
-                () -> pc2.cadastraPL("123456789-1", 1999, null, "saude,educacao basica", "http://example.com/semana_saude", true));
-    }
-
-    @Test
-    void testaCadastraPLInteressesVazio() {
-        assertThrows(IllegalArgumentException.class,
-                () -> pc2.cadastraPL("123456789-1", 1999, "Ementa PL conc", "", "http://example.com/semana_saude", true));
-        assertThrows(IllegalArgumentException.class,
-                () -> pc2.cadastraPL("123456789-1", 2016, "Ementa PL conc", " ", "http://example.com/semana_saude", true));
-    }
-
-    @Test
-    void testaCadastraPLInteresseNulo() {
-        assertThrows(NullPointerException.class,
-                () -> pc2.cadastraPL("123456789-1", 1999, "Ementa PL conc", null, "http://example.com/semana_saude", true));
+        assertThrows(IllegalArgumentException.class, () -> this.pc.cadastraPL("312534654-5", 2013, "Ementa PC Conclusiva", "saude, educacao", "wwww.ementa.com.br", true));
     }
 }
