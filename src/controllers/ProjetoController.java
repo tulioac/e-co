@@ -316,9 +316,9 @@ public class ProjetoController implements Serializable {
 
         boolean resultado = this.votarComissao(status, comissao, proposta);
 
-        proposta.alteraNovoLocal(proximoLocal);
-
         avaliaResultado(proximoLocal, proposta, resultado);
+
+        proposta.alteraNovoLocal(proximoLocal);
 
         return resultado;
     }

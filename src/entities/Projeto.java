@@ -264,9 +264,9 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
         }
 
         if (resultado)
-            this.alteraSituacaoDoLocalAnterior(SituacaoVotacao.APROVADO);
+            this.alteraSituacaoDoUltimoLocal(SituacaoVotacao.APROVADO);
         else
-            this.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADO);
+            this.alteraSituacaoDoUltimoLocal(SituacaoVotacao.REJEITADO);
     }
 
     /**

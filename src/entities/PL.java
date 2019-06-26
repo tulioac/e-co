@@ -1,5 +1,6 @@
 package entities;
 
+import enums.SituacaoVotacao;
 import enums.StatusGovernista;
 import enums.TipoProjeto;
 
@@ -35,7 +36,10 @@ public class PL extends Projeto implements Serializable {
      * @param proximoLocal o próximo local de votação.
      */
     public void alteraNovoLocal(String proximoLocal) {
-        if (!("-".equals(proximoLocal)) && !("".equals(proximoLocal.trim())))
+        if (conclusivo && this.getSituacaoAtual().equals(SituacaoVotacao.REJEITADO.toString()))
+            return;
+
+        if (!("-".equals(proximoLocal)) && !("".equals(proximoLocal.trim())) )
             this.setNovoLocalDeVotacao(proximoLocal);
     }
 
@@ -83,10 +87,23 @@ public class PL extends Projeto implements Serializable {
      */
     @Override
     public void avaliaResultado(String proximoLocal, boolean resultado, Pessoa autorDaProposta) {
-        super.avaliaResultado(proximoLocal, resultado, autorDaProposta);
-
         if (conclusivo && !resultado)
             this.encerraVotacao();
+
+        if (proximoLocal.equals("-")) {
+            if (resultado) {
+                this.aprovaVotacao();
+
+                autorDaProposta.aumentaLeis();
+            } else {
+                this.encerraVotacao();
+            }
+        }
+
+        if (resultado)
+            this.alteraSituacaoDoUltimoLocal(SituacaoVotacao.APROVADO);
+        else
+            this.alteraSituacaoDoUltimoLocal(SituacaoVotacao.REJEITADO);
     }
 
     /**
