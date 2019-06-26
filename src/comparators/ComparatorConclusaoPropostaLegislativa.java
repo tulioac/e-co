@@ -11,16 +11,10 @@ public class ComparatorConclusaoPropostaLegislativa implements Comparator<Propos
 		if(o1.getLocalDeVotacao().equals(o2.getLocalDeVotacao())) {
 			return 0;
 		}
-		if("Plenario - 2o turno".equals(o1.getLocalDeVotacao())) {
+		if("plenario".equals(o1.getLocalDeVotacao())) {
 			return -1;
 		}
-		if("Plenario - 2o turno".equals(o2.getLocalDeVotacao())) {
-			return 1;
-		}
-		if("Plenario - 1o turno".equals(o1.getLocalDeVotacao())) {
-			return -1;
-		}
-		if("Plenario - 1o turno".equals(o2.getLocalDeVotacao())) {
+		if("plenario".equals(o2.getLocalDeVotacao())) {
 			return 1;
 		}
 		
