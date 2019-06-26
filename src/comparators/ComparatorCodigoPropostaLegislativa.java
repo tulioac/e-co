@@ -8,7 +8,7 @@ public class ComparatorCodigoPropostaLegislativa implements Comparator<PropostaL
 
 	@Override
 	public int compare(PropostaLegislativa o1, PropostaLegislativa o2) {
-		return o2.getNumeroCodigo() - o1.getNumeroCodigo();
+		return o1.getNumeroCodigo() - o2.getNumeroCodigo();
 	}
 
 	

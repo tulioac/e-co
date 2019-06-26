@@ -1,6 +1,16 @@
 package controllers;
 
-import entities.*;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+
+import entities.Comissao;
+import entities.PEC;
+import entities.PL;
+import entities.PLP;
+import entities.Pessoa;
+import enums.EstrategiaBusca;
 import enums.SituacaoVotacao;
 import enums.StatusGovernista;
 import enums.TipoProjeto;
@@ -8,11 +18,8 @@ import interfaces.PropostaLegislativa;
 import services.ComissaoService;
 import services.PartidoBaseService;
 import services.PessoaService;
+import util.Buscador;
 import util.Validador;
-
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Essa classe usa o padrão Controller contendo métodos que operam sobre os diferentes
@@ -49,6 +56,11 @@ public class ProjetoController implements Serializable {
     private Map<String, PropostaLegislativa> propostas;
 
     /**
+     * 
+     */
+    private Buscador buscador;
+    
+    /**
      * Constrói um Controlador de Projetos que inicializa um mapa que guarda
      * as propostas legislativas do sistema.
      *
@@ -61,6 +73,7 @@ public class ProjetoController implements Serializable {
         this.comissaoService = comissaoService;
         this.partidoService = partidoService;
         this.propostas = new HashMap<>();
+        this.buscador = new Buscador(new HashSet<>(this.propostas.values()));
     }
 
     /**
@@ -453,4 +466,44 @@ public class ProjetoController implements Serializable {
 //
         return "Ainda nao implementado!";
     }
+
+	public String getPropostaRelacionada(String dni) {
+		this.buscador.setPropostas(new HashSet<PropostaLegislativa>(this.propostas.values()));
+		
+		Validador v = new Validador();
+		v.validaDni(dni, "Erro ao pegar proposta relacionada: dni invalido");
+		if(!this.pessoaService.ehPessoaCadastrada(dni)) {
+			throw new NullPointerException("Erro ao pegar proposta relacionada: pessoa nao pode ser vazia ou nula");
+		}
+		
+		String propostaMaisRelacionada = this.buscador
+				.buscaMaisRelacionado(this.pessoaService
+						.getPessoaPeloDni(dni)
+						.getInteresses()
+						.split(","));
+		
+		if(propostaMaisRelacionada == null) {
+			return "";
+		}
+		return propostaMaisRelacionada;
+	}
+
+	public void configurarEstrategiaPropostaRelacionada(String dni, String estrategia) {
+		Validador v = new Validador();
+		v.validaString(dni, "Erro ao configurar estrategia: pessoa nao pode ser vazia ou nula");
+		v.validaDni(dni, "Erro ao configurar estrategia: dni invalido");
+		v.validaString(estrategia, "Erro ao configurar estrategia: estrategia vazia");
+		
+		if("aprovacao".equals(estrategia.toLowerCase())) {
+			this.buscador.setEstrategiaAtual(EstrategiaBusca.APROVACAO);
+		}else if("conclusao".equals(estrategia.toLowerCase())) {
+			this.buscador.setEstrategiaAtual(EstrategiaBusca.CONCLUSAO);
+		}else if("constitucional".equals(estrategia.toLowerCase())) {
+			this.buscador.setEstrategiaAtual(EstrategiaBusca.CONSTITUCIONAL);
+		}else {
+			throw new IllegalArgumentException("Erro ao configurar estrategia: estrategia invalida");
+		}
+	}
+	
+	
 }

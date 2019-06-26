@@ -12,22 +12,22 @@ public class ComparatorConclusaoPropostaLegislativa implements Comparator<Propos
 			return 0;
 		}
 		if("Plenario - 2o turno".equals(o1.getLocalDeVotacao())) {
-			return 1;
+			return -1;
 		}
 		if("Plenario - 2o turno".equals(o2.getLocalDeVotacao())) {
-			return -1;
+			return 1;
 		}
 		if("Plenario - 1o turno".equals(o1.getLocalDeVotacao())) {
-			return 1;
+			return -1;
 		}
 		if("Plenario - 1o turno".equals(o2.getLocalDeVotacao())) {
-			return -1;
-		}
-		if(o1.getVotacoes().size() > o2.getVotacoes().size()) {
 			return 1;
 		}
-		if(o1.getVotacoes().size() < o2.getVotacoes().size()) {
+		if(o1.getVotacoes().size() > o2.getVotacoes().size()) {
 			return -1;
+		}
+		if(o1.getVotacoes().size() < o2.getVotacoes().size()) {
+			return 1;
 		}
 		return 0;
 	}
