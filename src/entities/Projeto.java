@@ -62,12 +62,12 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
     private String endereco;
 
     /**
-     * Armazena uma lista com os locais de votaçao por onde o projeto passou.
+     * Armazena uma lista com os locais de votação por onde o projeto passou.
      */
     private List<String[]> votacoes; // Local e Situação
 
     /**
-     * Constrói um projeto inicializando a lista com os locais de votaçao em CCJC e a situaçao em votaçao.
+     * Constrói um projeto inicializando a lista com os locais de votação em CCJC e a situaçao em votação.
      */
     public Projeto(String codigo, String dniAutor, int ano, String ementa, String interesses, String endereco) {
         super();
@@ -143,18 +143,37 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      * Retorna uma String com a situacao do projeto.
      *
      * @return String contendo a situacao atual do projeto,
-     * que pode ser em votaçao, aprovado, rejeitado ou arquivado.
+     * que pode ser em votação, aprovado, rejeitado ou arquivado.
      */
     public String getSituacaoAtual() {
         return this.votacoes.get(this.votacoes.size() - 1)[1].replace("_", " ");
     }
 
     /**
-     * Método que altera o resultado da votaçao no ultimo local onde ela foi votada.
+     * Método que altera o resultado da votação no penúltimo local onde ela foi votada.
      */
     public void alteraSituacaoDoLocalAnterior(SituacaoVotacao situacao) {
-        this.votacoes.get(this.votacoes.size() - 2)[1] = situacao.toString();
+        System.out.println(this.toString());
+        System.out.println(this.exibirTramitacao());
+        if (this.getSituacaoAtual().equals("EM VOTACAO"))
+            this.votacoes.get(this.votacoes.size() - 2)[1] = situacao.toString();
+        System.out.println(this.toString());
+        System.out.println(this.exibirTramitacao());
+        System.out.println("Alterado\n");
     }
+
+    /**
+     * Método que altera o resultado da votação no último local onde ela foi votada.
+     */
+    public void alteraSituacaoDoUltimoLocal(SituacaoVotacao situacao) {
+        System.out.println(this.toString());
+        System.out.println(this.exibirTramitacao());
+        this.votacoes.get(this.votacoes.size() - 1)[1] = situacao.toString();
+        System.out.println(this.toString());
+        System.out.println(this.exibirTramitacao());
+        System.out.println("Alterado\n");
+    }
+
 
     /**
      * Esse método retorna os interesses referentes ao projeto.
@@ -166,17 +185,19 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
     }
 
     /**
-     * Altera o estado da votaçao para arquivada.
+     * Altera o estado da votação para rejeitado.
      */
     public void encerraVotacao() {
-        this.votacoes.add(new String[]{"", SituacaoVotacao.REJEITADO.toString()});
+        if (this.getSituacaoAtual().equals("EM VOTACAO"))
+            this.alteraSituacaoDoUltimoLocal(SituacaoVotacao.REJEITADO);
     }
 
     /**
-     * Altera o estado da votaçao para aprovado.
+     * Altera o estado da votação para aprovado.
      */
     public void aprovaVotacao() {
-        this.votacoes.add(new String[]{"", SituacaoVotacao.APROVADO.toString()});
+        if (this.getSituacaoAtual().equals("EM VOTACAO"))
+            this.alteraSituacaoDoUltimoLocal(SituacaoVotacao.APROVADO);
     }
 
     /**
