@@ -83,10 +83,10 @@ public class PL extends Projeto implements Serializable {
      */
     @Override
     public void avaliaResultado(String proximoLocal, boolean resultado, Pessoa autorDaProposta) {
+        super.avaliaResultado(proximoLocal, resultado, autorDaProposta);
+
         if (conclusivo && !resultado)
             this.encerraVotacao();
-
-        super.avaliaResultado(proximoLocal, resultado, autorDaProposta);
     }
 
     /**
