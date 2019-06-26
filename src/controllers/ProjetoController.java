@@ -469,6 +469,11 @@ public class ProjetoController implements Serializable {
         return proposta.exibirTramitacao();
     }
 
+    /**
+     * 
+     * @param dni
+     * @return
+     */
 	public String getPropostaRelacionada(String dni) {
 		this.buscador.setPropostas(new HashSet<PropostaLegislativa>(this.propostas.values()));
 		
@@ -493,6 +498,11 @@ public class ProjetoController implements Serializable {
 		return propostaMaisRelacionada;
 	}
 
+	/**
+	 * 
+	 * @param dni
+	 * @param estrategia
+	 */
 	public void configurarEstrategiaPropostaRelacionada(String dni, String estrategia) {
 		Validador v = new Validador();
 		v.validaString(dni, "Erro ao configurar estrategia: pessoa nao pode ser vazia ou nula");
