@@ -189,25 +189,15 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      * Método que altera o resultado da votação no penúltimo local onde ela foi votada.
      */
     public void alteraSituacaoDoLocalAnterior(SituacaoVotacao situacao) {
-        System.out.println(this.toString());
-        System.out.println(this.exibirTramitacao());
         if (this.getSituacaoAtual().equals("EM VOTACAO"))
             this.votacoes.get(this.votacoes.size() - 2)[1] = situacao.toString();
-        System.out.println(this.toString());
-        System.out.println(this.exibirTramitacao());
-        System.out.println("Alterado\n");
     }
 
     /**
      * Método que altera o resultado da votação no último local onde ela foi votada.
      */
     public void alteraSituacaoDoUltimoLocal(SituacaoVotacao situacao) {
-        System.out.println(this.toString());
-        System.out.println(this.exibirTramitacao());
         this.votacoes.get(this.votacoes.size() - 1)[1] = situacao.toString();
-        System.out.println(this.toString());
-        System.out.println(this.exibirTramitacao());
-        System.out.println("Alterado\n");
     }
 
 

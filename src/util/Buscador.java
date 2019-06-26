@@ -43,137 +43,67 @@ public class Buscador{
 	}
 	
 	public String buscaMaisRelacionado(String[] interessesUsuario) {
-		//[ok]- Transforma o Set de PropostasLegislativas em List
-		//[ok]- Confere os interesses em comum do usuário com o das PropostasLegislativas
-		//[ok]- Confere se o status da PropostaLegislativa é EM_VOTACAO
-		//[ok]- Caso haja uma proposta com mais interesses em comum, a retorna
-		//[ok]- Caso não haja nenhuma proposta com pelo menos um interesse em comum retorna ""
-		//[ok]- Caso dê empate entre mais de uma proposta em número de interesses em comum,
-		//popula um ArrayList contendo somente essas propostas e utiliza o Collections.sort
-		//para descobrir a mais relacionada, usando o comparator definido em estrategiaAtual.
-		//[ok]- Se o primeiro lugar for único, retorna ele como mais relacionado.
-		//[ok]- Se não o for, retorna um ArrayList das propostas equivalentes.
-		//[ok]- Desse ArrayList vê a proposta mais antiga pelo ano.
-		//[ok]- Se ainda for igual retorna o que tiver sido cadastrado primeiro. Vê isso através
-		//do código da proposta.
-		//[ok]- Retorna a proposta mais relacionada.
-		
-		//List<String> interessesComuns = new ArrayList<>();
-		
-		//Filtra propostas que não possuem Situacao EM_VOTACAO
-		Set<PropostaLegislativa> propostasAll = new HashSet<>(this.propostas);
-		
+		//Filtra propostas "EM VOTACAO"
 		Set<PropostaLegislativa> propostasEmVotacao = this.propostas
 				.stream()
 				.filter(proposta -> "EM VOTACAO".equals(proposta.getSituacaoAtual()))
 				.collect(Collectors.toSet());
 		
-		System.out.println("|||||||||entrada|||||||||");
-		for(PropostaLegislativa proposta: propostasEmVotacao) {
-			System.out.println("CODIGO: " + proposta.getCodigo());
-		}
-		System.out.println("|||||||||entrada|||||||||");
-		
-		//propostasEmVotacao.stream().
-		
-		
-		
-		//Confere proposta por proposta vendo qual o maior número de interesses em comum
-//		int maiorQntdInteressesComuns = -1;
-//		for(PropostaLegislativa proposta: propostasEmVotacao) {
-//			int qntInterComuns = getQntdInteressesEmComum(proposta, interessesUsuario);
-//			if(qntInterComuns > maiorQntdInteressesComuns) {
-//				maiorQntdInteressesComuns = qntInterComuns;
-//			}
-//		}
-		//Percorre as propostas válidas novamente e remove as que possuem número de interesses
-		//em comum menor que a maior quantidade de interesses em comum encontrada no passo anterior
-//		for(PropostaLegislativa proposta: new HashSet<PropostaLegislativa>(propostasEmVotacao)) {
-//			if(getQntdInteressesEmComum(proposta, interessesUsuario) == 0) {
-//				propostasEmVotacao.remove(proposta);
-//			}
-//			if(getQntdInteressesEmComum(proposta, interessesUsuario) < maiorQntdInteressesComuns) {
-//				propostasEmVotacao.remove(proposta);
-//			}
-//		}
-		
-		//Mudando a referência para deixar o código mais legível
-		//List<PropostaLegislativa> 
+		//Filtra propostas com mais interesses em comum
 		Set<PropostaLegislativa> propostasMaisInteressantes = propostasEmVotacao
 				.stream()
-				.filter(
-						proposta -> 
-						(getQntdInteressesEmComum(proposta, interessesUsuario) == getQtdMaxInteressesComuns(interessesUsuario)
-						&& getQntdInteressesEmComum(proposta, interessesUsuario) != 0))
+				.filter(proposta -> (getQntdInteressesEmComum(proposta, interessesUsuario) == getQtdMaxInteressesComuns(interessesUsuario) 
+				&& getQntdInteressesEmComum(proposta, interessesUsuario) != 0))
 				.collect(Collectors.toSet());	
 		
 		List<PropostaLegislativa> propostasMaisRelacionadas = new ArrayList<>(propostasMaisInteressantes);
 		
-		//Se não houver nenhuma proposta relacionada retorna null, se houver uma, a retorna
+		//Se possuir uma proposta de maior interesse, a retorna
 		if(propostasMaisRelacionadas.isEmpty()) {
 			return "";
 		}else if(propostasMaisRelacionadas.size() == 1) {
 			return propostasMaisRelacionadas.get(0).getCodigo();
 		}
 		
-		//Ordena propostasMaisRelacionadas de acordo com a estratégia de busca definida
-		Collections.sort(propostasMaisRelacionadas, this.estrategiaAtual);
-		System.out.println(this.estrategiaAtual);
-		//Confere se há mais de um elegível no critério desempate da estratégia
-		propostasMaisRelacionadas = filtraPropostasElegiveisPorEstrategia(propostasMaisRelacionadas, this.estrategiaAtual);
+		//Define o modelo a se seguir na filtragem de acordo com a estratégia definida
+		PropostaLegislativa propModelo = propostasMaisRelacionadas
+				.stream()
+				.min(this.estrategiaAtual)
+				.get();
 		
+		//Filtra os itens que não seguirem a estratégia definida
+		propostasMaisRelacionadas = propostasMaisRelacionadas
+				.stream()
+				.filter
+				(proposta -> (this.estrategiaAtual.compare(proposta, propModelo) == 0))
+				.collect(Collectors.toList());
+		
+		//Se encontrar uma proposta única, a retorna
 		if(propostasMaisRelacionadas.size() == 1) {
 			return propostasMaisRelacionadas.get(0).getCodigo();
 		}
 		
-		//Ordena pelo ano das entidades restantes para saber qual é a mais antiga
-		Collections.sort(propostasMaisRelacionadas, new ComparatorIdadePropostaLegislativa());
+		//Define o menor ano a ser buscado como desempate
+		int menorAno = propostasMaisRelacionadas
+				.stream()
+				.min(new ComparatorIdadePropostaLegislativa())
+				.get()
+				.getAno();
+		//Mantem na lista somente os itens de menor idade
+		propostasMaisRelacionadas = propostasMaisRelacionadas.stream().filter(proposta -> proposta.getAno() == menorAno).collect(Collectors.toList());
 		
-		System.out.println("|||||||lista por ano|||||||||||");
-		for(int i=0;i<propostasMaisRelacionadas.size();i++) {
-			System.out.println("CODIGO: " + propostasMaisRelacionadas.get(i).getCodigo());
-		}
-		System.out.println("||||||||lista por ano||||||||||");
-		
-		//int menorAno = propostasMaisRelacionadas.get(0)
-		
-		//Confere se há mais de um elegível no critério desempate de idade
-		propostasMaisRelacionadas = filtraPropostasElegiveisPorEstrategia(propostasMaisRelacionadas, new ComparatorIdadePropostaLegislativa());
-		
-		
+		//Retorna se chegar a somente uma proposta
 		if(propostasMaisRelacionadas.size() == 1) {
-			System.out.println("SAIU AQUI Ó " + propostasMaisRelacionadas.get(0).getCodigo());
 			return propostasMaisRelacionadas.get(0).getCodigo();
 		}
-		System.out.println("|||||||lista|||||||||||");
-		for(int i=0;i<propostasMaisRelacionadas.size();i++) {
-			System.out.println("CODIGO: " + propostasMaisRelacionadas.get(i).getCodigo());
-		}
-		System.out.println("||||||||lista||||||||||");
-		//Ordena pelo código para alcançar a entidade cadastrada primeiro
-		PropostaLegislativa propostaMaisRelacionada = propostasMaisRelacionadas.stream().min(new ComparatorCodigoPropostaLegislativa()).get();
-		//Collections.sort(propostasMaisRelacionadas, new ComparatorCodigoPropostaLegislativa());
+
+		//Finalmente pega a primeira proposta a ser cadastrada no conjunto e a retorna
+		PropostaLegislativa propostaMaisRelacionada = propostasMaisRelacionadas
+				.stream()
+				.min(new ComparatorCodigoPropostaLegislativa())
+				.get();
 		
-		//Retorna a proposta com o código menor
-		//PropostaLegislativa propostaMaisRelacionada = propostasMaisRelacionadas.get(0);
-		System.out.println("||||||||final||||||||||");
-		System.out.println("CODIGO: " + propostasMaisRelacionadas.get(0).getCodigo());
-		System.out.println("|||||||||final|||||||||");
 		return propostaMaisRelacionada.getCodigo();
-	}
-	
-	private Set<PropostaLegislativa> filtraPropostasPorSituacaoVotacao(Set<PropostaLegislativa> propostas, String situacao){
-		
-		Set<PropostaLegislativa> propostasFiltradas = new HashSet<>();
-		
-		//Filtra propostas que não possuem Situacao passada
-		for(PropostaLegislativa proposta: propostas) {
-			if(proposta.getSituacaoAtual().equals(situacao)) {
-				propostasFiltradas.add(proposta);
-				//propostas.remove(proposta);
-			}
-		}
-		return propostasFiltradas;
 	}
 	
 	private int getQntdInteressesEmComum(PropostaLegislativa proposta, String[] interessesUsuario) {
@@ -192,22 +122,6 @@ public class Buscador{
 		return interessesEmComum;
 	}
 
-	private List<PropostaLegislativa> filtraPropostasElegiveisPorEstrategia(List<PropostaLegislativa> propostas, Comparator<PropostaLegislativa> comparator){
-		List<PropostaLegislativa> propostasElegiveis = new ArrayList<>();
-		for(int i=0; i < propostas.size()-1; i++) {
-			if(comparator.compare(propostas.get(i), propostas.get(i+1)) == 0) {
-				propostasElegiveis.add(propostas.get(i));
-				if(i == propostas.size()-2) {
-					propostasElegiveis.add(propostas.get(i+1));
-				}
-			}else {
-				propostasElegiveis.add(propostas.get(i));
-				break;
-			}
-		}
-		return propostasElegiveis;
-	}
-	
 	private int getQtdMaxInteressesComuns(String[] interessesUsuario) {
 		int maiorQntdInteressesComuns = 0;
 		for(PropostaLegislativa proposta: this.propostas) {
