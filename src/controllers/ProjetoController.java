@@ -314,10 +314,10 @@ public class ProjetoController implements Serializable {
 
         PropostaLegislativa proposta = this.propostas.get(codigo);
 
-        if (proposta.getLocalDeVotacao().equals("Plenario - 1o turno") || proposta.getLocalDeVotacao().equals("Plenario - 2o turno"))
+        if (proposta.getLocalDeVotacao().equals("Plenario - 1o turno") || proposta.getLocalDeVotacao().equals("Plenario - 2o turno") || proposta.getLocalDeVotacao().equals("plenario"))
             throw new IllegalArgumentException("Erro ao votar proposta: proposta encaminhada ao plenario");
 
-        if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()))
+        if (proposta.getSituacaoAtual().equals(SituacaoVotacao.REJEITADO.toString()))
             throw new IllegalArgumentException("Erro ao votar proposta: tramitacao encerrada");
 
         Comissao comissao;
@@ -438,12 +438,12 @@ public class ProjetoController implements Serializable {
 
         PropostaLegislativa proposta = this.propostas.get(codigo);
 
-        if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()) || proposta.getSituacaoAtual().equals(SituacaoVotacao.APROVADO.toString()))
+        if (proposta.getSituacaoAtual().equals(SituacaoVotacao.REJEITADO.toString()) || proposta.getSituacaoAtual().equals(SituacaoVotacao.APROVADO.toString()))
             throw new IllegalArgumentException("Erro ao votar proposta: tramitacao encerrada");
 
         this.verificaQuorumMinimo(presentes, proposta);
 
-        if (!(proposta.getLocalDeVotacao().equals("Plenario - 1o turno")) && !((proposta.getLocalDeVotacao().equals("Plenario - 2o turno"))))
+        if (!(proposta.getLocalDeVotacao().equals("Plenario - 1o turno")) && !((proposta.getLocalDeVotacao().equals("Plenario - 2o turno"))) && !((proposta.getLocalDeVotacao().equals("plenario"))))
             throw new IllegalArgumentException("Erro ao votar proposta: tramitacao em comissao");
 
         StatusGovernista status = StatusGovernista.valueOf(statusGovernista);
@@ -461,10 +461,12 @@ public class ProjetoController implements Serializable {
      * @param codigo o código do projeto que se deseja exibir a tramitação.
      */
     public String exibirTramitacao(String codigo) {
-//        if (!(this.propostas.containsKey(codigo)))
-//            throw new NullPointerException("Erro ao exibir projeto: codigo nao cadastrado");
-//
-        return "Ainda nao implementado!";
+        if (!(this.propostas.containsKey(codigo)))
+            throw new NullPointerException("Erro ao exibir tramitacao: projeto inexistente");
+
+        PropostaLegislativa proposta = this.propostas.get(codigo);
+
+        return proposta.exibirTramitacao();
     }
 
 	public String getPropostaRelacionada(String dni) {

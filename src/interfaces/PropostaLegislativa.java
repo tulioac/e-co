@@ -165,4 +165,9 @@ public interface PropostaLegislativa {
 	 * @return
 	 */
 	public int getNumeroCodigo();
+	
+	/**
+     * Esse método exibe toda a tramitação de um projeto.
+     */
+    public String exibirTramitacao();
 }

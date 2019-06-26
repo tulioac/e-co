@@ -29,6 +29,19 @@ public class PLP extends Projeto implements Serializable {
     }
 
     /**
+     * Esse método altera o próximo local de votação da comissão. Fazendo a análise para caso o mesmo vá para o plenário e o encaminha para o primeiro turno.
+     *
+     * @param proximoLocal o próximo local de votação.
+     */
+    public void alteraNovoLocal(String proximoLocal) {
+        if (proximoLocal.equals("plenario")) {
+            this.setNovoLocalDeVotacao("Plenario - 1o turno");
+        } else {
+            this.setNovoLocalDeVotacao(proximoLocal);
+        }
+    }
+
+    /**
      * Retorna uma representaçao em String da PLP sobrescrevendo o método toString que foi criado na
      * classe Projeto e exibindo os artigos que foram referenciados nessa PLP.
      *
@@ -92,8 +105,14 @@ public class PLP extends Projeto implements Serializable {
      */
     @Override
     public String toString() {
-        return "Projeto de Lei Complementar - " + super.toString()
-                + " - " + this.getArtigos() + " - " + this.exibeSituacaoAtual();
+        StringBuilder representacaoDeProjeto = new StringBuilder("Projeto de Lei Complementar - " + super.toString() + " - " + this.getArtigos() + " - ");
+
+        if (this.exibeSituacaoAtual().equals("REJEITADO"))
+            representacaoDeProjeto.append("ARQUIVADO");
+        else
+            representacaoDeProjeto.append(this.exibeSituacaoAtual());
+
+        return representacaoDeProjeto.toString();
     }
 
     /**
