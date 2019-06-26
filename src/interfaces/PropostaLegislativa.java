@@ -147,4 +147,9 @@ public interface PropostaLegislativa {
      * @param autorDaProposta o deputado autor da proposta.
      */
     public void avaliaResultado(boolean resultado, Pessoa autorDaProposta);
+
+    /**
+     * Esse método exibe toda a tramitação de um projeto.
+     */
+    public String exibirTramitacao();
 }

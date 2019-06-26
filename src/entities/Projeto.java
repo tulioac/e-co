@@ -105,8 +105,8 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      * @return string no formato Situaçao do projeto seguida pelo local onde o projeto foi votado.
      */
     public String exibeSituacaoAtual() {
-        if (this.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()))
-            return "ARQUIVADO";
+        if (this.getSituacaoAtual().equals(SituacaoVotacao.REJEITADO.toString()))
+            return "REJEITADO";
 
         else if (this.getSituacaoAtual().equals(SituacaoVotacao.APROVADO.toString()))
             return "APROVADO";
@@ -169,7 +169,7 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      * Altera o estado da votaçao para arquivada.
      */
     public void encerraVotacao() {
-        this.votacoes.add(new String[]{"", SituacaoVotacao.ARQUIVADO.toString()});
+        this.votacoes.add(new String[]{"", SituacaoVotacao.REJEITADO.toString()});
     }
 
     /**
@@ -212,13 +212,7 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      *
      * @param proximoLocal o próximo local de votação.
      */
-    public void alteraNovoLocal(String proximoLocal) {
-        if (proximoLocal.equals("plenario")) {
-            this.setNovoLocalDeVotacao("Plenario - 1o turno");
-        } else {
-            this.setNovoLocalDeVotacao(proximoLocal);
-        }
-    }
+    public abstract void alteraNovoLocal(String proximoLocal);
 
     /**
      * Esse método verifica se existe o quórum mínimo para que seja possível realizar a votação. Possuindo diferentes cálculos para os tipos de projeto.
@@ -259,7 +253,7 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
         if (resultado)
             this.alteraSituacaoDoLocalAnterior(SituacaoVotacao.APROVADO);
         else
-            this.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
+            this.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADO);
     }
 
     /**
@@ -269,6 +263,24 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      * @param autorDaProposta o deputado autor da proposta.
      */
     public abstract void avaliaResultado(boolean resultado, Pessoa autorDaProposta);
+
+    /**
+     * Esse método exibe a tramitação de um projeto.
+     */
+    public String exibirTramitacao() {
+        String saida = "";
+
+        for (String[] tramite : this.votacoes) {
+            saida += tramite[1].replace("_", " ") + " (";
+            if (tramite[0].equals("plenario"))
+                saida += "Plenario";
+            else
+                saida += tramite[0];
+            saida += "), ";
+        }
+
+        return saida.trim().substring(0, saida.length() - 2);
+    }
 
     /**
      * Retorna uma representaçao em String do projeto.

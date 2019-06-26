@@ -51,7 +51,8 @@ public class EcoFacade {
 //                "acceptance_tests/use_case_4.txt",
 //                "acceptance_tests/use_case_5.txt",
 //                "acceptance_tests/use_case_6.txt",
-                "acceptance_tests/use_case_7.txt"
+                "acceptance_tests/use_case_7.txt",
+                "acceptance_tests/use_case_8.txt"
         };
 
         EasyAccept.main(args);

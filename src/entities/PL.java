@@ -30,6 +30,16 @@ public class PL extends Projeto implements Serializable {
     }
 
     /**
+     * Esse método altera o próximo local de votação da comissão. Fazendo a análise para caso o mesmo vá para o plenário e o encaminha para o primeiro turno.
+     *
+     * @param proximoLocal o próximo local de votação.
+     */
+    public void alteraNovoLocal(String proximoLocal) {
+        if (!("-".equals(proximoLocal)) && !("".equals(proximoLocal.trim())))
+            this.setNovoLocalDeVotacao(proximoLocal);
+    }
+
+    /**
      * Retorna uma representaçao em String da PL sobreescrevendo o método
      * que foi criado na classe Projeto exibindo se o a PL foi conclusiva ou nao.
      *
@@ -112,7 +122,11 @@ public class PL extends Projeto implements Serializable {
 
         if (conclusivo)
             representacaoDeProjeto.append("Conclusiva - ");
-        representacaoDeProjeto.append(this.exibeSituacaoAtual());
+
+        if (this.exibeSituacaoAtual().equals("REJEITADO"))
+            representacaoDeProjeto.append("ARQUIVADO");
+        else
+            representacaoDeProjeto.append(this.exibeSituacaoAtual());
 
         return representacaoDeProjeto.toString();
     }

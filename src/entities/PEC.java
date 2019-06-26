@@ -29,6 +29,19 @@ public class PEC extends Projeto implements Serializable {
     }
 
     /**
+     * Esse método altera o próximo local de votação da comissão. Fazendo a análise para caso o mesmo vá para o plenário e o encaminha para o primeiro turno.
+     *
+     * @param proximoLocal o próximo local de votação.
+     */
+    public void alteraNovoLocal(String proximoLocal) {
+        if (proximoLocal.equals("plenario")) {
+            this.setNovoLocalDeVotacao("Plenario - 1o turno");
+        } else {
+            this.setNovoLocalDeVotacao(proximoLocal);
+        }
+    }
+
+    /**
      * Retorna uma representaçao em String da PEC sobreescrevendo o método toString que foi criado na
      * classe Projeto e exibindo os artigos que foram referenciados nessa PEC.
      *
@@ -92,8 +105,14 @@ public class PEC extends Projeto implements Serializable {
      */
     @Override
     public String toString() {
-        return "Projeto de Emenda Constitucional - " + super.toString()
-                + " - " + this.getArtigos() + " - " + this.exibeSituacaoAtual();
+        StringBuilder representacaoDeProjeto = new StringBuilder("Projeto de Emenda Constitucional - " + super.toString() + " - " + this.getArtigos() + " - ");
+
+        if (this.exibeSituacaoAtual().equals("REJEITADO"))
+            representacaoDeProjeto.append("ARQUIVADO");
+        else
+            representacaoDeProjeto.append(this.exibeSituacaoAtual());
+
+        return representacaoDeProjeto.toString();
     }
 
     /**
