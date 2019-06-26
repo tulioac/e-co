@@ -12,7 +12,7 @@ public class ComparatorAprovacaoPropostaLegislativa implements Comparator<Propos
 		int votacoesAprovadas1 = o1.getVotacoes().size()-1;
 		int votacoesAprovadas2 = o2.getVotacoes().size()-1;
 		
-		return votacoesAprovadas1 - votacoesAprovadas2;
+		return votacoesAprovadas2 - votacoesAprovadas1;
 	}
 
 	

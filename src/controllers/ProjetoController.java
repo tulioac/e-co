@@ -471,6 +471,9 @@ public class ProjetoController implements Serializable {
 		this.buscador.setPropostas(new HashSet<PropostaLegislativa>(this.propostas.values()));
 		
 		Validador v = new Validador();
+		if("".trim().equals(dni)) {
+			throw new IllegalArgumentException("Erro ao pegar proposta relacionada: pessoa nao pode ser vazia ou nula");
+		}
 		v.validaDni(dni, "Erro ao pegar proposta relacionada: dni invalido");
 		if(!this.pessoaService.ehPessoaCadastrada(dni)) {
 			throw new NullPointerException("Erro ao pegar proposta relacionada: pessoa nao pode ser vazia ou nula");
