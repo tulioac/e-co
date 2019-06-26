@@ -39,7 +39,7 @@ public class PL extends Projeto implements Serializable {
         if (conclusivo && this.getSituacaoAtual().equals(SituacaoVotacao.REJEITADO.toString()))
             return;
 
-        if (!("-".equals(proximoLocal)) && !("".equals(proximoLocal.trim())) )
+        if (!("-".equals(proximoLocal)) && !("".equals(proximoLocal.trim())))
             this.setNovoLocalDeVotacao(proximoLocal);
     }
 
@@ -90,20 +90,7 @@ public class PL extends Projeto implements Serializable {
         if (conclusivo && !resultado)
             this.encerraVotacao();
 
-        if (proximoLocal.equals("-")) {
-            if (resultado) {
-                this.aprovaVotacao();
-
-                autorDaProposta.aumentaLeis();
-            } else {
-                this.encerraVotacao();
-            }
-        }
-
-        if (resultado)
-            this.alteraSituacaoDoUltimoLocal(SituacaoVotacao.APROVADO);
-        else
-            this.alteraSituacaoDoUltimoLocal(SituacaoVotacao.REJEITADO);
+        super.avaliaResultado(proximoLocal, resultado, autorDaProposta);
     }
 
     /**
