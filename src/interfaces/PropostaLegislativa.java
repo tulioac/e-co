@@ -1,5 +1,7 @@
 package interfaces;
 
+import java.util.List;
+
 import entities.Pessoa;
 import enums.SituacaoVotacao;
 import enums.StatusGovernista;
@@ -22,6 +24,10 @@ public interface PropostaLegislativa {
      */
     public String exibeSituacaoAtual();
 
+    public String getCodigo();
+    
+    public List<String[]> getVotacoes();
+    
     /**
      * Retorna o ano em que foi criada a proposta legislativa.
      *
@@ -147,4 +153,21 @@ public interface PropostaLegislativa {
      * @param autorDaProposta o deputado autor da proposta.
      */
     public void avaliaResultado(boolean resultado, Pessoa autorDaProposta);
+
+    /**
+     * 
+     * @param i
+     */
+	public void setNumeroCodigo(int i);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getNumeroCodigo();
+	
+	/**
+     * Esse método exibe toda a tramitação de um projeto.
+     */
+    public String exibirTramitacao();
 }

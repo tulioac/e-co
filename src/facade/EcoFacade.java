@@ -51,7 +51,10 @@ public class EcoFacade {
 //                "acceptance_tests/use_case_4.txt",
 //                "acceptance_tests/use_case_5.txt",
 //                "acceptance_tests/use_case_6.txt",
-                "acceptance_tests/use_case_7.txt"
+                "acceptance_tests/use_case_7.txt",
+                "acceptance_tests/use_case_8.txt",
+                "acceptance_tests/use_case_9.txt"
+
         };
 
         EasyAccept.main(args);
@@ -274,5 +277,36 @@ public class EcoFacade {
      */
     public String exibirTramitacao(String codigo) {
         return this.projetoController.exibirTramitacao(codigo);
+    }
+    
+    /**
+     * Retorna o código da proposta mais relacionada a pessoa do dni, com base
+     * no número de interesses em comum com a proposta. Caso não haja interesses
+     * em comum, uma String vazia é retornada. Caso haja mais de uma proposta com
+     * o mesmo número de interesses em comum, vale a estratégia de desempate definida
+     * pelo usuário no sistema. Os últimos critérios de desempate são: ano de cadastro
+     * da proposta e código da proposta, por último, se o ano também for igual.Lança
+     * IllegalArgumentException e NullPointerException para entradas inválidas ou nulas,
+     * respectivamente.
+     * 
+     * @param dni dni da pessoa a qual se quer buscar a proposta mais relacionada
+     * @return código da proposta mais relacionada, String vazia se não houver nenhuma
+     */
+    public String pegarPropostaRelacionada(String dni) {
+    	return this.projetoController.getPropostaRelacionada(dni);
+    }
+    
+    /**
+     * Redefine a estratégia de desempate da busca por uma proposta mais relacionada, com
+     * base no dni da pessoa e na estratégia nova a ser sobreposta a antiga. Essa estratégia
+     * só pode ser dos tipos: "APROVACAO", "CONCLUSAO" e "CONSTITUCIONAL". Lança
+     * IllegalArgumentException e NullPointerException para entradas inválidas ou nulas,
+     * respectivamente.
+     * 
+     * @param dni dni da pessoa que se quer modificar a estratégia
+     * @param estrategia nova estratégia a ser redefinida
+     */
+    public void configurarEstrategiaPropostaRelacionada(String dni, String estrategia) {
+    	this.projetoController.configurarEstrategiaPropostaRelacionada(dni, estrategia);
     }
 }

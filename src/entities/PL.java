@@ -1,5 +1,6 @@
 package entities;
 
+import enums.SituacaoVotacao;
 import enums.StatusGovernista;
 import enums.TipoProjeto;
 
@@ -27,6 +28,19 @@ public class PL extends Projeto implements Serializable {
         super(codigo, dniAutor, ano, ementa, interesses, endereco);
         this.conclusivo = conclusivo;
         this.setTipoDoProjeto(TipoProjeto.PL);
+    }
+
+    /**
+     * Esse método altera o próximo local de votação da comissão. Fazendo a análise para caso o mesmo vá para o plenário e o encaminha para o primeiro turno.
+     *
+     * @param proximoLocal o próximo local de votação.
+     */
+    public void alteraNovoLocal(String proximoLocal) {
+        if (conclusivo && this.getSituacaoAtual().equals(SituacaoVotacao.REJEITADO.toString()))
+            return;
+
+        if (!("-".equals(proximoLocal)) && !("".equals(proximoLocal.trim())))
+            this.setNovoLocalDeVotacao(proximoLocal);
     }
 
     /**
@@ -112,7 +126,11 @@ public class PL extends Projeto implements Serializable {
 
         if (conclusivo)
             representacaoDeProjeto.append("Conclusiva - ");
-        representacaoDeProjeto.append(this.exibeSituacaoAtual());
+
+        if (this.exibeSituacaoAtual().equals("REJEITADO"))
+            representacaoDeProjeto.append("ARQUIVADO");
+        else
+            representacaoDeProjeto.append(this.exibeSituacaoAtual());
 
         return representacaoDeProjeto.toString();
     }

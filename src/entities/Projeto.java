@@ -35,6 +35,11 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      * de projetos do mesmo tipo naquele ano seguida por este ano.
      */
     private String codigo;
+    
+    /**
+     * 
+     */
+    private int numeroCodigo;
 
     /**
      * Armazena a Dni do autor do projeto.
@@ -62,12 +67,12 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
     private String endereco;
 
     /**
-     * Armazena uma lista com os locais de votaçao por onde o projeto passou.
+     * Armazena uma lista com os locais de votação por onde o projeto passou.
      */
     private List<String[]> votacoes; // Local e Situação
 
     /**
-     * Constrói um projeto inicializando a lista com os locais de votaçao em CCJC e a situaçao em votaçao.
+     * Constrói um projeto inicializando a lista com os locais de votação em CCJC e a situaçao em votação.
      */
     public Projeto(String codigo, String dniAutor, int ano, String ementa, String interesses, String endereco) {
         super();
@@ -105,8 +110,8 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      * @return string no formato Situaçao do projeto seguida pelo local onde o projeto foi votado.
      */
     public String exibeSituacaoAtual() {
-        if (this.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()))
-            return "ARQUIVADO";
+        if (this.getSituacaoAtual().equals(SituacaoVotacao.REJEITADO.toString()))
+            return "REJEITADO";
 
         else if (this.getSituacaoAtual().equals(SituacaoVotacao.APROVADO.toString()))
             return "APROVADO";
@@ -114,6 +119,37 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
         return this.getSituacaoAtual() + " (" + this.getLocalDeVotacao() + ")";
     }
 
+    /**
+     * 
+     * @return
+     */
+    public List<String[]> getVotacoes() {
+    	return this.votacoes;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public String getCodigo() {
+    	return this.codigo;
+    }
+    
+    /**
+     * 
+     */
+    public void setNumeroCodigo(int numeroCodigo) {
+    	this.numeroCodigo = numeroCodigo;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public int getNumeroCodigo() {
+    	return this.numeroCodigo;
+    }
+    
     /**
      * Retorna o ano de criaçao do projeto.
      *
@@ -143,18 +179,28 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      * Retorna uma String com a situacao do projeto.
      *
      * @return String contendo a situacao atual do projeto,
-     * que pode ser em votaçao, aprovado, rejeitado ou arquivado.
+     * que pode ser em votação, aprovado, rejeitado ou arquivado.
      */
     public String getSituacaoAtual() {
         return this.votacoes.get(this.votacoes.size() - 1)[1].replace("_", " ");
     }
 
     /**
-     * Método que altera o resultado da votaçao no ultimo local onde ela foi votada.
+     * Método que altera o resultado da votação no penúltimo local onde ela foi votada.
      */
     public void alteraSituacaoDoLocalAnterior(SituacaoVotacao situacao) {
-        this.votacoes.get(this.votacoes.size() - 2)[1] = situacao.toString();
+
+        if (this.getSituacaoAtual().equals("EM VOTACAO"))
+            this.votacoes.get(this.votacoes.size() - 2)[1] = situacao.toString();
     }
+
+    /**
+     * Método que altera o resultado da votação no último local onde ela foi votada.
+     */
+    public void alteraSituacaoDoUltimoLocal(SituacaoVotacao situacao) {
+        this.votacoes.get(this.votacoes.size() - 1)[1] = situacao.toString();
+    }
+
 
     /**
      * Esse método retorna os interesses referentes ao projeto.
@@ -166,17 +212,19 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
     }
 
     /**
-     * Altera o estado da votaçao para arquivada.
+     * Altera o estado da votação para rejeitado.
      */
     public void encerraVotacao() {
-        this.votacoes.add(new String[]{"", SituacaoVotacao.ARQUIVADO.toString()});
+        if (this.getSituacaoAtual().equals("EM VOTACAO"))
+            this.alteraSituacaoDoUltimoLocal(SituacaoVotacao.REJEITADO);
     }
 
     /**
-     * Altera o estado da votaçao para aprovado.
+     * Altera o estado da votação para aprovado.
      */
     public void aprovaVotacao() {
-        this.votacoes.add(new String[]{"", SituacaoVotacao.APROVADO.toString()});
+        if (this.getSituacaoAtual().equals("EM VOTACAO"))
+            this.alteraSituacaoDoUltimoLocal(SituacaoVotacao.APROVADO);
     }
 
     /**
@@ -212,13 +260,7 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      *
      * @param proximoLocal o próximo local de votação.
      */
-    public void alteraNovoLocal(String proximoLocal) {
-        if (proximoLocal.equals("plenario")) {
-            this.setNovoLocalDeVotacao("Plenario - 1o turno");
-        } else {
-            this.setNovoLocalDeVotacao(proximoLocal);
-        }
-    }
+    public abstract void alteraNovoLocal(String proximoLocal);
 
     /**
      * Esse método verifica se existe o quórum mínimo para que seja possível realizar a votação. Possuindo diferentes cálculos para os tipos de projeto.
@@ -257,9 +299,9 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
         }
 
         if (resultado)
-            this.alteraSituacaoDoLocalAnterior(SituacaoVotacao.APROVADO);
+            this.alteraSituacaoDoUltimoLocal(SituacaoVotacao.APROVADO);
         else
-            this.alteraSituacaoDoLocalAnterior(SituacaoVotacao.REJEITADA);
+            this.alteraSituacaoDoUltimoLocal(SituacaoVotacao.REJEITADO);
     }
 
     /**
@@ -269,6 +311,24 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      * @param autorDaProposta o deputado autor da proposta.
      */
     public abstract void avaliaResultado(boolean resultado, Pessoa autorDaProposta);
+
+    /**
+     * Esse método exibe a tramitação de um projeto.
+     */
+    public String exibirTramitacao() {
+        String saida = "";
+
+        for (String[] tramite : this.votacoes) {
+            saida += tramite[1].replace("_", " ") + " (";
+            if (tramite[0].equals("plenario"))
+                saida += "Plenario";
+            else
+                saida += tramite[0];
+            saida += "), ";
+        }
+
+        return saida.trim().substring(0, saida.length() - 2);
+    }
 
     /**
      * Retorna uma representaçao em String do projeto.
