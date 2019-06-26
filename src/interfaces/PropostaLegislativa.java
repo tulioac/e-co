@@ -153,4 +153,16 @@ public interface PropostaLegislativa {
      * @param autorDaProposta o deputado autor da proposta.
      */
     public void avaliaResultado(boolean resultado, Pessoa autorDaProposta);
+
+    /**
+     * 
+     * @param i
+     */
+	public void setNumeroCodigo(int i);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getNumeroCodigo();
 }

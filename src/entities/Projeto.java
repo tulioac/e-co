@@ -35,6 +35,11 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      * de projetos do mesmo tipo naquele ano seguida por este ano.
      */
     private String codigo;
+    
+    /**
+     * 
+     */
+    private int numeroCodigo;
 
     /**
      * Armazena a Dni do autor do projeto.
@@ -128,6 +133,21 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      */
     public String getCodigo() {
     	return this.codigo;
+    }
+    
+    /**
+     * 
+     */
+    public void setNumeroCodigo(int numeroCodigo) {
+    	this.numeroCodigo = numeroCodigo;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public int getNumeroCodigo() {
+    	return this.numeroCodigo;
     }
     
     /**

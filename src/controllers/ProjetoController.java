@@ -147,7 +147,8 @@ public class ProjetoController implements Serializable {
 
         String codigo = criaCodigo(TipoProjeto.PL, ano);
         this.propostas.put(codigo, new PL(codigo, dni, ano, ementa, interesses, url, conclusivo));
-
+        this.propostas.get(codigo).setNumeroCodigo(contaProjetoEmAno(TipoProjeto.PL, ano) + 1);
+        
         return codigo;
     }
 
@@ -168,7 +169,8 @@ public class ProjetoController implements Serializable {
 
         String codigo = criaCodigo(TipoProjeto.PLP, ano);
         this.propostas.put(codigo, new PLP(codigo, dni, ano, ementa, interesses, url, artigos));
-
+        this.propostas.get(codigo).setNumeroCodigo(contaProjetoEmAno(TipoProjeto.PLP, ano) + 1);
+        
         return codigo;
     }
 
@@ -189,7 +191,8 @@ public class ProjetoController implements Serializable {
 
         String codigo = criaCodigo(TipoProjeto.PEC, ano);
         this.propostas.put(codigo, new PEC(codigo, dni, ano, ementa, interesses, url, artigos));
-
+        this.propostas.get(codigo).setNumeroCodigo(contaProjetoEmAno(TipoProjeto.PEC, ano) + 1);
+        
         return codigo;
     }
 

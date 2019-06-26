@@ -1,24 +1,38 @@
 package util;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
+import comparators.ComparatorAprovacaoPropostaLegislativa;
+import comparators.ComparatorConclusaoPropostaLegislativa;
+import comparators.ComparatorConstitucionalPropostaLegislativa;
+import comparators.ComparatorIdadePropostaLegislativa;
 import enums.EstrategiaBusca;
 import interfaces.PropostaLegislativa;
 
 public class Buscador {
 
-	private EstrategiaBusca estrategiaAtual;
+	private Comparator<PropostaLegislativa> estrategiaAtual;
 	private Set<PropostaLegislativa> propostas;
 	
 	public Buscador(Set<PropostaLegislativa> propostas) {
-		this.estrategiaAtual = EstrategiaBusca.CONSTITUCIONAL;
+		this.estrategiaAtual = new ComparatorConstitucionalPropostaLegislativa();
 		this.propostas = propostas;
 	}
 	
 	public void setEstrategiaAtual(EstrategiaBusca estrategiaAtual) {
-		this.estrategiaAtual = estrategiaAtual;
+		if(EstrategiaBusca.APROVACAO.equals(estrategiaAtual)) {
+			this.estrategiaAtual = new ComparatorAprovacaoPropostaLegislativa();
+		}
+		if(EstrategiaBusca.CONCLUSAO.equals(estrategiaAtual)) {
+			this.estrategiaAtual = new ComparatorConclusaoPropostaLegislativa();
+		}
+		if(EstrategiaBusca.CONSTITUCIONAL.equals(estrategiaAtual)) {
+			this.estrategiaAtual = new ComparatorConstitucionalPropostaLegislativa();
+		}
 	}
 	
 	public PropostaLegislativa buscaMaisRelacionado(String[] interessesUsuario) {
@@ -27,12 +41,12 @@ public class Buscador {
 		//[ok]- Confere se o status da PropostaLegislativa é EM_VOTACAO
 		//[ok]- Caso haja uma proposta com mais interesses em comum, a retorna
 		//[ok]- Caso não haja nenhuma proposta com pelo menos um interesse em comum retorna ""
-		//[]- Caso dê empate entre mais de uma proposta em número de interesses em comum,
+		//[ok]- Caso dê empate entre mais de uma proposta em número de interesses em comum,
 		//popula um ArrayList contendo somente essas propostas e utiliza o Collections.sort
 		//para descobrir a mais relacionada, usando o comparator definido em estrategiaAtual.
-		//[]- Se o primeiro lugar for único, retorna ele como mais relacionado.
-		//[]- Se não o for, retorna um ArrayList das propostas equivalentes.
-		//[]- Desse ArrayList vê a proposta mais antiga pelo ano.
+		//[ok]- Se o primeiro lugar for único, retorna ele como mais relacionado.
+		//[ok]- Se não o for, retorna um ArrayList das propostas equivalentes.
+		//[ok]- Desse ArrayList vê a proposta mais antiga pelo ano.
 		//[]- Se ainda for igual retorna o que tiver sido cadastrado primeiro. Vê isso através
 		//do código da proposta.
 		//[]- Retorna a proposta mais relacionada.
@@ -54,6 +68,9 @@ public class Buscador {
 		//Percorre as propostas válidas novamente e remove as que possuem número de interesses
 		//em comum menor que a maior quantidade de interesses em comum encontrada no passo anterior
 		for(PropostaLegislativa proposta: propostasEmVotacao) {
+			if(getQntdInteressesEmComum(proposta, interessesUsuario) == 0) {
+				propostasEmVotacao.remove(proposta);
+			}
 			if(maiorQntdInteressesComuns > getQntdInteressesEmComum(proposta, interessesUsuario)) {
 				propostasEmVotacao.remove(proposta);
 			}
@@ -62,13 +79,39 @@ public class Buscador {
 		//Mudando a referência para deixar o código mais legível
 		List<PropostaLegislativa> propostasMaisRelacionadas = propostasEmVotacao;
 		
+		//Se não houver nenhuma proposta relacionada retorna null, se houver uma, a retorna
 		if(propostasMaisRelacionadas.size() == 0) {
 			return null;
 		}else if(propostasMaisRelacionadas.size() == 1) {
 			return propostasMaisRelacionadas.get(0);
 		}
 		
+		//Ordena propostasMaisRelacionadas de acordo com a estratégia de busca definida
+		Collections.sort(propostasMaisRelacionadas, this.estrategiaAtual);
 		
+		//Confere se há mais de um elegível no critério desempate da estratégia
+		propostasMaisRelacionadas = filtraPropostasElegiveisPorEstrategia(propostasMaisRelacionadas, this.estrategiaAtual);
+		
+		if(propostasMaisRelacionadas.size() == 1) {
+			return propostasMaisRelacionadas.get(0);
+		}
+		
+		//Ordena pelo ano das entidades restantes para saber qual é a mais antiga
+		Collections.sort(propostasMaisRelacionadas, new ComparatorIdadePropostaLegislativa());
+		
+		//Confere se há mais de um elegível no critério desempate de idade
+		propostasMaisRelacionadas = filtraPropostasElegiveisPorEstrategia(propostasMaisRelacionadas, new ComparatorIdadePropostaLegislativa());
+		
+		if(propostasMaisRelacionadas.size() == 1) {
+			return propostasMaisRelacionadas.get(0);
+		}
+		
+		//Ordena pelo código para alcançar a entidade cadastrada primeiro
+		Collections.sort(propostasMaisRelacionadas, new ComparatorIdadePropostaLegislativa());
+		
+		//Retorna a proposta com o código menor
+		PropostaLegislativa propostaMaisRelacionada = propostasMaisRelacionadas.get(0);
+		return propostaMaisRelacionada;
 	}
 	
 	private List<PropostaLegislativa> filtraPropostasPorSituacaoVotacao(Set<PropostaLegislativa> propostas, String situacao){
@@ -97,5 +140,17 @@ public class Buscador {
 		}
 		return interessesEmComum;
 	}
-	
+
+	private List<PropostaLegislativa> filtraPropostasElegiveisPorEstrategia(List<PropostaLegislativa> propostas, Comparator<PropostaLegislativa> comparator){
+		List<PropostaLegislativa> propostasElegiveis = new ArrayList<>();
+		for(int i=0; i < propostas.size()-1; i++) {
+			if(comparator.compare(propostas.get(i), propostas.get(i+1)) == 0) {
+				propostasElegiveis.add(propostas.get(i));
+			}else {
+				propostasElegiveis.add(propostas.get(i));
+				break;
+			}
+		}
+		return propostasElegiveis;
+	}
 }
