@@ -99,20 +99,8 @@ public class Buscador{
 		//Ordena propostasMaisRelacionadas de acordo com a estratégia de busca definida
 		Collections.sort(propostasMaisRelacionadas, this.estrategiaAtual);
 		
-		System.out.println("||||||||||||||||||||||||||||||||||||||||");
-		for(int i=0;i<propostasMaisRelacionadas.size(); i++) {
-			System.out.println(propostasMaisRelacionadas.get(i).toString());
-		}
-		System.out.println("||||||||||||||||||||||||||||||||||||||||");
-		
 		//Confere se há mais de um elegível no critério desempate da estratégia
 		propostasMaisRelacionadas = filtraPropostasElegiveisPorEstrategia(propostasMaisRelacionadas, this.estrategiaAtual);
-		System.out.println("ESTRATEGIA ATUAL: " + this.estrategiaAtual);
-		System.out.println("|||||||||||||Criterio Desempate 1||||||||||||||||||");
-		for(int i=0;i<propostasMaisRelacionadas.size(); i++) {
-			System.out.println(propostasMaisRelacionadas.get(i).toString());
-		}
-		System.out.println("|||||||||||||Criterio Desempate 1||||||||||||||||||||");
 		
 		if(propostasMaisRelacionadas.size() == 1) {
 			return propostasMaisRelacionadas.get(0).getCodigo();
@@ -121,20 +109,8 @@ public class Buscador{
 		//Ordena pelo ano das entidades restantes para saber qual é a mais antiga
 		Collections.sort(propostasMaisRelacionadas, new ComparatorIdadePropostaLegislativa());
 		
-		System.out.println("|||||||||||||Desempate pelo ano||||||||||||||||||");
-		for(int i=0;i<propostasMaisRelacionadas.size(); i++) {
-			System.out.println(propostasMaisRelacionadas.get(i).toString());
-		}
-		System.out.println("|||||||||||||Desempate pelo ano||||||||||||||||||||");
-		
 		//Confere se há mais de um elegível no critério desempate de idade
 		propostasMaisRelacionadas = filtraPropostasElegiveisPorEstrategia(propostasMaisRelacionadas, new ComparatorIdadePropostaLegislativa());
-		
-		System.out.println("|||||||||||||Só mais velhas||||||||||||||||||");
-		for(int i=0;i<propostasMaisRelacionadas.size(); i++) {
-			System.out.println(propostasMaisRelacionadas.get(i).toString());
-		}
-		System.out.println("|||||||||||||Só mais velhas||||||||||||||||||||");
 		
 		if(propostasMaisRelacionadas.size() == 1) {
 			return propostasMaisRelacionadas.get(0).getCodigo();
@@ -143,17 +119,10 @@ public class Buscador{
 		//Ordena pelo código para alcançar a entidade cadastrada primeiro
 		Collections.sort(propostasMaisRelacionadas, new ComparatorCodigoPropostaLegislativa());
 		
-		System.out.println("|||||||||||||Mesma Idade, Cadastro primeiro||||||||||||||||||");
-		for(int i=0;i<propostasMaisRelacionadas.size(); i++) {
-			System.out.println(propostasMaisRelacionadas.get(i).toString());
-		}
-		System.out.println("|||||||||||||Mesma Idade, Cadastro primeiro||||||||||||||||||||");
 		
 		//Retorna a proposta com o código menor
 		PropostaLegislativa propostaMaisRelacionada = propostasMaisRelacionadas.get(0);
-		System.out.println("|||||||||||||RETORNOU NO FINAL||||||||||||||||");
-		System.out.println(propostaMaisRelacionada);
-		System.out.println("|||||||||||||RETORNOU NO FINAL||||||||||||||||\nFimExec\n\n");
+		
 		return propostaMaisRelacionada.getCodigo();
 	}
 	
