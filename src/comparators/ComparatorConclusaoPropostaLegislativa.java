@@ -23,13 +23,9 @@ public class ComparatorConclusaoPropostaLegislativa implements Comparator<Propos
 		if("Plenario - 1o turno".equals(o2.getLocalDeVotacao())) {
 			return 1;
 		}
-		if(o1.getVotacoes().size() > o2.getVotacoes().size()) {
-			return -1;
-		}
-		if(o1.getVotacoes().size() < o2.getVotacoes().size()) {
-			return 1;
-		}
-		return 0;
+		
+		return Double.compare(o2.getVotacoes().size(), o1.getVotacoes().size());
+		
 	}
 
 	

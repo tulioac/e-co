@@ -1,9 +1,7 @@
 package util;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -49,12 +47,19 @@ public class Buscador{
 				.filter(proposta -> "EM VOTACAO".equals(proposta.getSituacaoAtual()))
 				.collect(Collectors.toSet());
 		
+		System.out.println("||||||||||||||||||||||||TODOS||||||||||||||||");
+		propostasEmVotacao.stream().forEach(proposta -> System.out.println(proposta));
+		System.out.println("||||||||||||||||||||||||TODOS||||||||||||||||");
 		//Filtra propostas com mais interesses em comum
 		Set<PropostaLegislativa> propostasMaisInteressantes = propostasEmVotacao
 				.stream()
 				.filter(proposta -> (getQntdInteressesEmComum(proposta, interessesUsuario) == getQtdMaxInteressesComuns(interessesUsuario) 
 				&& getQntdInteressesEmComum(proposta, interessesUsuario) != 0))
 				.collect(Collectors.toSet());	
+		
+		System.out.println("||||||||||||||||||||||||MAIS INTERESSES||||||||||||||||");
+		propostasMaisInteressantes.stream().forEach(proposta -> System.out.println(proposta));
+		System.out.println("||||||||||||||||||||||||MAIS INTERESSES||||||||||||||||");
 		
 		List<PropostaLegislativa> propostasMaisRelacionadas = new ArrayList<>(propostasMaisInteressantes);
 		
@@ -77,6 +82,10 @@ public class Buscador{
 				.filter
 				(proposta -> (this.estrategiaAtual.compare(proposta, propModelo) == 0))
 				.collect(Collectors.toList());
+		System.out.println(this.estrategiaAtual.toString());
+		System.out.println("||||||||||||||||||||||||ESTRATÉGIA||||||||||||||||");
+		propostasMaisInteressantes.stream().forEach(proposta -> System.out.println(proposta));
+		System.out.println("||||||||||||||||||||||||ESTRATEGIA||||||||||||||||");
 		
 		//Se encontrar uma proposta única, a retorna
 		if(propostasMaisRelacionadas.size() == 1) {
@@ -89,8 +98,12 @@ public class Buscador{
 				.min(new ComparatorIdadePropostaLegislativa())
 				.get()
 				.getAno();
-		//Mantem na lista somente os itens de menor idade
+		//Mantem na lista somente os itens de menor ano
 		propostasMaisRelacionadas = propostasMaisRelacionadas.stream().filter(proposta -> proposta.getAno() == menorAno).collect(Collectors.toList());
+		
+		System.out.println("||||||||||||||||||||||||ANO||||||||||||||||");
+		propostasMaisInteressantes.stream().forEach(proposta -> System.out.println(proposta));
+		System.out.println("||||||||||||||||||||||||ANO||||||||||||||||");
 		
 		//Retorna se chegar a somente uma proposta
 		if(propostasMaisRelacionadas.size() == 1) {
@@ -102,6 +115,10 @@ public class Buscador{
 				.stream()
 				.min(new ComparatorCodigoPropostaLegislativa())
 				.get();
+		
+		System.out.println("||||||||||||||||||||||||SAIDA||||||||||||||||");
+		System.out.println(propostaMaisRelacionada.getCodigo());
+		System.out.println("||||||||||||||||||||||||SAIDA||||||||||||||||");
 		
 		return propostaMaisRelacionada.getCodigo();
 	}
