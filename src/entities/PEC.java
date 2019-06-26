@@ -1,5 +1,6 @@
 package entities;
 
+import enums.SituacaoVotacao;
 import enums.StatusGovernista;
 import enums.TipoProjeto;
 
@@ -82,6 +83,7 @@ public class PEC extends Projeto implements Serializable {
         if (this.getLocalDeVotacao().equals("Plenario - 1o turno")) {
             if (resultado) {
                 this.setNovoLocalDeVotacao("Plenario - 2o turno");
+                this.alteraSituacaoDoLocalAnterior(SituacaoVotacao.APROVADO);
             } else {
                 this.encerraVotacao();
             }
