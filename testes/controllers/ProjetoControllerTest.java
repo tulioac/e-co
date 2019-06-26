@@ -106,4 +106,43 @@ class ProjetoControllerTest {
 
         assertThrows(IllegalArgumentException.class, () -> this.pc.cadastraPLP("312534654-5", 2013, "Ementa PL Conclusiva", "saude, educacao", "wwww.ementa.com.br", "4,5"));
     }
+
+    @Test
+    void testaCadastrarPEC() {
+        this.p.cadastrarPessoa("Tulio", "312534654-5", "PB", "saude", "POT");
+        this.p.cadastrarDeputado("312534654-5", "25061998");
+        this.pc.cadastraPEC("312534654-5", 2013, "Ementa PEC", "saude, educacao", "wwww.ementa.com.br", "4,5");
+        assertEquals("Projeto de Emenda Constitucional - PEC 1/2013 - 312534654-5 - Ementa PEC - 4, 5 - EM VOTACAO (CCJC)", this.pc.exibirProjeto("PEC 1/2013"));
+    }
+
+    @Test
+    void testaCadastrarPECVaziaOuNula() {
+        this.p.cadastrarPessoa("Tulio", "312534654-5", "PB", "saude", "POT");
+        this.p.cadastrarDeputado("312534654-5", "25061998");
+
+        assertThrows(NullPointerException.class, () -> this.pc.cadastraPEC(null, 2013, "Ementa PL Conclusiva", "saude, educacao", "wwww.ementa.com.br", "4,5"));
+        assertThrows(NullPointerException.class, () -> this.pc.cadastraPEC("312534654-5", 2013, null, "saude, educacao", "wwww.ementa.com.br", "4,5"));
+        assertThrows(NullPointerException.class, () -> this.pc.cadastraPEC("312534654-5", 2013, "Ementa PL Conclusiva", null, "wwww.ementa.com.br", "4,5"));
+        assertThrows(NullPointerException.class, () -> this.pc.cadastraPEC("312534654-5", 2013, "Ementa PL Conclusiva", "saude, educacao", null, "4,5"));
+        assertThrows(NullPointerException.class, () -> this.pc.cadastraPEC("312534654-5", 2013, "Ementa PL Conclusiva", "saude, educacao", "wwww.ementa.com.br", null));
+
+        assertThrows(IllegalArgumentException.class, () -> this.pc.cadastraPEC("", 2013, "Ementa PL Conclusiva", "saude, educacao", "wwww.ementa.com.br", "4,5"));
+        assertThrows(IllegalArgumentException.class, () -> this.pc.cadastraPEC("312534654-5", 1500, "Ementa PL Conclusiva", "saude, educacao", "wwww.ementa.com.br", "4,5"));
+        assertThrows(IllegalArgumentException.class, () -> this.pc.cadastraPEC("312534654-5", 2013, "", "saude, educacao", "wwww.ementa.com.br", "4,5"));
+        assertThrows(IllegalArgumentException.class, () -> this.pc.cadastraPEC("312534654-5", 2013, "Ementa PL Conclusiva", "", "wwww.ementa.com.br", "4,5"));
+        assertThrows(IllegalArgumentException.class, () -> this.pc.cadastraPEC("312534654-5", 2013, "Ementa PL Conclusiva", "saude, educacao", "", "4,5"));
+        assertThrows(IllegalArgumentException.class, () -> this.pc.cadastraPEC("312534654-5", 2013, "Ementa PL Conclusiva", "saude, educacao", "wwww.ementa.com.br", ""));
+    }
+
+    @Test
+    void testaCadastrarPECSemCadastrarPessoa() {
+        assertThrows(NullPointerException.class, () -> this.pc.cadastraPEC("312534654-5", 2013, "Ementa PL Conclusiva", "saude, educacao", "wwww.ementa.com.br", "4,5"));
+    }
+
+    @Test
+    void testaCadastrarPECSemPessoaSerDeputado() {
+        this.p.cadastrarPessoa("Tulio", "312534654-5", "PB", "saude", "POT");
+
+        assertThrows(IllegalArgumentException.class, () -> this.pc.cadastraPEC("312534654-5", 2013, "Ementa PL Conclusiva", "saude, educacao", "wwww.ementa.com.br", "4,5"));
+    }
 }
