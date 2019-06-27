@@ -200,7 +200,6 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
         this.votacoes.get(this.votacoes.size() - 1)[1] = situacao.toString();
     }
 
-
     /**
      * Esse método retorna os interesses referentes ao projeto.
      *
