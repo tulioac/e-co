@@ -5,9 +5,21 @@ import java.util.Comparator;
 import enums.TipoProjeto;
 import interfaces.PropostaLegislativa;
 
+/**
+ * Essa classe implementa o Comparator para a interface PropostaLegislativa. Ela compara os 
+ * tipos de propostas. A prioradade natural é: PEC > PLP > PL
+ * 
+ * @author Jonathan Tavares da Silva
+ * @author Mirella Quintans Lyra
+ * @author Tulio Araujo Cunha
+ * @author Guilherme de Melo Carneiro
+ *
+ */
 public class ComparatorConstitucionalPropostaLegislativa implements Comparator<PropostaLegislativa>  {
 
-	
+	/**
+	 * Esse método compara os tipos de propostas legislativas.
+	 */
 	@Override
 	public int compare(PropostaLegislativa o1, PropostaLegislativa o2) {
 		
