@@ -1,6 +1,16 @@
 package controllers;
 
-import entities.*;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+
+import entities.Comissao;
+import entities.PEC;
+import entities.PL;
+import entities.PLP;
+import entities.Pessoa;
+import enums.EstrategiaBusca;
 import enums.SituacaoVotacao;
 import enums.StatusGovernista;
 import enums.TipoProjeto;
@@ -8,11 +18,8 @@ import interfaces.PropostaLegislativa;
 import services.ComissaoService;
 import services.PartidoBaseService;
 import services.PessoaService;
+import util.Buscador;
 import util.Validador;
-
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Essa classe usa o padrão Controller contendo métodos que operam sobre os diferentes
@@ -49,6 +56,11 @@ public class ProjetoController implements Serializable {
     private Map<String, PropostaLegislativa> propostas;
 
     /**
+     * 
+     */
+    private Buscador buscador;
+    
+    /**
      * Constrói um Controlador de Projetos que inicializa um mapa que guarda
      * as propostas legislativas do sistema.
      *
@@ -61,6 +73,7 @@ public class ProjetoController implements Serializable {
         this.comissaoService = comissaoService;
         this.partidoService = partidoService;
         this.propostas = new HashMap<>();
+        this.buscador = new Buscador(new HashSet<>(this.propostas.values()));
     }
 
     /**
@@ -147,7 +160,8 @@ public class ProjetoController implements Serializable {
 
         String codigo = criaCodigo(TipoProjeto.PL, ano);
         this.propostas.put(codigo, new PL(codigo, dni, ano, ementa, interesses, url, conclusivo));
-
+        this.propostas.get(codigo).setNumeroCodigo(contaProjetoEmAno(TipoProjeto.PL, ano) + 1);
+        
         return codigo;
     }
 
@@ -168,7 +182,8 @@ public class ProjetoController implements Serializable {
 
         String codigo = criaCodigo(TipoProjeto.PLP, ano);
         this.propostas.put(codigo, new PLP(codigo, dni, ano, ementa, interesses, url, artigos));
-
+        this.propostas.get(codigo).setNumeroCodigo(contaProjetoEmAno(TipoProjeto.PLP, ano) + 1);
+        
         return codigo;
     }
 
@@ -189,7 +204,8 @@ public class ProjetoController implements Serializable {
 
         String codigo = criaCodigo(TipoProjeto.PEC, ano);
         this.propostas.put(codigo, new PEC(codigo, dni, ano, ementa, interesses, url, artigos));
-
+        this.propostas.get(codigo).setNumeroCodigo(contaProjetoEmAno(TipoProjeto.PEC, ano) + 1);
+        
         return codigo;
     }
 
@@ -298,10 +314,10 @@ public class ProjetoController implements Serializable {
 
         PropostaLegislativa proposta = this.propostas.get(codigo);
 
-        if (proposta.getLocalDeVotacao().equals("Plenario - 1o turno") || proposta.getLocalDeVotacao().equals("Plenario - 2o turno"))
+        if (proposta.getLocalDeVotacao().equals("Plenario - 1o turno") || proposta.getLocalDeVotacao().equals("Plenario - 2o turno") || proposta.getLocalDeVotacao().equals("plenario"))
             throw new IllegalArgumentException("Erro ao votar proposta: proposta encaminhada ao plenario");
 
-        if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()))
+        if (proposta.getSituacaoAtual().equals(SituacaoVotacao.REJEITADO.toString()))
             throw new IllegalArgumentException("Erro ao votar proposta: tramitacao encerrada");
 
         Comissao comissao;
@@ -316,9 +332,9 @@ public class ProjetoController implements Serializable {
 
         boolean resultado = this.votarComissao(status, comissao, proposta);
 
-        proposta.alteraNovoLocal(proximoLocal);
-
         avaliaResultado(proximoLocal, proposta, resultado);
+
+        proposta.alteraNovoLocal(proximoLocal);
 
         return resultado;
     }
@@ -422,12 +438,12 @@ public class ProjetoController implements Serializable {
 
         PropostaLegislativa proposta = this.propostas.get(codigo);
 
-        if (proposta.getSituacaoAtual().equals(SituacaoVotacao.ARQUIVADO.toString()) || proposta.getSituacaoAtual().equals(SituacaoVotacao.APROVADO.toString()))
+        if (proposta.getSituacaoAtual().equals(SituacaoVotacao.REJEITADO.toString()) || proposta.getSituacaoAtual().equals(SituacaoVotacao.APROVADO.toString()))
             throw new IllegalArgumentException("Erro ao votar proposta: tramitacao encerrada");
 
         this.verificaQuorumMinimo(presentes, proposta);
 
-        if (!(proposta.getLocalDeVotacao().equals("Plenario - 1o turno")) && !((proposta.getLocalDeVotacao().equals("Plenario - 2o turno"))))
+        if (!(proposta.getLocalDeVotacao().equals("Plenario - 1o turno")) && !((proposta.getLocalDeVotacao().equals("Plenario - 2o turno"))) && !((proposta.getLocalDeVotacao().equals("plenario"))))
             throw new IllegalArgumentException("Erro ao votar proposta: tramitacao em comissao");
 
         StatusGovernista status = StatusGovernista.valueOf(statusGovernista);
@@ -445,9 +461,75 @@ public class ProjetoController implements Serializable {
      * @param codigo o código do projeto que se deseja exibir a tramitação.
      */
     public String exibirTramitacao(String codigo) {
-//        if (!(this.propostas.containsKey(codigo)))
-//            throw new NullPointerException("Erro ao exibir projeto: codigo nao cadastrado");
-//
-        return "Ainda nao implementado!";
+        if (!(this.propostas.containsKey(codigo)))
+            throw new NullPointerException("Erro ao exibir tramitacao: projeto inexistente");
+
+        PropostaLegislativa proposta = this.propostas.get(codigo);
+
+        return proposta.exibirTramitacao();
     }
+
+    /**
+     * Retorna o código da proposta mais relacionada ao usuario detentor do dni passado como
+     * parâmetro. Caso não haja nenhuma proposta relacionada retorna uma String vazia. 
+     * A prioridade inicial é pelo maior número de interesses em comum entre o usuário e a
+     * proposta. Caso essa não seja suficiente, leva-se em consideração a Estratégia de
+     * desempate definida pelo usuário, que pode ser APROVACAO, CONCLUSAO OU CONSTITUCIONAL.
+     * O sistema se inicia com a estratégia CONSTITUCIONAL. Caso ainda não seja suficiente,
+     * prevalece a proposta com maior idade e, por ultimo, a cadastrada primeiro. Lança
+     * IllegalArgumentException para valores vazios e NullPointerException para valores nulos.
+     * 
+     * @param dni String com o dni da pessoa que se quer buscar a proposta mais relacionada
+     * @return String com o codigo da proposta mais relacionada, ou "" caso não exista uma
+     */
+	public String getPropostaRelacionada(String dni) {
+		this.buscador.setPropostas(new HashSet<PropostaLegislativa>(this.propostas.values()));
+		
+		Validador v = new Validador();
+		if("".trim().equals(dni)) {
+			throw new IllegalArgumentException("Erro ao pegar proposta relacionada: pessoa nao pode ser vazia ou nula");
+		}
+		v.validaDni(dni, "Erro ao pegar proposta relacionada: dni invalido");
+		if(!this.pessoaService.ehPessoaCadastrada(dni)) {
+			throw new NullPointerException("Erro ao pegar proposta relacionada: pessoa nao pode ser vazia ou nula");
+		}
+		
+		String propostaMaisRelacionada = this.buscador
+				.buscaMaisRelacionado(this.pessoaService
+						.getPessoaPeloDni(dni)
+						.getInteresses()
+						.split(","));
+		
+		return propostaMaisRelacionada;
+	}
+
+	/**
+	 * Não possui retorno. Configura uma estratégia de desempate para a busca de proposta
+	 * mais relacionada. Essa estratégia é do tipo EstrategiaBusca.
+	 * 
+	 * APROVACAO - tem como prioridade o número de aprovacoes em comissões e plenario
+	 * CONCLUSAO - tem como prioridade a proximidade com a aprovação da proposta
+	 * CONSTITUCIONAL - tem como prioridade a ordem: PEC > PLP > PL
+	 * 
+	 * Lança IllegalArgumentException para valores vazios e NullPointerException para valores nulos
+	 * 
+	 * @param dni String contendo o dni do usuario
+	 * @param estrategia nova estratégia
+	 */
+	public void configurarEstrategiaPropostaRelacionada(String dni, String estrategia) {
+		Validador v = new Validador();
+		v.validaString(dni, "Erro ao configurar estrategia: pessoa nao pode ser vazia ou nula");
+		v.validaDni(dni, "Erro ao configurar estrategia: dni invalido");
+		v.validaString(estrategia, "Erro ao configurar estrategia: estrategia vazia");
+		
+		EstrategiaBusca estrat;
+		try {
+			estrat = EstrategiaBusca.valueOf(estrategia);
+		}catch(IllegalArgumentException iae) {
+			throw new IllegalArgumentException("Erro ao configurar estrategia: estrategia invalida");
+		}
+		this.buscador.setEstrategiaAtual(estrat);
+	}
+	
+	
 }
