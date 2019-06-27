@@ -4,8 +4,21 @@ import java.util.Comparator;
 
 import interfaces.PropostaLegislativa;
 
+/**
+ * Essa classe implementa o Comparator para a interface PropostaLegislativa. Ela compara a
+ * aprovação de entre propostas.
+ * 
+ * @author Jonathan Tavares da Silva
+ * @author Mirella Quintans Lyra
+ * @author Tulio Araujo Cunha
+ * @author Guilherme de Melo Carneiro
+ *
+ */
 public class ComparatorAprovacaoPropostaLegislativa implements Comparator<PropostaLegislativa>{
 
+	/**
+	 * Esse método compara duas propostas pelo seus números de aprovações 
+	 */
 	@Override
 	public int compare(PropostaLegislativa o1, PropostaLegislativa o2) {
 		

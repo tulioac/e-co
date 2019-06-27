@@ -470,9 +470,17 @@ public class ProjetoController implements Serializable {
     }
 
     /**
+     * Retorna o código da proposta mais relacionada ao usuario detentor do dni passado como
+     * parâmetro. Caso não haja nenhuma proposta relacionada retorna uma String vazia. 
+     * A prioridade inicial é pelo maior número de interesses em comum entre o usuário e a
+     * proposta. Caso essa não seja suficiente, leva-se em consideração a Estratégia de
+     * desempate definida pelo usuário, que pode ser APROVACAO, CONCLUSAO OU CONSTITUCIONAL.
+     * O sistema se inicia com a estratégia CONSTITUCIONAL. Caso ainda não seja suficiente,
+     * prevalece a proposta com maior idade e, por ultimo, a cadastrada primeiro. Lança
+     * IllegalArgumentException para valores vazios e NullPointerException para valores nulos.
      * 
-     * @param dni
-     * @return
+     * @param dni String com o dni da pessoa que se quer buscar a proposta mais relacionada
+     * @return String com o codigo da proposta mais relacionada, ou "" caso não exista uma
      */
 	public String getPropostaRelacionada(String dni) {
 		this.buscador.setPropostas(new HashSet<PropostaLegislativa>(this.propostas.values()));
@@ -492,16 +500,21 @@ public class ProjetoController implements Serializable {
 						.getInteresses()
 						.split(","));
 		
-		if(propostaMaisRelacionada == null) {
-			return "";
-		}
 		return propostaMaisRelacionada;
 	}
 
 	/**
+	 * Não possui retorno. Configura uma estratégia de desempate para a busca de proposta
+	 * mais relacionada. Essa estratégia é do tipo EstrategiaBusca.
 	 * 
-	 * @param dni
-	 * @param estrategia
+	 * APROVACAO - tem como prioridade o número de aprovacoes em comissões e plenario
+	 * CONCLUSAO - tem como prioridade a proximidade com a aprovação da proposta
+	 * CONSTITUCIONAL - tem como prioridade a ordem: PEC > PLP > PL
+	 * 
+	 * Lança IllegalArgumentException para valores vazios e NullPointerException para valores nulos
+	 * 
+	 * @param dni String contendo o dni do usuario
+	 * @param estrategia nova estratégia
 	 */
 	public void configurarEstrategiaPropostaRelacionada(String dni, String estrategia) {
 		Validador v = new Validador();
@@ -509,15 +522,13 @@ public class ProjetoController implements Serializable {
 		v.validaDni(dni, "Erro ao configurar estrategia: dni invalido");
 		v.validaString(estrategia, "Erro ao configurar estrategia: estrategia vazia");
 		
-		if("aprovacao".equals(estrategia.toLowerCase())) {
-			this.buscador.setEstrategiaAtual(EstrategiaBusca.APROVACAO);
-		}else if("conclusao".equals(estrategia.toLowerCase())) {
-			this.buscador.setEstrategiaAtual(EstrategiaBusca.CONCLUSAO);
-		}else if("constitucional".equals(estrategia.toLowerCase())) {
-			this.buscador.setEstrategiaAtual(EstrategiaBusca.CONSTITUCIONAL);
-		}else {
+		EstrategiaBusca estrat;
+		try {
+			estrat = EstrategiaBusca.valueOf(estrategia);
+		}catch(IllegalArgumentException iae) {
 			throw new IllegalArgumentException("Erro ao configurar estrategia: estrategia invalida");
 		}
+		this.buscador.setEstrategiaAtual(estrat);
 	}
 	
 	
