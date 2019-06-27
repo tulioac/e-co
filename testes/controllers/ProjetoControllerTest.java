@@ -187,7 +187,7 @@ class ProjetoControllerTest {
     }
 
     @Test
-    void testaVotarPLComissaoConclusiva() {
+    void testaVotarPLConclusiva() {
 
         this.pc.cadastraPL("111111111-1", 2013, "Ementa PL Conclusiva", "saude, educacao", "wwww.ementa.com.br", true);
 
@@ -198,9 +198,9 @@ class ProjetoControllerTest {
     }
 
     @Test
-    void testaVotarPLComissaoNaoConclusiva() {
+    void testaVotarPLNaoConclusiva() {
 
-        this.pc.cadastraPL("111111111-1", 2013, "Ementa PL Conclusiva", "saude, educacao", "wwww.ementa.com.br", false);
+        this.pc.cadastraPL("111111111-1", 2013, "Ementa PL Não Conclusiva", "saude, educacao", "wwww.ementa.com.br", false);
 
         assertTrue(this.pc.votarComissao("PL 1/2013", "GOVERNISTA", "CTF"));
         assertFalse(this.pc.votarComissao("PL 1/2013", "GOVERNISTA", "plenario"));
@@ -209,4 +209,62 @@ class ProjetoControllerTest {
 
         assertEquals("POL: pedrinho - 111111111-1 (PB) - PartidoGov - Interesses: educacao,seguranca publica,saude - 24/01/2013 - 1 Leis", this.p.exibirPessoa("111111111-1"));
     }
+
+    @Test
+    void testaQuorumMinimoDePL() {
+        this.pc.cadastraPL("111111111-1", 2013, "Ementa PL Conclusiva", "saude, educacao", "wwww.ementa.com.br", false);
+
+        this.pc.votarComissao("PL 1/2013", "GOVERNISTA", "plenario");
+
+        assertThrows(IllegalArgumentException.class, () -> this.pc.votarPlenario("PL 1/2013", "LIVRE", "111111111-1"));
+    }
+
+    @Test
+    void testaVotarPLP() {
+        this.pc.cadastraPLP("111111111-1", 2013, "Ementa PLP", "saude, educacao", "wwww.ementa.com.br", "4,5");
+
+        assertTrue(this.pc.votarComissao("PLP 1/2013", "LIVRE", "plenario"));
+        assertEquals("Projeto de Lei Complementar - PLP 1/2013 - 111111111-1 - Ementa PLP - 4, 5 - EM VOTACAO (Plenario - 1o turno)", this.pc.exibirProjeto("PLP 1/2013"));
+
+        assertTrue(this.pc.votarPlenario("PLP 1/2013", "OPOSICAO", "111111111-1,222222222-2,444444444-4,555555555-5"));
+        assertEquals("Projeto de Lei Complementar - PLP 1/2013 - 111111111-1 - Ementa PLP - 4, 5 - EM VOTACAO (Plenario - 2o turno)", this.pc.exibirProjeto("PLP 1/2013"));
+
+        assertTrue(this.pc.votarPlenario("PLP 1/2013", "LIVRE", "111111111-1,222222222-2,444444444-4,555555555-5"));
+        assertEquals("Projeto de Lei Complementar - PLP 1/2013 - 111111111-1 - Ementa PLP - 4, 5 - APROVADO", this.pc.exibirProjeto("PLP 1/2013"));
+        assertEquals("POL: pedrinho - 111111111-1 (PB) - PartidoGov - Interesses: educacao,seguranca publica,saude - 24/01/2013 - 1 Leis", this.p.exibirPessoa("111111111-1"));
+    }
+
+    @Test
+    void testaQuorumMinimoDePLP() {
+        this.pc.cadastraPLP("111111111-1", 2013, "Ementa PL Conclusiva", "saude, educacao", "wwww.ementa.com.br", "4,5");
+
+        this.pc.votarComissao("PLP 1/2013", "GOVERNISTA", "plenario");
+
+        assertThrows(IllegalArgumentException.class, () -> this.pc.votarPlenario("PLP 1/2013", "OPOSICAO", "222222222-2"));
+    }
+
+    @Test
+    void testaVotarPEC() {
+        this.pc.cadastraPEC("111111111-1", 2013, "Ementa PEC", "saude, educacao", "wwww.ementa.com.br", "4,5");
+
+        assertTrue(this.pc.votarComissao("PEC 1/2013", "LIVRE", "plenario"));
+        assertEquals("Projeto de Emenda Constitucional - PEC 1/2013 - 111111111-1 - Ementa PEC - 4, 5 - EM VOTACAO (Plenario - 1o turno)", this.pc.exibirProjeto("PEC 1/2013"));
+
+        assertTrue(this.pc.votarPlenario("PEC 1/2013", "OPOSICAO", "111111111-1,222222222-2,444444444-4,555555555-5"));
+        assertEquals("Projeto de Emenda Constitucional - PEC 1/2013 - 111111111-1 - Ementa PEC - 4, 5 - EM VOTACAO (Plenario - 2o turno)", this.pc.exibirProjeto("PEC 1/2013"));
+
+        assertTrue(this.pc.votarPlenario("PEC 1/2013", "LIVRE", "111111111-1,222222222-2,444444444-4,555555555-5"));
+        assertEquals("Projeto de Emenda Constitucional - PEC 1/2013 - 111111111-1 - Ementa PEC - 4, 5 - APROVADO", this.pc.exibirProjeto("PEC 1/2013"));
+        assertEquals("POL: pedrinho - 111111111-1 (PB) - PartidoGov - Interesses: educacao,seguranca publica,saude - 24/01/2013 - 1 Leis", this.p.exibirPessoa("111111111-1"));
+    }
+
+    @Test
+    void testaQuorumMinimoDePEC() {
+        this.pc.cadastraPEC("111111111-1", 2013, "Ementa PL Conclusiva", "saude, educacao", "wwww.ementa.com.br", "4,5");
+
+        this.pc.votarComissao("PEC 1/2013", "GOVERNISTA", "plenario");
+
+        assertThrows(IllegalArgumentException.class, () -> this.pc.votarPlenario("PEC 1/2013", "OPOSICAO", "222222222-2"));
+    }
+
 }
