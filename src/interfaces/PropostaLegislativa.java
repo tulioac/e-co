@@ -1,12 +1,12 @@
 package interfaces;
 
-import java.util.Date;
-import java.util.List;
-
 import entities.Pessoa;
 import enums.SituacaoVotacao;
 import enums.StatusGovernista;
 import enums.TipoProjeto;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * Essa interface representa as possibilidades de propostas legislativas

@@ -1,15 +1,6 @@
 package controllers;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-
-import entities.Comissao;
-import entities.PEC;
-import entities.PL;
-import entities.PLP;
-import entities.Pessoa;
+import entities.*;
 import enums.EstrategiaBusca;
 import enums.SituacaoVotacao;
 import enums.StatusGovernista;
@@ -20,6 +11,11 @@ import services.PartidoBaseService;
 import services.PessoaService;
 import util.Buscador;
 import util.Validador;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 /**
  * Essa classe usa o padrão Controller contendo métodos que operam sobre os diferentes

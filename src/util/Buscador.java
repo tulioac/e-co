@@ -1,18 +1,14 @@
 package util;
 
+import comparators.*;
+import enums.EstrategiaBusca;
+import interfaces.PropostaLegislativa;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import comparators.ComparatorAprovacaoPropostaLegislativa;
-import comparators.ComparatorConclusaoPropostaLegislativa;
-import comparators.ComparatorConstitucionalPropostaLegislativa;
-import comparators.ComparatorDataCriacaoPropostaLegislativa;
-import comparators.ComparatorIdadePropostaLegislativa;
-import enums.EstrategiaBusca;
-import interfaces.PropostaLegislativa;
 
 /**
  * Classe que simula um buscador de propostas cadastradas.

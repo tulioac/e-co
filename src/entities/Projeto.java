@@ -1,14 +1,14 @@
 package entities;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import enums.SituacaoVotacao;
 import enums.StatusGovernista;
 import enums.TipoProjeto;
 import interfaces.PropostaLegislativa;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Essa classe representa a abstração de uma Proposta Legislativa que tramita no Sistema.
