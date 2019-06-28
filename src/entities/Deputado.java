@@ -16,12 +16,10 @@ import java.util.Date;
  * @author Guilherme de Melo Carneiro
  */
 public class Deputado implements CargoPolitico, Serializable {
-
     /**
      * Armazena a quantidade de leis aprovadas.
      */
     private int leis;
-
     /**
      * Armazena a data de inicio do mandato do deputado.
      */
@@ -78,7 +76,6 @@ public class Deputado implements CargoPolitico, Serializable {
     public String toString() {
         return this.getDataDeInicio() + " - " + this.getLeis() + " Leis";
     }
-
 
     /**
      * Esse método aumenta a quantidade de leis de um deputado em uma unidade.

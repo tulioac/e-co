@@ -18,17 +18,32 @@ import services.PessoaService;
  */
 public class EcoFacade {
     /**
-     * Armazena uma instância da classe controladora de pessoa.
+     * Armazena uma instância da classe controladora de Pessoa.
      */
     private PessoaController pessoaController;
+    /**
+     * Armazena uma instância da classe controladora de Partido.
+     */
     private PartidoBaseController partidoController;
+    /**
+     * Armazena uma instância da classe controladora de Comissão.
+     */
     private ComissaoController comissaoController;
+    /**
+     * Armazena uma instância da classe controladora de PropostasLegislativas.
+     */
     private ProjetoController projetoController;
+    /**
+     * Armazena uma instância da classe controladora de Persistencia de dados em arquivo.
+     */
     private PersistenciaController persistenciaController;
 
     /**
      * Constrói a classe EcoFacade e inicializa uma instância da classe
-     * PessoaController para operar sobre pessoa.
+     * PessoaController para operar sobre pessoa, PartidoController para
+     * operar sobre Partido, ComissãoController para operar sobre Comissões,
+     * ProjetoController para operar sobre Propostas Legislativas e
+     * PersistenciaController para escrita e coleta dos dados em arquivo.
      */
     public EcoFacade() {
         this.pessoaController = new PessoaController();
@@ -39,7 +54,7 @@ public class EcoFacade {
     }
 
     /**
-     * Método de testes do EasyAccept.
+     * Método Main usado para executar testes do EasyAccept.
      *
      * @param args argumentos para execução do EasyAccept.
      */
@@ -51,9 +66,9 @@ public class EcoFacade {
 //                "acceptance_tests/use_case_4.txt",
 //                "acceptance_tests/use_case_5.txt",
 //                "acceptance_tests/use_case_6.txt",
-                "acceptance_tests/use_case_7.txt",
+//                "acceptance_tests/use_case_7.txt",
                 "acceptance_tests/use_case_8.txt",
-                "acceptance_tests/use_case_9.txt"
+//                "acceptance_tests/use_case_9.txt"
 
         };
 

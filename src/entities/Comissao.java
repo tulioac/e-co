@@ -14,12 +14,10 @@ import java.util.Set;
  * @author Guilherme de Melo Carneiro
  */
 public class Comissao implements Serializable {
-
     /**
      * Armazena o tema da comissão.
      */
     private String tema;
-
     /**
      * Armazena o conjunto de integrantes da comissão.
      */

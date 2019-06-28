@@ -1,15 +1,6 @@
 package controllers;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-
-import entities.Comissao;
-import entities.PEC;
-import entities.PL;
-import entities.PLP;
-import entities.Pessoa;
+import entities.*;
 import enums.EstrategiaBusca;
 import enums.SituacaoVotacao;
 import enums.StatusGovernista;
@@ -21,6 +12,11 @@ import services.PessoaService;
 import util.Buscador;
 import util.Validador;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+
 /**
  * Essa classe usa o padrão Controller contendo métodos que operam sobre os diferentes
  * tipos de Propostas Legislativas.
@@ -31,7 +27,6 @@ import util.Validador;
  * @author Guilherme de Melo Carneiro
  */
 public class ProjetoController implements Serializable {
-
     /**
      * Armazena Id de serialização de ProjetoController.
      */
@@ -54,15 +49,18 @@ public class ProjetoController implements Serializable {
      * o valor é do tipo PropostaLegislativa.
      */
     private Map<String, PropostaLegislativa> propostas;
-
     /**
-     * 
+     * Armazena objeto utilizado para buscar proposta
+     * mais relacionada
      */
     private Buscador buscador;
     
     /**
      * Constrói um Controlador de Projetos que inicializa um mapa que guarda
-     * as propostas legislativas do sistema.
+     * as propostas legislativas do sistema, um objeto buscador utilizado para recuperar
+     * propostas mais interessantes, um objeto PessoaService para comunicação com PessoaController,
+     * um objeto ComissaoService para comunicação com ComissaoController e um objeto PartidoService
+     * para comunicação com PartidoController.
      *
      * @param pessoaService   instancia de PessoaService.
      * @param comissaoService instancia de ComissaoService.
@@ -480,7 +478,7 @@ public class ProjetoController implements Serializable {
      * @return String com o codigo da proposta mais relacionada, ou "" caso não exista uma
      */
 	public String getPropostaRelacionada(String dni) {
-		this.buscador.setPropostas(new HashSet<PropostaLegislativa>(this.propostas.values()));
+		this.buscador.setPropostas(new HashSet<>(this.propostas.values()));
 		
 		Validador v = new Validador();
 		if("".trim().equals(dni)) {

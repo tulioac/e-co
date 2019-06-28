@@ -1,9 +1,9 @@
 package comparators;
 
-import java.util.Comparator;
-
 import enums.TipoProjeto;
 import interfaces.PropostaLegislativa;
+
+import java.util.Comparator;
 
 /**
  * Essa classe implementa o Comparator para a interface PropostaLegislativa. Ela compara os 

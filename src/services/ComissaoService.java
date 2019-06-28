@@ -8,8 +8,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Classe de serviço que busca objetos Comissao e retorna informações sobre os
- * mesmos.
+ * Classe de serviço que busca e retorna informações sobre
+ * objetos Comissao.
  *
  * @author Jonathan Tavares da Silva
  * @author Mirella Quintans Lyra

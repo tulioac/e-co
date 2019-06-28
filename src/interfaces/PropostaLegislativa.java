@@ -1,12 +1,12 @@
 package interfaces;
 
-import java.util.Date;
-import java.util.List;
-
 import entities.Pessoa;
 import enums.SituacaoVotacao;
 import enums.StatusGovernista;
 import enums.TipoProjeto;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * Essa interface representa as possibilidades de propostas legislativas
@@ -26,11 +26,19 @@ public interface PropostaLegislativa {
     public String exibeSituacaoAtual();
 
     /**
-     * 
-     * @return
+     * Retorna o código do projeto
+     *
+     * @return String com o código do projeto
      */
     public String getCodigo();
-    
+
+    /**
+     * Retorna sequencia de votações de uma proposta legislativa
+     * em ordem cronológica.
+     *
+     * @return lista contendo arrays String da sequência de votações
+     * de uma proposta.
+     */
     public List<String[]> getVotacoes();
     
     /**
@@ -101,7 +109,6 @@ public interface PropostaLegislativa {
      */
     public String getAutor();
 
-    
     /**
      * Retorna a data de cadastro da proposta no sistema.
      * 
@@ -110,7 +117,7 @@ public interface PropostaLegislativa {
     public Date getDataCriacao();
     
     /**
-     * Esse método retorna a representaçao em String de um projeto de lei.
+     * Esse método retorna a representaçao em String de uma proposta legislativa.
      *
      * @return String contendo a representação em String do objeto.
      */
