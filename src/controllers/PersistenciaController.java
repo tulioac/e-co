@@ -23,7 +23,7 @@ public class PersistenciaController {
         try {
             objGravador = new ObjectOutputStream(new FileOutputStream("dados/eco.txt"));
 
-            for (Serializable controller : controllers) objGravador.writeObject(controller);
+            objGravador.writeObject(new Object());
         } catch (IOException ioe) {
             ioe.printStackTrace();
         } finally {
