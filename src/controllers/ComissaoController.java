@@ -17,7 +17,6 @@ import java.util.*;
  * @author Guilherme de Melo Carneiro
  */
 public class ComissaoController implements Serializable {
-
     /**
      * Armazena Id de serialização de ComissaoController
      */
@@ -27,7 +26,6 @@ public class ComissaoController implements Serializable {
      * cadastrados no sistema.
      */
     private PessoaService pessoaService;
-
     /**
      * Armazena objetos Comissao assumindo como chave seu tema.
      */
