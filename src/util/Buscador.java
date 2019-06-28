@@ -7,9 +7,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import comparators.ComparatorAprovacaoPropostaLegislativa;
-import comparators.ComparatorCodigoPropostaLegislativa;
 import comparators.ComparatorConclusaoPropostaLegislativa;
 import comparators.ComparatorConstitucionalPropostaLegislativa;
+import comparators.ComparatorDataCriacaoPropostaLegislativa;
 import comparators.ComparatorIdadePropostaLegislativa;
 import enums.EstrategiaBusca;
 import interfaces.PropostaLegislativa;
@@ -135,7 +135,7 @@ public class Buscador{
 		//Finalmente pega a primeira proposta a ser cadastrada no conjunto e a retorna
 		PropostaLegislativa propostaMaisRelacionada = propostasMaisRelacionadas
 				.stream()
-				.min(new ComparatorCodigoPropostaLegislativa())
+				.min(new ComparatorDataCriacaoPropostaLegislativa())
 				.get();
 	
 		return propostaMaisRelacionada.getCodigo();
