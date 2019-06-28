@@ -23,14 +23,14 @@ public interface PropostaLegislativa {
      *
      * @return a situação da proposta legislativa no Congresso.
      */
-    public String exibeSituacaoAtual();
+    String exibeSituacaoAtual();
 
     /**
      * Retorna o código do projeto
      *
      * @return String com o código do projeto
      */
-    public String getCodigo();
+    String getCodigo();
 
     /**
      * Retorna sequencia de votações de uma proposta legislativa
@@ -39,35 +39,35 @@ public interface PropostaLegislativa {
      * @return lista contendo arrays String da sequência de votações
      * de uma proposta.
      */
-    public List<String[]> getVotacoes();
-    
+    List<String[]> getVotacoes();
+
     /**
      * Retorna o ano em que foi criada a proposta legislativa.
      *
      * @return ano de criação da Proposta Legislativa.
      */
-    public int getAno();
+    int getAno();
 
     /**
      * Retornao tipo da proposta legislativa, se é PL, PLP ou PEC.
      *
      * @return tipo da proposta legislativa
      */
-    public TipoProjeto getTipoDoProjeto();
+    TipoProjeto getTipoDoProjeto();
 
     /**
      * Retorna o local de votação atual da proposta.
      *
      * @return local de votação atual da proposta
      */
-    public String getLocalDeVotacao();
+    String getLocalDeVotacao();
 
     /**
      * Define o novo local de votação da proposta.
      *
      * @param localDeVotacao String contendo o novo local de votação da proposta
      */
-    public void setNovoLocalDeVotacao(String localDeVotacao);
+    void setNovoLocalDeVotacao(String localDeVotacao);
 
     /**
      * Retorna uma String contendo os interesses da proposta legislativa. Os interesses retornados
@@ -75,14 +75,14 @@ public interface PropostaLegislativa {
      *
      * @return String contendo os interesses da proposta legislativa
      */
-    public String getInteresses();
+    String getInteresses();
 
     /**
      * Retorna String contendo a situação atual da proposta legislativa no Congresso.
      *
      * @return String contendo a situação atual da proposta legislativa no Congresso
      */
-    public String getSituacaoAtual();
+    String getSituacaoAtual();
 
     /**
      * Não possui retorno. Altera a situação de votação do local anterior, visto que já foi votado
@@ -90,38 +90,38 @@ public interface PropostaLegislativa {
      *
      * @param situacao situação de votação a sobrepor a anterior
      */
-    public void alteraSituacaoDoLocalAnterior(SituacaoVotacao situacao);
+    void alteraSituacaoDoLocalAnterior(SituacaoVotacao situacao);
 
     /**
      * Não possui retorno. Define como encerrada uma votação da proposta legislativa no Congresso.
      */
-    public void encerraVotacao();
+    void encerraVotacao();
 
     /**
      * Não possui retorno. Define como aprovada uma votação da proposta legislativa no Congresso.
      */
-    public void aprovaVotacao();
+    void aprovaVotacao();
 
     /**
      * Retorna uma String com o dni do Autor da proposta legislativa.
      *
      * @return String contendo o dni do autor da proposta legislativa
      */
-    public String getAutor();
+    String getAutor();
 
     /**
      * Retorna a data de cadastro da proposta no sistema.
-     * 
+     *
      * @return data de cadastro da proposta no sistema
      */
-    public Date getDataCriacao();
-    
+    Date getDataCriacao();
+
     /**
      * Esse método retorna a representaçao em String de uma proposta legislativa.
      *
      * @return String contendo a representação em String do objeto.
      */
-    public String toString();
+    String toString();
 
     /**
      * Esse método realiza a votação de uma comissão de acordo com a quantidade de políticos a favor e a quantidade total de políticos da comissão.
@@ -130,14 +130,14 @@ public interface PropostaLegislativa {
      * @param qntPoliticosFavoraveis   a quantidade de políticos a favor.
      * @param status                   o status da votação.
      */
-    public boolean votarComissao(int qntPoliticosFavoraveis, int qntDePoliticosDaComissao, StatusGovernista status);
+    boolean votarComissao(int qntPoliticosFavoraveis, int qntDePoliticosDaComissao, StatusGovernista status);
 
     /**
      * Esse método altera o próximo local de votação da comissão. Fazendo a análise para caso o mesmo vá para o plenário e o encaminha para o primeiro turno.
      *
      * @param proximoLocal o próximo local de votação.
      */
-    public void alteraNovoLocal(String proximoLocal);
+    void alteraNovoLocal(String proximoLocal);
 
     /**
      * Esse método verifica se existe o quórum mínimo para que seja possível realizar a votação. Possuindo diferentes cálculos para os tipos de projeto.
@@ -145,7 +145,7 @@ public interface PropostaLegislativa {
      * @param qntDeputadosPresentes a quantidade de deputados presentes.
      * @param qntTotalDeputado      a quantidade total de deputados cadastrados.
      */
-    public void verificaQuorumMinimo(int qntDeputadosPresentes, int qntTotalDeputado);
+    void verificaQuorumMinimo(int qntDeputadosPresentes, int qntTotalDeputado);
 
     /**
      * Esse método realiza a votação do plenário de acordo com o tipo de proposta desejada.
@@ -154,7 +154,7 @@ public interface PropostaLegislativa {
      * @param qntPoliticosPresentes  a quantidade políticos presentes na votação.
      * @param status                 o status da votação.
      */
-    public boolean votarPlenario(int qntPoliticosFavoraveis, int qntPoliticosPresentes, StatusGovernista status);
+    boolean votarPlenario(int qntPoliticosFavoraveis, int qntPoliticosPresentes, StatusGovernista status);
 
     /**
      * Esse método avalia o resultado da votação da Comissão. Sendo possível encerrá-la ou aprová-la e aumentando
@@ -164,7 +164,7 @@ public interface PropostaLegislativa {
      * @param resultado       o resultado da votação.
      * @param autorDaProposta o deputado autor da proposta.
      */
-    public void avaliaResultado(String proximoLocal, boolean resultado, Pessoa autorDaProposta);
+    void avaliaResultado(String proximoLocal, boolean resultado, Pessoa autorDaProposta);
 
     /**
      * Esse método avalia o resultado da votação do Plenário. Designando para o respectivo tipo de proposta a avaliação.
@@ -172,10 +172,10 @@ public interface PropostaLegislativa {
      * @param resultado       o resultado da votação.
      * @param autorDaProposta o deputado autor da proposta.
      */
-    public void avaliaResultado(boolean resultado, Pessoa autorDaProposta);
-	
-	/**
+    void avaliaResultado(boolean resultado, Pessoa autorDaProposta);
+
+    /**
      * Esse método exibe toda a tramitação de um projeto.
      */
-    public String exibirTramitacao();
+    String exibirTramitacao();
 }

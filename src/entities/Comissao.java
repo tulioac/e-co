@@ -64,10 +64,8 @@ public class Comissao implements Serializable {
             return false;
         Comissao other = (Comissao) obj;
         if (tema == null) {
-            if (other.tema != null)
-                return false;
+            return other.tema == null;
         } else return tema.equals(other.tema);
-        return true;
     }
 
     /**

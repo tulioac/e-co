@@ -12,5 +12,5 @@ import java.io.Serializable;
  * @author Guilherme de Melo Carneiro
  */
 public enum EstrategiaBusca implements Serializable {
-	CONSTITUCIONAL, CONCLUSAO, APROVACAO
+    CONSTITUCIONAL, CONCLUSAO, APROVACAO
 }
