@@ -59,7 +59,7 @@ public class ProjetoController implements Serializable {
      * Constrói um Controlador de Projetos que inicializa um mapa que guarda
      * as propostas legislativas do sistema, um objeto buscador utilizado para recuperar
      * propostas mais interessantes, um objeto PessoaService para comunicação com PessoaController,
-     * um objeto ComissaoService para comunicação com ComissãoController e um objeto PartidoService
+     * um objeto ComissaoService para comunicação com ComissaoController e um objeto PartidoService
      * para comunicação com PartidoController.
      *
      * @param pessoaService   instancia de PessoaService.
