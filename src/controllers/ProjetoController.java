@@ -54,7 +54,7 @@ public class ProjetoController implements Serializable {
      * mais relacionada
      */
     private Buscador buscador;
-    
+
     /**
      * Constrói um Controlador de Projetos que inicializa um mapa que guarda
      * as propostas legislativas do sistema, um objeto buscador utilizado para recuperar
@@ -158,7 +158,7 @@ public class ProjetoController implements Serializable {
 
         String codigo = criaCodigo(TipoProjeto.PL, ano);
         this.propostas.put(codigo, new PL(codigo, dni, ano, ementa, interesses, url, conclusivo));
-        
+
         return codigo;
     }
 
@@ -179,7 +179,7 @@ public class ProjetoController implements Serializable {
 
         String codigo = criaCodigo(TipoProjeto.PLP, ano);
         this.propostas.put(codigo, new PLP(codigo, dni, ano, ementa, interesses, url, artigos));
-        
+
         return codigo;
     }
 
@@ -200,7 +200,7 @@ public class ProjetoController implements Serializable {
 
         String codigo = criaCodigo(TipoProjeto.PEC, ano);
         this.propostas.put(codigo, new PEC(codigo, dni, ano, ementa, interesses, url, artigos));
-        
+
         return codigo;
     }
 
@@ -466,65 +466,65 @@ public class ProjetoController implements Serializable {
 
     /**
      * Retorna o código da proposta mais relacionada ao usuario detentor do dni passado como
-     * parâmetro. Caso não haja nenhuma proposta relacionada retorna uma String vazia. 
+     * parâmetro. Caso não haja nenhuma proposta relacionada retorna uma String vazia.
      * A prioridade inicial é pelo maior número de interesses em comum entre o usuário e a
      * proposta. Caso essa não seja suficiente, leva-se em consideração a Estratégia de
      * desempate definida pelo usuário, que pode ser APROVACAO, CONCLUSAO OU CONSTITUCIONAL.
      * O sistema se inicia com a estratégia CONSTITUCIONAL. Caso ainda não seja suficiente,
      * prevalece a proposta com maior idade e, por ultimo, a cadastrada primeiro. Lança
      * IllegalArgumentException para valores vazios e NullPointerException para valores nulos.
-     * 
+     *
      * @param dni String com o dni da pessoa que se quer buscar a proposta mais relacionada
      * @return String com o codigo da proposta mais relacionada, ou "" caso não exista uma
      */
-	public String getPropostaRelacionada(String dni) {
-		this.buscador.setPropostas(new HashSet<>(this.propostas.values()));
-		
-		Validador v = new Validador();
-		if("".trim().equals(dni)) {
-			throw new IllegalArgumentException("Erro ao pegar proposta relacionada: pessoa nao pode ser vazia ou nula");
-		}
-		v.validaDni(dni, "Erro ao pegar proposta relacionada: dni invalido");
-		if(!this.pessoaService.ehPessoaCadastrada(dni)) {
-			throw new NullPointerException("Erro ao pegar proposta relacionada: pessoa nao pode ser vazia ou nula");
-		}
-		
-		String propostaMaisRelacionada = this.buscador
-				.buscaMaisRelacionado(this.pessoaService
-						.getPessoaPeloDni(dni)
-						.getInteresses()
-						.split(","));
-		
-		return propostaMaisRelacionada;
-	}
+    public String getPropostaRelacionada(String dni) {
+        this.buscador.setPropostas(new HashSet<>(this.propostas.values()));
 
-	/**
-	 * Não possui retorno. Configura uma estratégia de desempate para a busca de proposta
-	 * mais relacionada. Essa estratégia é do tipo EstrategiaBusca.
-	 * 
-	 * APROVACAO - tem como prioridade o número de aprovacoes em comissões e plenario
-	 * CONCLUSAO - tem como prioridade a proximidade com a aprovação da proposta
-	 * CONSTITUCIONAL - tem como prioridade a ordem: PEC > PLP > PL
-	 * 
-	 * Lança IllegalArgumentException para valores vazios e NullPointerException para valores nulos
-	 * 
-	 * @param dni String contendo o dni do usuario
-	 * @param estrategia nova estratégia
-	 */
-	public void configurarEstrategiaPropostaRelacionada(String dni, String estrategia) {
-		Validador v = new Validador();
-		v.validaString(dni, "Erro ao configurar estrategia: pessoa nao pode ser vazia ou nula");
-		v.validaDni(dni, "Erro ao configurar estrategia: dni invalido");
-		v.validaString(estrategia, "Erro ao configurar estrategia: estrategia vazia");
-		
-		EstrategiaBusca estrat;
-		try {
-			estrat = EstrategiaBusca.valueOf(estrategia);
-		}catch(IllegalArgumentException iae) {
-			throw new IllegalArgumentException("Erro ao configurar estrategia: estrategia invalida");
-		}
-		this.buscador.setEstrategiaAtual(estrat);
-	}
-	
-	
+        Validador v = new Validador();
+        if ("".trim().equals(dni)) {
+            throw new IllegalArgumentException("Erro ao pegar proposta relacionada: pessoa nao pode ser vazia ou nula");
+        }
+        v.validaDni(dni, "Erro ao pegar proposta relacionada: dni invalido");
+        if (!this.pessoaService.ehPessoaCadastrada(dni)) {
+            throw new NullPointerException("Erro ao pegar proposta relacionada: pessoa nao pode ser vazia ou nula");
+        }
+
+        String propostaMaisRelacionada = this.buscador
+                .buscaMaisRelacionado(this.pessoaService
+                        .getPessoaPeloDni(dni)
+                        .getInteresses()
+                        .split(","));
+
+        return propostaMaisRelacionada;
+    }
+
+    /**
+     * Não possui retorno. Configura uma estratégia de desempate para a busca de proposta
+     * mais relacionada. Essa estratégia é do tipo EstrategiaBusca.
+     * <p>
+     * APROVACAO - tem como prioridade o número de aprovacoes em comissões e plenario
+     * CONCLUSAO - tem como prioridade a proximidade com a aprovação da proposta
+     * CONSTITUCIONAL - tem como prioridade a ordem: PEC > PLP > PL
+     * <p>
+     * Lança IllegalArgumentException para valores vazios e NullPointerException para valores nulos
+     *
+     * @param dni        String contendo o dni do usuario
+     * @param estrategia nova estratégia
+     */
+    public void configurarEstrategiaPropostaRelacionada(String dni, String estrategia) {
+        Validador v = new Validador();
+        v.validaString(dni, "Erro ao configurar estrategia: pessoa nao pode ser vazia ou nula");
+        v.validaDni(dni, "Erro ao configurar estrategia: dni invalido");
+        v.validaString(estrategia, "Erro ao configurar estrategia: estrategia vazia");
+
+        EstrategiaBusca estrat;
+        try {
+            estrat = EstrategiaBusca.valueOf(estrategia);
+        } catch (IllegalArgumentException iae) {
+            throw new IllegalArgumentException("Erro ao configurar estrategia: estrategia invalida");
+        }
+        this.buscador.setEstrategiaAtual(estrat);
+    }
+
+
 }
