@@ -109,7 +109,6 @@ public interface PropostaLegislativa {
      */
     public String getAutor();
 
-    
     /**
      * Retorna a data de cadastro da proposta no sistema.
      * 
