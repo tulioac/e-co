@@ -14,25 +14,25 @@ public interface CargoPolitico {
     /**
      * Esse método retorna o nome do cargo político.
      */
-    public CargosPoliticos getNomeCargo();
+    CargosPoliticos getNomeCargo();
 
     /**
      * Esse método retorna a data de início do mandato político.
      */
-    public String getDataDeInicio();
+    String getDataDeInicio();
 
     /**
      * Esse método retorna a quantidade de leis elaboradas por um politico.
      */
-    public int getLeis();
+    int getLeis();
 
     /**
      * Esse método retorna a representação textual adicional do cargo político.
      */
-    public String toString();
+    String toString();
 
     /**
      * Esse método adiciona uma lei aprovada à uma pessoa que possui um Cargo Político.
      */
-    public void aumentaLeis();
+    void aumentaLeis();
 }

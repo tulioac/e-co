@@ -115,22 +115,22 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
 
     /**
      * Retorna a sequência de votações pela qual o projeto já passou.
-     * 
+     *
      * @return lista com todas as votações pela qual o projeto já passou, em ordem cronológica
      */
     public List<String[]> getVotacoes() {
-    	return this.votacoes;
+        return this.votacoes;
     }
-    
+
     /**
      * Retorna o código do projeto.
-     * 
+     *
      * @return String com o código do projeto.
      */
     public String getCodigo() {
-    	return this.codigo;
+        return this.codigo;
     }
-    
+
     /**
      * Retorna o ano de criaçao do projeto.
      *
@@ -165,14 +165,14 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
     public String getSituacaoAtual() {
         return this.votacoes.get(this.votacoes.size() - 1)[1].replace("_", " ");
     }
-    
+
     /**
      * Retorna a data de cadastro da proposta no sistema.
-     * 
+     *
      * @return a data de cadastro da proposta no sistema.
      */
     public Date getDataCriacao() {
-    	return this.dataCriacao;
+        return this.dataCriacao;
     }
 
     /**
