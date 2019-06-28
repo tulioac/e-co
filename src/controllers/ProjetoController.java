@@ -56,7 +56,8 @@ public class ProjetoController implements Serializable {
     private Map<String, PropostaLegislativa> propostas;
 
     /**
-     * 
+     * Armazena objeto utilizado para buscar proposta
+     * mais relacionada
      */
     private Buscador buscador;
     
