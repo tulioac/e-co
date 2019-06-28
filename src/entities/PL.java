@@ -31,7 +31,9 @@ public class PL extends Projeto implements Serializable {
     }
 
     /**
-     * Esse método altera o próximo local de votação da comissão. Fazendo a análise para caso o mesmo vá para o plenário e o encaminha para o primeiro turno.
+     * Esse método altera o próximo local de votação da comissão.
+     * Fazendo a análise para caso o mesmo vá para o plenário e
+     * o encaminha para o primeiro turno.
      *
      * @param proximoLocal o próximo local de votação.
      */
