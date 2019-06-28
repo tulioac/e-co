@@ -53,10 +53,7 @@ public class EcoFacade {
         this.projetoController = new ProjetoController(new PessoaService(pessoaController),
                 new ComissaoService(comissaoController),
                 new PartidoBaseService(partidoController));
-        this.persistenciaController = new PersistenciaController(new PessoaService(pessoaController),
-                new ComissaoService(comissaoController),
-                new PartidoBaseService(partidoController),
-                new ProjetoService(projetoController));
+        this.persistenciaController = new PersistenciaController(new ProjetoService(projetoController));
     }
 
     /**
@@ -93,8 +90,7 @@ public class EcoFacade {
      * Esse método serve para guardar os dados serializados do sistema em um arquivo txt
      */
     public void salvarSistema() {
-        this.persistenciaController.salvarSistema(this.comissaoController, this.partidoController,
-                this.pessoaController, this.projetoController);
+        this.persistenciaController.salvarSistema();
     }
 
     /**
