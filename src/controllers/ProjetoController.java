@@ -526,5 +526,9 @@ public class ProjetoController implements Serializable {
         this.buscador.setEstrategiaAtual(estrat);
     }
 
+    public PartidoBaseService getPartidoService() {
+        return this.partidoService;
+    }
+
 
 }

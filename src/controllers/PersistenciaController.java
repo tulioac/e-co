@@ -1,9 +1,16 @@
 package controllers;
 
+import services.ProjetoService;
+
 import java.io.*;
 
 
 public class PersistenciaController {
+    private ProjetoService projetoService;
+
+    public PersistenciaController(ProjetoService projetoService) {
+        this.projetoService = projetoService;
+    }
 
     public void limparSistema() {
         File arquivoEco = new File("eco.txt");
@@ -11,7 +18,7 @@ public class PersistenciaController {
 //        arquivoEco = new File("eco.txt");
     }
 
-    public void salvarSistema(Serializable... controllers) {
+    public void salvarSistema() {
         ObjectOutputStream objGravador = null;
         try {
             objGravador = new ObjectOutputStream(new FileOutputStream("dados/eco.txt"));
