@@ -27,7 +27,6 @@ import java.util.Map;
  * @author Guilherme de Melo Carneiro
  */
 public class ProjetoController implements Serializable {
-
     /**
      * Armazena Id de serialização de ProjetoController.
      */
@@ -50,7 +49,6 @@ public class ProjetoController implements Serializable {
      * o valor é do tipo PropostaLegislativa.
      */
     private Map<String, PropostaLegislativa> propostas;
-
     /**
      * Armazena objeto utilizado para buscar proposta
      * mais relacionada
@@ -59,7 +57,10 @@ public class ProjetoController implements Serializable {
     
     /**
      * Constrói um Controlador de Projetos que inicializa um mapa que guarda
-     * as propostas legislativas do sistema.
+     * as propostas legislativas do sistema, um objeto buscador utilizado para recuperar
+     * propostas mais interessantes, um objeto PessoaService para comunicação com PessoaController,
+     * um objeto ComissaoService para comunicação com ComissãoController e um objeto PartidoService
+     * para comunicação com PartidoController.
      *
      * @param pessoaService   instancia de PessoaService.
      * @param comissaoService instancia de ComissaoService.
@@ -477,7 +478,7 @@ public class ProjetoController implements Serializable {
      * @return String com o codigo da proposta mais relacionada, ou "" caso não exista uma
      */
 	public String getPropostaRelacionada(String dni) {
-		this.buscador.setPropostas(new HashSet<PropostaLegislativa>(this.propostas.values()));
+		this.buscador.setPropostas(new HashSet<>(this.propostas.values()));
 		
 		Validador v = new Validador();
 		if("".trim().equals(dni)) {
