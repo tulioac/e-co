@@ -30,7 +30,9 @@ public class PLP extends Projeto implements Serializable {
     }
 
     /**
-     * Esse método altera o próximo local de votação da comissão. Fazendo a análise para caso o mesmo vá para o plenário e o encaminha para o primeiro turno.
+     * Esse método altera o próximo local de votação da comissão.
+     * Fazendo a análise para caso o mesmo vá para o plenário e
+     * o encaminha para o primeiro turno.
      *
      * @param proximoLocal o próximo local de votação.
      */
@@ -68,7 +70,7 @@ public class PLP extends Projeto implements Serializable {
         if (qntPoliticosFavoraveis >= qntPoliticosPresentes / 2 + 1)
             resultado = true;
 
-        return (status == StatusGovernista.OPOSICAO) ? !resultado : resultado;
+        return (status == StatusGovernista.OPOSICAO) != resultado;
     }
 
     /**
@@ -107,7 +109,8 @@ public class PLP extends Projeto implements Serializable {
      */
     @Override
     public String toString() {
-        StringBuilder representacaoDeProjeto = new StringBuilder("Projeto de Lei Complementar - " + super.toString() + " - " + this.getArtigos() + " - ");
+        StringBuilder representacaoDeProjeto =
+                new StringBuilder("Projeto de Lei Complementar - " + super.toString() + " - " + this.getArtigos() + " - ");
 
         if (this.exibeSituacaoAtual().equals("REJEITADO"))
             representacaoDeProjeto.append("ARQUIVADO");

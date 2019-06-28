@@ -1,17 +1,17 @@
 package entities;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import enums.SituacaoVotacao;
 import enums.StatusGovernista;
 import enums.TipoProjeto;
 import interfaces.PropostaLegislativa;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 /**
- * Essa classe representa a abstração de um Projeto que tramita no Sistema.
+ * Essa classe representa a abstração de uma Proposta Legislativa que tramita no Sistema.
  *
  * @author Jonathan Tavares da Silva
  * @author Mirella Quintans Lyra
@@ -29,48 +29,41 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      * pode ser do tipo PL, PLP ou PEC.
      */
     private TipoProjeto tipoDoProjeto;
-
     /**
      * Armazena uma String codigo do projeto.
      * Atributo responsavel por identificar o projeto. Eh composto pela sequencia cronologica
      * de projetos do mesmo tipo naquele ano seguida por este ano.
      */
     private String codigo;
-  
     /**
      * Armazena a Dni do autor do projeto.
      */
     private String dniAutor;
-
     /**
      * Armazena ano no qual o projeto foi criado.
      */
     private int ano;
-
     /**
      * Armazena uma String contendo uma breve descricao do projeto.
      */
     private String ementa;
-
     /**
      * Armazena os interesses realcionados ao projeto.
      */
     private String interesses;
-
     /**
      * Armazena uma String com a url de endereço do projeto.
      */
     private String endereco;
-
     /**
      * Armazena uma lista com os locais de votação por onde o projeto passou.
      */
     private List<String[]> votacoes; // Local e Situação
-
     /**
      * Armazena a data de criação da entidade Projeto no sistema.
      */
     private Date dataCriacao;
+
     /**
      * Constrói um projeto inicializando a lista com os locais de votação em CCJC e a situaçao em votação.
      */
@@ -232,7 +225,8 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
     }
 
     /**
-     * Esse método realiza a votação de uma comissão de acordo com a quantidade de políticos a favor e a quantidade total de políticos da comissão.
+     * Esse método realiza a votação de uma comissão de acordo com a quantidade
+     * de políticos a favor e a quantidade total de políticos da comissão.
      *
      * @param qntDePoliticosDaComissao a quantidade de políticos da comissão.
      * @param qntPoliticosFavoraveis   a quantidade de políticos a favor.
@@ -244,21 +238,20 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
         if (qntPoliticosFavoraveis >= qntDePoliticosDaComissao / 2 + 1)
             resultado = true;
 
-        if (status == StatusGovernista.OPOSICAO)
-            resultado = !resultado;
-
-        return resultado;
+        return (status == StatusGovernista.OPOSICAO) != resultado;
     }
 
     /**
-     * Esse método altera o próximo local de votação da comissão. Fazendo a análise para caso o mesmo vá para o plenário e o encaminha para o primeiro turno.
+     * Esse método altera o próximo local de votação da comissão. Fazendo a análise para
+     * caso o mesmo vá para o plenário e o encaminha para o primeiro turno.
      *
      * @param proximoLocal o próximo local de votação.
      */
     public abstract void alteraNovoLocal(String proximoLocal);
 
     /**
-     * Esse método verifica se existe o quórum mínimo para que seja possível realizar a votação. Possuindo diferentes cálculos para os tipos de projeto.
+     * Esse método verifica se existe o quórum mínimo para que seja possível realizar a votação.
+     * Possuindo diferentes cálculos para os tipos de projeto.
      *
      * @param qntDeputadosPresentes a quantidade de deputados presentes.
      * @param qntTotalDeputado      a quantidade total de deputados cadastrados.
@@ -300,7 +293,8 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
     }
 
     /**
-     * Esse método avalia o resultado da votação do Plenário. Designando para o respectivo tipo de proposta a avaliação.
+     * Esse método avalia o resultado da votação do Plenário.
+     * Designando para o respectivo tipo de proposta a avaliação.
      *
      * @param resultado       o resultado da votação.
      * @param autorDaProposta o deputado autor da proposta.
@@ -311,18 +305,18 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      * Esse método exibe a tramitação de um projeto.
      */
     public String exibirTramitacao() {
-        String saida = "";
+        StringBuilder tramitacao = new StringBuilder();
 
         for (String[] tramite : this.votacoes) {
-            saida += tramite[1].replace("_", " ") + " (";
+            tramitacao.append(tramite[1].replace("_", " ")).append(" (");
             if (tramite[0].equals("plenario"))
-                saida += "Plenario";
+                tramitacao.append("Plenario");
             else
-                saida += tramite[0];
-            saida += "), ";
+                tramitacao.append(tramite[0]);
+            tramitacao.append("), ");
         }
 
-        return saida.trim().substring(0, saida.length() - 2);
+        return tramitacao.toString().trim().substring(0, tramitacao.length() - 2);
     }
 
     /**

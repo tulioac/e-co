@@ -1,8 +1,8 @@
 package comparators;
 
-import java.util.Comparator;
-
 import interfaces.PropostaLegislativa;
+
+import java.util.Comparator;
 
 /**
  * Essa classe implementa o Comparator para a interface PropostaLegislativa. Ela compara a 
@@ -32,9 +32,5 @@ public class ComparatorConclusaoPropostaLegislativa implements Comparator<Propos
 		}
 		
 		return Double.compare(o2.getVotacoes().size(), o1.getVotacoes().size());
-		
 	}
-
-	
-	
 }

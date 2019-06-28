@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
  * @author Guilherme de Melo Carneiro
  */
 public class PartidoBaseController implements Serializable {
-
     /**
      * Armazena Id de Serialização de PartidoBaseController
      */
