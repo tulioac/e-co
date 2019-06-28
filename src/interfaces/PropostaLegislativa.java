@@ -26,11 +26,19 @@ public interface PropostaLegislativa {
     public String exibeSituacaoAtual();
 
     /**
-     * 
-     * @return
+     * Retorna o código do projeto
+     *
+     * @return String com o código do projeto
      */
     public String getCodigo();
-    
+
+    /**
+     * Retorna sequencia de votações de uma proposta legislativa
+     * em ordem cronológica.
+     *
+     * @return lista contendo arrays String da sequência de votações
+     * de uma proposta.
+     */
     public List<String[]> getVotacoes();
     
     /**

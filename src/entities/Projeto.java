@@ -244,10 +244,7 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
         if (qntPoliticosFavoraveis >= qntDePoliticosDaComissao / 2 + 1)
             resultado = true;
 
-        if (status == StatusGovernista.OPOSICAO)
-            resultado = !resultado;
-
-        return resultado;
+        return (status == StatusGovernista.OPOSICAO) != resultado;
     }
 
     /**
