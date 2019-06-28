@@ -311,18 +311,18 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      * Esse método exibe a tramitação de um projeto.
      */
     public String exibirTramitacao() {
-        String saida = "";
+        StringBuilder tramitacao = new StringBuilder();
 
         for (String[] tramite : this.votacoes) {
-            saida += tramite[1].replace("_", " ") + " (";
+            tramitacao.append(tramite[1].replace("_", " ")).append(" (");
             if (tramite[0].equals("plenario"))
-                saida += "Plenario";
+                tramitacao.append("Plenario");
             else
-                saida += tramite[0];
-            saida += "), ";
+                tramitacao.append(tramite[0]);
+            tramitacao.append("), ");
         }
 
-        return saida.trim().substring(0, saida.length() - 2);
+        return tramitacao.toString().trim().substring(0, tramitacao.length() - 2);
     }
 
     /**

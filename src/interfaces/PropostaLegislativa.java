@@ -110,7 +110,7 @@ public interface PropostaLegislativa {
     public Date getDataCriacao();
     
     /**
-     * Esse método retorna a representaçao em String de um projeto de lei.
+     * Esse método retorna a representaçao em String de uma proposta legislativa.
      *
      * @return String contendo a representação em String do objeto.
      */
