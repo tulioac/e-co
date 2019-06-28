@@ -1,13 +1,14 @@
 package entities;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import enums.SituacaoVotacao;
 import enums.StatusGovernista;
 import enums.TipoProjeto;
 import interfaces.PropostaLegislativa;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Essa classe representa a abstração de um Projeto que tramita no Sistema.
@@ -35,12 +36,7 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      * de projetos do mesmo tipo naquele ano seguida por este ano.
      */
     private String codigo;
-    
-    /**
-     * 
-     */
-    private int numeroCodigo;
-
+  
     /**
      * Armazena a Dni do autor do projeto.
      */
@@ -72,6 +68,10 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
     private List<String[]> votacoes; // Local e Situação
 
     /**
+     * Armazena a data de criação da entidade Projeto no sistema.
+     */
+    private Date dataCriacao;
+    /**
      * Constrói um projeto inicializando a lista com os locais de votação em CCJC e a situaçao em votação.
      */
     public Projeto(String codigo, String dniAutor, int ano, String ementa, String interesses, String endereco) {
@@ -84,6 +84,7 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
         this.endereco = endereco;
         this.votacoes = new ArrayList<>();
         this.votacoes.add(new String[]{"CCJC", SituacaoVotacao.EM_VOTACAO.toString()});
+        this.dataCriacao = new Date();
     }
 
     /**
@@ -120,34 +121,21 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
     }
 
     /**
+     * Retorna a sequência de votações pela qual o projeto já passou.
      * 
-     * @return
+     * @return lista com todas as votações pela qual o projeto já passou, em ordem cronológica
      */
     public List<String[]> getVotacoes() {
     	return this.votacoes;
     }
     
     /**
+     * Retorna o código do projeto.
      * 
-     * @return
+     * @return String com o código do projeto.
      */
     public String getCodigo() {
     	return this.codigo;
-    }
-    
-    /**
-     * 
-     */
-    public void setNumeroCodigo(int numeroCodigo) {
-    	this.numeroCodigo = numeroCodigo;
-    }
-    
-    /**
-     * 
-     * @return
-     */
-    public int getNumeroCodigo() {
-    	return this.numeroCodigo;
     }
     
     /**
@@ -183,6 +171,15 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      */
     public String getSituacaoAtual() {
         return this.votacoes.get(this.votacoes.size() - 1)[1].replace("_", " ");
+    }
+    
+    /**
+     * Retorna a data de cadastro da proposta no sistema.
+     * 
+     * @return a data de cadastro da proposta no sistema.
+     */
+    public Date getDataCriacao() {
+    	return this.dataCriacao;
     }
 
     /**

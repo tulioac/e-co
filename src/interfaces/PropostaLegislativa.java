@@ -1,5 +1,6 @@
 package interfaces;
 
+import java.util.Date;
 import java.util.List;
 
 import entities.Pessoa;
@@ -24,6 +25,10 @@ public interface PropostaLegislativa {
      */
     public String exibeSituacaoAtual();
 
+    /**
+     * 
+     * @return
+     */
     public String getCodigo();
     
     public List<String[]> getVotacoes();
@@ -96,6 +101,14 @@ public interface PropostaLegislativa {
      */
     public String getAutor();
 
+    
+    /**
+     * Retorna a data de cadastro da proposta no sistema.
+     * 
+     * @return data de cadastro da proposta no sistema
+     */
+    public Date getDataCriacao();
+    
     /**
      * Esse método retorna a representaçao em String de um projeto de lei.
      *
@@ -153,18 +166,6 @@ public interface PropostaLegislativa {
      * @param autorDaProposta o deputado autor da proposta.
      */
     public void avaliaResultado(boolean resultado, Pessoa autorDaProposta);
-
-    /**
-     * 
-     * @param i
-     */
-	public void setNumeroCodigo(int i);
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public int getNumeroCodigo();
 	
 	/**
      * Esse método exibe toda a tramitação de um projeto.
