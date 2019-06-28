@@ -32,9 +32,5 @@ public class ComparatorConclusaoPropostaLegislativa implements Comparator<Propos
 		}
 		
 		return Double.compare(o2.getVotacoes().size(), o1.getVotacoes().size());
-		
 	}
-
-	
-	
 }

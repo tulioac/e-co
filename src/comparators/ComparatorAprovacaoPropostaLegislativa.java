@@ -27,7 +27,4 @@ public class ComparatorAprovacaoPropostaLegislativa implements Comparator<Propos
 		
 		return votacoesAprovadas2 - votacoesAprovadas1;
 	}
-
-	
-	
 }

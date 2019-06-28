@@ -23,7 +23,4 @@ public class ComparatorIdadePropostaLegislativa implements Comparator<PropostaLe
 	public int compare(PropostaLegislativa o1, PropostaLegislativa o2) {
 		return o1.getAno() - o2.getAno();
 	}
-
-	
-	
 }

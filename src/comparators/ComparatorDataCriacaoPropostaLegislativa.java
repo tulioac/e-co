@@ -23,7 +23,4 @@ public class ComparatorDataCriacaoPropostaLegislativa implements Comparator<Prop
 	public int compare(PropostaLegislativa o1, PropostaLegislativa o2) {
 		return o1.getDataCriacao().compareTo(o2.getDataCriacao());
 	}
-
-	
-	
 }
