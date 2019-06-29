@@ -17,7 +17,6 @@ import java.util.Map;
  * @author Guilherme de Melo Carneiro
  */
 public class ComissaoService implements Serializable {
-
     /**
      * Armazena Id de serialização de ComissaoService
      */
@@ -73,6 +72,12 @@ public class ComissaoService implements Serializable {
         return null;
     }
 
+    /**
+     * Esse método serve para carregar o mapa de comissões
+     * com o conjunto de comissões do arquivo.
+     *
+     * @param mapaComissoes mapa de comissões
+     */
     public void setComissoes(Map<String, Comissao> mapaComissoes) {
         this.comissoes.setComissoes(mapaComissoes);
     }

@@ -82,21 +82,22 @@ public class EcoFacade {
 
 
     /**
-     * Esse método serve para limpar o arquivo txt no qual é guardado os dados serializados do sistema
+     * Esse método serve para limpar os arquivos de texto que guarda os dados serializados
+     * do sistema.
      */
     public void limparSistema() throws IOException {
         this.persistenciaController.limparSistema();
     }
 
     /**
-     * Esse método serve para guardar os dados serializados do sistema em um arquivo txt
+     * Esse método serve para guardar os dados serializados do sistema em arquivos de texto.
      */
     public void salvarSistema() {
         this.persistenciaController.salvarSistema();
     }
 
     /**
-     * Esse método carrega os dados serializados do sistema que estão gravados no arquivo txt
+     * Esse método carrega os dados serializados do sistema que estão gravados em arquivos de texto.
      */
     public void carregarSistema() {
         this.persistenciaController.carregarSistema();

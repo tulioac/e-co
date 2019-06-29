@@ -6,20 +6,51 @@ import entities.Pessoa;
 import interfaces.PropostaLegislativa;
 import services.ProjetoService;
 
-import java.io.*;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
-
+/**
+ * Essa classe usa o padrão Controller contendo métodos que facilitam a
+ * persistência e leitura de dados
+ *
+ * @author Jonathan Tavares da Silva
+ * @author Mirella Quintans Lyra
+ * @author Tulio Araujo Cunha
+ * @author Guilherme de Melo Carneiro
+ */
 public class PersistenciaController {
+    /**
+     * Armazena uma instância de ProjetoService
+     */
     private ProjetoService projetoService;
 
+    /**
+     * Constrói um controlador usado para persistir e ler
+     * dados. Faz uso de ProjetoService.
+     *
+     * @param projetoService instância de ProjetoService
+     */
     public PersistenciaController(ProjetoService projetoService) {
         this.projetoService = projetoService;
     }
 
+    /**
+     * Esse método sobrescreve os arquivos de texto comissoes,
+     * pessoas, partidos e propostas do sistema com uma string
+     * vazia.
+     *
+     * @throws IOException erro de escrita em arquivos
+     */
     public void limparSistema() throws IOException {
         FileWriter arquivoComissoes = new FileWriter("dados" + File.separator + "comissoes.txt");
         FileWriter arquivoPessoas = new FileWriter("dados" + File.separator + "pessoas.txt");
@@ -43,6 +74,11 @@ public class PersistenciaController {
         arquivoPropostas.close();
     }
 
+    /**
+     * Esse método serve para salvar as estruturas
+     * que guardam pessoas, comissoes, partidos e
+     * propostas em seus respectivos arquivos.
+     */
     public void salvarSistema() {
         this.salvarPessoas();
         this.salvarComissoes();
@@ -50,6 +86,12 @@ public class PersistenciaController {
         this.salvarPropostas();
     }
 
+    /**
+     * Esse método serve para carregar as estruturas
+     * salvas nos arquivos de pessoas, comissoes, partidos
+     * e propostas nas estruturas de dados dos seus respectivos
+     * controllers.
+     */
     public void carregarSistema() {
         this.carregarPessoas(this.recuperarPessoas());
         this.carregarComissoes(this.recuperarComissoes());
@@ -57,9 +99,9 @@ public class PersistenciaController {
         this.carregarPropostas(this.recuperarPropostas());
     }
 
-    //
-    // SALVAR COMISSÕES
-    //
+    /**
+     * Esse método serve para salvar o Set de comissões no arquivo.
+     */
     private void salvarComissoes() {
         HashSet<Comissao> comissoes = new HashSet<>(this.projetoService.getComissaoService().getComissoes());
         ObjectOutputStream objGravador = null;
@@ -73,6 +115,9 @@ public class PersistenciaController {
         }
     }
 
+    /**
+     * Esse método serve para salvar o Set de pessoas no arquivo.
+     */
     private void salvarPessoas() {
         HashSet<Pessoa> pessoas = new HashSet<>(this.projetoService.getPessoaService().getPessoas());
         try {
@@ -85,6 +130,9 @@ public class PersistenciaController {
         }
     }
 
+    /**
+     * Esse método serve para salvar o Set de partidos no arquivo.
+     */
     private void salvarPartidos() {
         HashSet<Partido> partidos = new HashSet<>(this.projetoService.getPartidoService().getPartidos());
         try {
@@ -97,6 +145,9 @@ public class PersistenciaController {
         }
     }
 
+    /**
+     * Esse método serve para salvar o Set de propostas no arquivo.
+     */
     private void salvarPropostas() {
         HashSet<PropostaLegislativa> propostas = new HashSet<>(this.projetoService.getPropostas());
         try {
@@ -109,9 +160,12 @@ public class PersistenciaController {
         }
     }
 
-    //
-    // RECUPERAR COMISSÕES
-    //
+    /**
+     * Esse método serve para recuperar do arquivo o Set de comissões
+     * e retorná-lo.
+     *
+     * @return Set de comissões
+     */
     private HashSet<Comissao> recuperarComissoes() {
         HashSet<Comissao> comissoes = new HashSet<>();
         try {
@@ -129,6 +183,12 @@ public class PersistenciaController {
         return comissoes;
     }
 
+    /**
+     * Esse método serve para recuperar do arquivo o Set de pessoas
+     * e retorná-lo.
+     *
+     * @return Set de pessoas
+     */
     private HashSet<Pessoa> recuperarPessoas() {
         HashSet<Pessoa> pessoas = new HashSet<>();
         try {
@@ -146,6 +206,12 @@ public class PersistenciaController {
         return pessoas;
     }
 
+    /**
+     * Esse método serve para recuperar do arquivo o Set de partidos
+     * e retorná-lo.
+     *
+     * @return Set de Partidos
+     */
     private HashSet<Partido> recuperarPartidos() {
         HashSet<Partido> partidos = new HashSet<>();
         try {
@@ -163,6 +229,12 @@ public class PersistenciaController {
         return partidos;
     }
 
+    /**
+     * Esse método serve para recuperar do arquivo o Set de propostas
+     * e retorná-lo.
+     *
+     * @return Set de propostas
+     */
     private HashSet<PropostaLegislativa> recuperarPropostas() {
         HashSet<PropostaLegislativa> propostas = new HashSet<>();
         try {
@@ -180,9 +252,13 @@ public class PersistenciaController {
         return propostas;
     }
 
-    //
-    // CARREGAR COMISSÕES
-    //
+
+    /**
+     * Esse método serve para carregar o mapa de comissões com
+     * os dados do arquivo.
+     *
+     * @param comissoes Set de comissões
+     */
     private void carregarComissoes(HashSet<Comissao> comissoes) {
         if (comissoes != null) {
             Map<String, Comissao> mapaComissoes = new HashMap<>();
@@ -196,6 +272,12 @@ public class PersistenciaController {
         }
     }
 
+    /**
+     * Esse método serve para carregar o mapa de pessoas com
+     * os dados do arquivo.
+     *
+     * @param pessoas Set de pessoas
+     */
     private void carregarPessoas(HashSet<Pessoa> pessoas) {
         if (pessoas != null) {
             Map<String, Pessoa> mapaPessoas = new HashMap<>();
@@ -210,6 +292,12 @@ public class PersistenciaController {
         }
     }
 
+    /**
+     * Esse método serve para carregar o mapa de partidos com
+     * os dados do arquivo.
+     *
+     * @param partidos Set de partidos
+     */
     private void carregarPartidos(HashSet<Partido> partidos) {
         if (partidos != null) {
             Map<String, Partido> mapaPartidos = new HashMap<>();
@@ -224,6 +312,12 @@ public class PersistenciaController {
         }
     }
 
+    /**
+     * Esse método serve para carregar o mapa de propostas com
+     * os dados do arquivo.
+     *
+     * @param propostas Set de propostas
+     */
     private void carregarPropostas(HashSet<PropostaLegislativa> propostas) {
         if (propostas != null) {
             Map<String, PropostaLegislativa> mapaPropostas = new HashMap<>();

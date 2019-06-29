@@ -144,6 +144,12 @@ public class PessoaController implements Serializable {
         return new HashSet<>(this.pessoas.values());
     }
 
+    /**
+     * Esse método serve para carregar o mapa de pessoas
+     * com o conjunto de pessoas do arquivo.
+     *
+     * @param mapaPessoas mapa de pessoas
+     */
     public void setPessoas(Map<String, Pessoa> mapaPessoas) {
         this.pessoas = mapaPessoas;
     }
