@@ -102,4 +102,8 @@ public class ComissaoController implements Serializable {
     public Set<Comissao> getComissoes() {
         return new HashSet<>(this.comissoes.values());
     }
+
+    public void setComissoes(Map<String, Comissao> mapaComissoes) {
+        this.comissoes = mapaComissoes;
+    }
 }

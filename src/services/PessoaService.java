@@ -6,7 +6,7 @@ import enums.CargosPoliticos;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.Map;
 
 /**
  * Classe que segue o padrão Service e é responsável por retornar as informações
@@ -43,7 +43,7 @@ public class PessoaService implements Serializable {
      * @return Set de Pessoa contendo todas as pessoas que foram cadastradas no
      * sistema até o momento
      */
-    public Set<Pessoa> getPessoas() {
+    public HashSet<Pessoa> getPessoas() {
         return new HashSet<>(this.pessoas.getPessoas());
     }
 
@@ -100,5 +100,9 @@ public class PessoaService implements Serializable {
                 qntDeputados++;
 
         return qntDeputados;
+    }
+
+    public void setPessoas(Map<String, Pessoa> mapaPessoas) {
+        this.pessoas.setPessoas(mapaPessoas);
     }
 }

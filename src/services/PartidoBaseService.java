@@ -5,7 +5,7 @@ import entities.Partido;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.Map;
 
 /**
  * Essa classe representa uma serviço que funciona como um comunicador para
@@ -42,7 +42,7 @@ public class PartidoBaseService implements Serializable {
      *
      * @return Set de Partidos pertencentes a Base governista.
      */
-    public Set<Partido> getPartidos() {
+    public HashSet<Partido> getPartidos() {
         return new HashSet<>(this.partidos.getPartidos());
     }
 
@@ -58,5 +58,9 @@ public class PartidoBaseService implements Serializable {
             if (partido.getNome().equals(partidoDesejado))
                 return true;
         return false;
+    }
+
+    public void setPartidos(Map<String, Partido> mapaPartidos) {
+        this.partidos.setPartidos(mapaPartidos);
     }
 }

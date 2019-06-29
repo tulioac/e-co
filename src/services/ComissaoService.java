@@ -5,7 +5,7 @@ import entities.Comissao;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.Map;
 
 /**
  * Classe de serviço que busca e retorna informações sobre
@@ -42,7 +42,7 @@ public class ComissaoService implements Serializable {
      *
      * @return Set de objetos Comissao cadastrados no sistema
      */
-    public Set<Comissao> getComissoes() {
+    public HashSet<Comissao> getComissoes() {
         return new HashSet<>(this.comissoes.getComissoes());
     }
 
@@ -71,5 +71,9 @@ public class ComissaoService implements Serializable {
             if (comissao.getTema().equals(comissaoDesejada))
                 return comissao;
         return null;
+    }
+
+    public void setComissoes(Map<String, Comissao> mapaComissoes) {
+        this.comissoes.setComissoes(mapaComissoes);
     }
 }
