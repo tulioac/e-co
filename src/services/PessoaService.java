@@ -102,6 +102,12 @@ public class PessoaService implements Serializable {
         return qntDeputados;
     }
 
+    /**
+     * Esse método serve para carregar o mapa de pessoas
+     * com o conjunto de pessoas do arquivo.
+     *
+     * @param mapaPessoas mapa de pessoas
+     */
     public void setPessoas(Map<String, Pessoa> mapaPessoas) {
         this.pessoas.setPessoas(mapaPessoas);
     }

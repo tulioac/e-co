@@ -527,22 +527,52 @@ public class ProjetoController implements Serializable {
         this.buscador.setEstrategiaAtual(estrat);
     }
 
+    /**
+     * Esse método serve para retornar uma instância
+     * de PartidoService
+     *
+     * @return PartidoService
+     */
     public PartidoBaseService getPartidoService() {
         return this.partidoService;
     }
 
+    /**
+     * Esse método serve para retornar uma instância
+     * de ComissaoService
+     *
+     * @return ComissaoService
+     */
     public ComissaoService getComissaoService() {
         return this.comissaoService;
     }
 
+    /**
+     * Esse método serve para retornar uma instância
+     * de PessoaService
+     *
+     * @return PessoaService
+     */
     public PessoaService getPessoaService() {
         return this.pessoaService;
     }
 
+    /**
+     * Esse método serve para retornar um Set de
+     * propostas legislativas.
+     *
+     * @return Set de propostas legislativas
+     */
     public Set<PropostaLegislativa> getPropostas() {
         return new HashSet<>(this.propostas.values());
     }
 
+    /**
+     * Esse método serve para carregar o mapa de propostas com
+     * o conjunto de propostas do arquivo.
+     *
+     * @param mapaPropostas mapa de propostas
+     */
     public void setPropostas(Map<String, PropostaLegislativa> mapaPropostas) {
         this.propostas = mapaPropostas;
     }

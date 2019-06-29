@@ -103,6 +103,12 @@ public class ComissaoController implements Serializable {
         return new HashSet<>(this.comissoes.values());
     }
 
+    /**
+     * Esse método serve para carregar o mapa de comissões
+     * com o conjunto de comissões do arquivo.
+     *
+     * @param mapaComissoes mapa de comissões
+     */
     public void setComissoes(Map<String, Comissao> mapaComissoes) {
         this.comissoes = mapaComissoes;
     }
