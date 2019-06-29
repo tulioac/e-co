@@ -27,12 +27,6 @@ class PartidoTest {
     }
 
     @Test
-    void testaConstrutorComNomeVazio() {
-        assertThrows(IllegalArgumentException.class,
-                () -> new Partido(""));
-    }
-
-    @Test
     void testaEquals() {
         assertEquals(partido, new Partido("TST"));
         assertNotEquals(partido, new Partido("ACD"));

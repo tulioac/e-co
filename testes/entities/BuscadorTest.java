@@ -1,20 +1,15 @@
 package entities;
 
-import static org.junit.Assert.assertEquals;
+import enums.EstrategiaBusca;
+import interfaces.PropostaLegislativa;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import util.Buscador;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import controllers.ComissaoController;
-import controllers.PartidoBaseController;
-import controllers.PessoaController;
-import enums.EstrategiaBusca;
-import interfaces.PropostaLegislativa;
-import services.PessoaService;
-import util.Buscador;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BuscadorTest {
 
