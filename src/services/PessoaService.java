@@ -7,7 +7,6 @@ import enums.CargosPoliticos;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Classe que segue o padrão Service e é responsável por retornar as informações

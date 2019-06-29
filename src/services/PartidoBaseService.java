@@ -6,7 +6,6 @@ import entities.Partido;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Essa classe representa uma serviço que funciona como um comunicador para

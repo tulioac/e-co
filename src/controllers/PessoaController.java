@@ -5,7 +5,10 @@ import enums.CargosPoliticos;
 import util.Validador;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 /**
  * Essa classe usa o padrão Controller contendo métodos que operam sobre a

@@ -3,12 +3,14 @@ package controllers;
 import entities.Comissao;
 import entities.Partido;
 import entities.Pessoa;
-import entities.Projeto;
 import interfaces.PropostaLegislativa;
 import services.ProjetoService;
 
 import java.io.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
 
 
 public class PersistenciaController {

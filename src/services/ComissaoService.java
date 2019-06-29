@@ -6,7 +6,6 @@ import entities.Comissao;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Classe de serviço que busca e retorna informações sobre
