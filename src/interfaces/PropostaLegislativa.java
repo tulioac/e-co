@@ -110,11 +110,10 @@ public interface PropostaLegislativa {
     String getAutor();
 
     /**
-     * Retorna a data de cadastro da proposta no sistema.
-     *
-     * @return data de cadastro da proposta no sistema
+     * Retorna o número sequencial do cadastro de um projeto.
+     * @return inteiro equivalente a ordem em que o projeto foi cadastrado
      */
-    Date getDataCriacao();
+    int getNumCriacaoProjeto();
 
     /**
      * Esse método retorna a representaçao em String de uma proposta legislativa.

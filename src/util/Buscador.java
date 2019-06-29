@@ -1,14 +1,18 @@
 package util;
 
-import comparators.*;
-import enums.EstrategiaBusca;
-import interfaces.PropostaLegislativa;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import comparators.ComparatorAprovacaoPropostaLegislativa;
+import comparators.ComparatorConclusaoPropostaLegislativa;
+import comparators.ComparatorConstitucionalPropostaLegislativa;
+import comparators.ComparatorIdadePropostaLegislativa;
+import comparators.ComparatorOrdemCriacaoPropostaLegislativa;
+import enums.EstrategiaBusca;
+import interfaces.PropostaLegislativa;
 
 /**
  * Classe que simula um buscador de propostas cadastradas.
@@ -133,7 +137,7 @@ public class Buscador {
         //Finalmente pega a primeira proposta a ser cadastrada no conjunto e a retorna
         PropostaLegislativa propostaMaisRelacionada = propostasMaisRelacionadas
                 .stream()
-                .min(new ComparatorDataCriacaoPropostaLegislativa())
+                .min(new ComparatorOrdemCriacaoPropostaLegislativa())
                 .get();
 
         return propostaMaisRelacionada.getCodigo();
