@@ -72,6 +72,12 @@ public class ComissaoService implements Serializable {
         return null;
     }
 
+    /**
+     * Esse método serve para carregar o mapa de comissões
+     * com o conjunto de comissões do arquivo.
+     *
+     * @param mapaComissoes mapa de comissões
+     */
     public void setComissoes(Map<String, Comissao> mapaComissoes) {
         this.comissoes.setComissoes(mapaComissoes);
     }
