@@ -73,6 +73,12 @@ public class PartidoBaseController implements Serializable {
         return new HashSet<>(this.partidos.values());
     }
 
+    /**
+     * Esse método serve para carregar o mapa de partidos
+     * com o conjunto de partidos do arquivo.
+     *
+     * @param mapaPartidos mapa de partidos
+     */
     public void setPartidos(Map<String, Partido> mapaPartidos) {
         this.partidos = mapaPartidos;
     }
