@@ -6,6 +6,7 @@ import easyaccept.EasyAccept;
 import services.ComissaoService;
 import services.PartidoBaseService;
 import services.PessoaService;
+import services.ProjetoService;
 
 /**
  * Essa classe usa o padrão Facade contendo métodos de acesso ao E-Camara
@@ -49,8 +50,10 @@ public class EcoFacade {
         this.pessoaController = new PessoaController();
         this.partidoController = new PartidoBaseController();
         this.comissaoController = new ComissaoController(new PessoaService(pessoaController));
-        this.projetoController = new ProjetoController(new PessoaService(pessoaController), new ComissaoService(comissaoController), new PartidoBaseService(partidoController));
-        this.persistenciaController = new PersistenciaController();
+        this.projetoController = new ProjetoController(new PessoaService(pessoaController),
+                new ComissaoService(comissaoController),
+                new PartidoBaseService(partidoController));
+        this.persistenciaController = new PersistenciaController(new ProjetoService(projetoController));
     }
 
     /**
@@ -66,8 +69,8 @@ public class EcoFacade {
 //                "acceptance_tests/use_case_4.txt",
 //                "acceptance_tests/use_case_5.txt",
 //                "acceptance_tests/use_case_6.txt",
-//                "acceptance_tests/use_case_7.txt",
-                "acceptance_tests/use_case_8.txt",
+                "acceptance_tests/use_case_7.txt",
+//                "acceptance_tests/use_case_8.txt",
 //                "acceptance_tests/use_case_9.txt"
 
         };
@@ -87,8 +90,7 @@ public class EcoFacade {
      * Esse método serve para guardar os dados serializados do sistema em um arquivo txt
      */
     public void salvarSistema() {
-        this.persistenciaController.salvarSistema(this.comissaoController, this.partidoController,
-                this.pessoaController, this.projetoController);
+        this.persistenciaController.salvarSistema();
     }
 
     /**
