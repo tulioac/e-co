@@ -16,6 +16,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Essa classe usa o padrão Controller contendo métodos que operam sobre os diferentes
@@ -526,5 +527,20 @@ public class ProjetoController implements Serializable {
         this.buscador.setEstrategiaAtual(estrat);
     }
 
+    public PartidoBaseService getPartidoService() {
+        return this.partidoService;
+    }
+
+    public ComissaoService getComissaoService() {
+        return this.comissaoService;
+    }
+
+    public PessoaService getPessoaService() {
+        return this.pessoaService;
+    }
+
+    public Set<PropostaLegislativa> getPropostas() {
+        return new HashSet<>(this.propostas.values());
+    }
 
 }
