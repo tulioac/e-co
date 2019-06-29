@@ -1,5 +1,6 @@
 package entities;
 
+import enums.CargosPoliticos;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +23,7 @@ class DeputadoTest {
 
     @Test
     void testaGetNomeCargo() {
-        assertEquals("Deputado",
+        assertEquals(CargosPoliticos.DEPUTADO,
                 this.d.getNomeCargo());
     }
 
