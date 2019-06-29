@@ -72,4 +72,8 @@ public class PartidoBaseController implements Serializable {
     public Set<Partido> getPartidos() {
         return new HashSet<>(this.partidos.values());
     }
+
+    public void setPartidos(Map<String, Partido> mapaPartidos) {
+        this.partidos = mapaPartidos;
+    }
 }
