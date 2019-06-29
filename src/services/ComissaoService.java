@@ -17,7 +17,6 @@ import java.util.Map;
  * @author Guilherme de Melo Carneiro
  */
 public class ComissaoService implements Serializable {
-
     /**
      * Armazena Id de serialização de ComissaoService
      */
