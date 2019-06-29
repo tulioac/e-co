@@ -24,6 +24,12 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      * Armazena Id de Serialização do objeto
      */
     private static final long serialVersionUID = 100476511324712155L;
+    
+    /**
+     * Número de projetos já cadastrados.
+     */
+    private static int contagemDeProjetos = 0;
+    
     /**
      * Armazena um enum do que cartacteriza o tipo do projeto em analise,
      * pode ser do tipo PL, PLP ou PEC.
@@ -59,16 +65,19 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      * Armazena uma lista com os locais de votação por onde o projeto passou.
      */
     private List<String[]> votacoes; // Local e Situação
-    /**
-     * Armazena a data de criação da entidade Projeto no sistema.
-     */
-    private Date dataCriacao;
 
+    /**
+     * Número de identificação sequencial do projeto.
+     */
+    private int numCriacaoProjeto;
+    
     /**
      * Constrói um projeto inicializando a lista com os locais de votação em CCJC e a situaçao em votação.
      */
     public Projeto(String codigo, String dniAutor, int ano, String ementa, String interesses, String endereco) {
         super();
+        Projeto.contagemDeProjetos++;
+        this.numCriacaoProjeto = Projeto.contagemDeProjetos;
         this.codigo = codigo;
         this.dniAutor = dniAutor;
         this.ano = ano;
@@ -77,7 +86,7 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
         this.endereco = endereco;
         this.votacoes = new ArrayList<>();
         this.votacoes.add(new String[]{"CCJC", SituacaoVotacao.EM_VOTACAO.toString()});
-        this.dataCriacao = new Date();
+        
     }
 
     /**
@@ -167,12 +176,10 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
     }
 
     /**
-     * Retorna a data de cadastro da proposta no sistema.
-     *
-     * @return a data de cadastro da proposta no sistema.
+     * Retorna o número sequencial(ordinal) de cadastro do projeto.
      */
-    public Date getDataCriacao() {
-        return this.dataCriacao;
+    public int getNumCriacaoProjeto() {
+    	return this.numCriacaoProjeto;
     }
 
     /**
