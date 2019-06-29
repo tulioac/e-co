@@ -4,6 +4,7 @@ import controllers.ProjetoController;
 import interfaces.PropostaLegislativa;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class ProjetoService {
@@ -27,5 +28,9 @@ public class ProjetoService {
 
     public PessoaService getPessoaService() {
         return this.projetoController.getPessoaService();
+    }
+
+    public void setPessoas(Map<String, PropostaLegislativa> mapaPropostas) {
+        this.projetoController.setPropostas(mapaPropostas);
     }
 }

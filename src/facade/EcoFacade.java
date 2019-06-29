@@ -8,6 +8,8 @@ import services.PartidoBaseService;
 import services.PessoaService;
 import services.ProjetoService;
 
+import java.io.IOException;
+
 /**
  * Essa classe usa o padrão Facade contendo métodos de acesso ao E-Camara
  * Organizada, provendo uma interface mais simples de acesso ao subsistema.
@@ -69,8 +71,8 @@ public class EcoFacade {
 //                "acceptance_tests/use_case_4.txt",
 //                "acceptance_tests/use_case_5.txt",
 //                "acceptance_tests/use_case_6.txt",
-                "acceptance_tests/use_case_7.txt",
-//                "acceptance_tests/use_case_8.txt",
+//                "acceptance_tests/use_case_7.txt",
+                "acceptance_tests/use_case_8.txt",
 //                "acceptance_tests/use_case_9.txt"
 
         };
@@ -82,7 +84,7 @@ public class EcoFacade {
     /**
      * Esse método serve para limpar o arquivo txt no qual é guardado os dados serializados do sistema
      */
-    public void limparSistema() {
+    public void limparSistema() throws IOException {
         this.persistenciaController.limparSistema();
     }
 

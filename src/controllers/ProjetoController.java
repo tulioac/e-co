@@ -543,4 +543,7 @@ public class ProjetoController implements Serializable {
         return new HashSet<>(this.propostas.values());
     }
 
+    public void setPropostas(Map<String, PropostaLegislativa> mapaPropostas) {
+        this.propostas = mapaPropostas;
+    }
 }

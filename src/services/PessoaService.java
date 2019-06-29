@@ -6,6 +6,7 @@ import enums.CargosPoliticos;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -100,5 +101,9 @@ public class PessoaService implements Serializable {
                 qntDeputados++;
 
         return qntDeputados;
+    }
+
+    public void setPessoas(Map<String, Pessoa> mapaPessoas) {
+        this.pessoas.setPessoas(mapaPessoas);
     }
 }

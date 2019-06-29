@@ -140,4 +140,8 @@ public class PessoaController implements Serializable {
     public Set<Pessoa> getPessoas() {
         return new HashSet<>(this.pessoas.values());
     }
+
+    public void setPessoas(Map<String, Pessoa> mapaPessoas) {
+        this.pessoas = mapaPessoas;
+    }
 }

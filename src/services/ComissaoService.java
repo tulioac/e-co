@@ -5,6 +5,7 @@ import entities.Comissao;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -71,5 +72,9 @@ public class ComissaoService implements Serializable {
             if (comissao.getTema().equals(comissaoDesejada))
                 return comissao;
         return null;
+    }
+
+    public void setComissoes(Map<String, Comissao> mapaComissoes) {
+        this.comissoes.setComissoes(mapaComissoes);
     }
 }

@@ -5,6 +5,7 @@ import entities.Partido;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -58,5 +59,9 @@ public class PartidoBaseService implements Serializable {
             if (partido.getNome().equals(partidoDesejado))
                 return true;
         return false;
+    }
+
+    public void setPartidos(Map<String, Partido> mapaPartidos) {
+        this.partidos.setPartidos(mapaPartidos);
     }
 }

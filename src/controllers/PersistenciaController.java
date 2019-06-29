@@ -7,8 +7,7 @@ import interfaces.PropostaLegislativa;
 import services.ProjetoService;
 
 import java.io.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 
 public class PersistenciaController {
@@ -18,10 +17,27 @@ public class PersistenciaController {
         this.projetoService = projetoService;
     }
 
-    public void limparSistema() {
-        File arquivoEco = new File("eco.txt");
-        if (arquivoEco.exists()) arquivoEco.delete();
-//        arquivoEco = new File("eco.txt");
+    public void limparSistema() throws IOException {
+        FileWriter arquivoComissoes = new FileWriter("dados" + File.separator + "comissoes.txt");
+        FileWriter arquivoPessoas = new FileWriter("dados" + File.separator + "pessoas.txt");
+        FileWriter arquivoPartidos = new FileWriter("dados" + File.separator + "partidos.txt");
+        FileWriter arquivoPropostas = new FileWriter("dados" + File.separator + "propostas.txt");
+
+        arquivoComissoes.write("");
+        arquivoComissoes.flush();
+        arquivoComissoes.close();
+
+        arquivoPessoas.write("");
+        arquivoPessoas.flush();
+        arquivoPessoas.close();
+
+        arquivoPartidos.write("");
+        arquivoPartidos.flush();
+        arquivoPartidos.close();
+
+        arquivoPropostas.write("");
+        arquivoPropostas.flush();
+        arquivoPropostas.close();
     }
 
     public void salvarSistema() {
@@ -32,10 +48,10 @@ public class PersistenciaController {
     }
 
     public void carregarSistema() {
-        this.carregarPessoas();
-        this.carregarComissoes();
-        this.carregarPartidos();
-        this.carregarPropostas();
+        this.carregarPessoas(this.recuperarPessoas());
+        this.carregarComissoes(this.recuperarComissoes());
+        this.carregarPartidos(this.recuperarPartidos());
+        this.carregarPropostas(this.recuperarPropostas());
     }
 
     private void salvarComissoes() {
@@ -60,7 +76,7 @@ public class PersistenciaController {
     public Set recuperarComissoes() {
         ObjectInputStream objLeitor = null;
         try {
-            objLeitor = new ObjectInputStream(new FileInputStream("dados" + File.separator + "comissoes.txt"));
+            objLeitor = new ObjectInputStream(new FileInputStream("dados/comissoes.txt"));
 
             return (Set) objLeitor.readObject();
 
@@ -78,13 +94,20 @@ public class PersistenciaController {
         return null;
     }
 
+    private void carregarComissoes(Set comissoes) {
+        Map<String, Comissao> mapaComissoes = new HashMap<>();
 
+        for (Iterator<Comissao> it = comissoes.iterator(); it.hasNext();)
+            mapaComissoes.put(it.next().getTema(), it.next());
+
+        this.projetoService.getComissaoService().setComissoes(mapaComissoes);
+    }
 
     private void salvarPessoas() {
-        Set<Pessoa> pessoas = new HashSet<>(this.projetoService.getPessoaService().getPessoas());
+        HashSet<Pessoa> pessoas = new HashSet<>(this.projetoService.getPessoaService().getPessoas());
         ObjectOutputStream objGravador = null;
         try {
-            objGravador = new ObjectOutputStream(new FileOutputStream("dados" + File.separator + "pessoas.txt"));
+            objGravador = new ObjectOutputStream(new FileOutputStream("dados/pessoas.txt"));
             objGravador.writeObject(pessoas);
         } catch (IOException ioe) {
             ioe.printStackTrace();
@@ -99,13 +122,12 @@ public class PersistenciaController {
         }
     }
 
-    public Set recuperarPessoas() {
+    private HashSet<Pessoa> recuperarPessoas() {
         ObjectInputStream objLeitor = null;
         try {
-            objLeitor = new ObjectInputStream(new FileInputStream("dados" + File.separator + "pessoas.txt"));
+            objLeitor = new ObjectInputStream(new FileInputStream("dados/pessoas.txt"));
 
-            return (Set) objLeitor.readObject();
-
+            return (HashSet<Pessoa>) objLeitor.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         } finally {
@@ -120,12 +142,17 @@ public class PersistenciaController {
         return null;
     }
 
-    private void carregarPessoas() {
+    private void carregarPessoas(HashSet<Pessoa> pessoas) {
+        Map<String, Pessoa> mapaPessoas = new HashMap<>();
 
+        for (Iterator<Pessoa> it = pessoas.iterator(); it.hasNext(); )
+            mapaPessoas.put(it.next().getDni(), it.next());
+
+        this.projetoService.getPessoaService().setPessoas(mapaPessoas);
     }
 
     private void salvarPartidos() {
-        Set<Partido> partidos = new HashSet<>(this.projetoService.getPartidoService().getPartidos());
+        HashSet<Partido> partidos = new HashSet<>(this.projetoService.getPartidoService().getPartidos());
         ObjectOutputStream objGravador = null;
         try {
             objGravador = new ObjectOutputStream(new FileOutputStream("dados" + File.separator + "partidos.txt"));
@@ -162,6 +189,15 @@ public class PersistenciaController {
             }
         }
         return null;
+    }
+
+    private void carregarPartidos(Set partidos) {
+        Map<String, Partido> mapaPartidos = new HashMap<>();
+
+        for (Iterator<Partido> it = partidos.iterator(); it.hasNext();)
+            mapaPartidos.put(it.next().getNome(), it.next());
+
+        this.projetoService.getPartidoService().setPartidos(mapaPartidos);
     }
 
     private void salvarPropostas() {
@@ -204,5 +240,13 @@ public class PersistenciaController {
         return null;
     }
 
+    private void carregarPropostas(Set propostas) {
+        Map<String, PropostaLegislativa> mapaPropostas = new HashMap<>();
+
+        for (Iterator<PropostaLegislativa> it = propostas.iterator(); it.hasNext();)
+            mapaPropostas.put(it.next().getCodigo(), it.next());
+
+        this.projetoService.setPessoas(mapaPropostas);
+    }
 
 }
