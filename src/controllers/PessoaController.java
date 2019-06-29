@@ -137,7 +137,7 @@ public class PessoaController implements Serializable {
      *
      * @return Set de pessoas
      */
-    public Set<Pessoa> getPessoas() {
+    public HashSet<Pessoa> getPessoas() {
         return new HashSet<>(this.pessoas.values());
     }
 

@@ -43,7 +43,7 @@ public class PartidoBaseService implements Serializable {
      *
      * @return Set de Partidos pertencentes a Base governista.
      */
-    public Set<Partido> getPartidos() {
+    public HashSet<Partido> getPartidos() {
         return new HashSet<>(this.partidos.getPartidos());
     }
 

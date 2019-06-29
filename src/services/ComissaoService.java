@@ -43,7 +43,7 @@ public class ComissaoService implements Serializable {
      *
      * @return Set de objetos Comissao cadastrados no sistema
      */
-    public Set<Comissao> getComissoes() {
+    public HashSet<Comissao> getComissoes() {
         return new HashSet<>(this.comissoes.getComissoes());
     }
 
