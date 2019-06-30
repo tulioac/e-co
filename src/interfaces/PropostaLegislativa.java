@@ -78,11 +78,6 @@ public interface PropostaLegislativa {
     String getSituacaoAtual();
 
     /**
-     * Não possui retorno. Define como encerrada uma votação da proposta legislativa no Congresso.
-     */
-    void encerraVotacao();
-
-    /**
      * Não possui retorno. Define como aprovada uma votação da proposta legislativa no Congresso.
      */
     void aprovaVotacao();
