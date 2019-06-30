@@ -218,7 +218,6 @@ class BuscadorTest {
 		assertTrue(this.pc.votarComissao("PL 1/2006", "GOVERNISTA", "CGOV"));
 
 		this.propostas = this.projs.getPropostas();
-		System.out.println(this.propostas);
 
 		//Mais interesses em comum, mesmo ano mais antigo, prevalece no momento de cadastro
 		PropostaLegislativa plp001 = new PLP("PLP 1/2005", "111111000-1", 2005, "Destina 30% das multas de trânsito arrecadadas à melhoria da acessibilidade urbana",
@@ -247,7 +246,6 @@ class BuscadorTest {
 		this.propostas.add(plp2);
 		this.propostas.add(plp3);
 		this.propostas.add(pec1);
-		System.out.println("\n"+this.propostas);
 		this.buscador.setPropostas(this.propostas);
 	}
 	
