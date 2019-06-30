@@ -208,7 +208,7 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
     /**
      * Altera o estado da votação para aprovado.
      */
-    public void aprovaVotacao() {
+    protected void aprovaVotacao() {
         if (this.getSituacaoAtual().equals("EM VOTACAO"))
             this.alteraSituacaoDoUltimoLocal(SituacaoVotacao.APROVADO);
     }

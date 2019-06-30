@@ -1,7 +1,6 @@
 package interfaces;
 
 import entities.Pessoa;
-import enums.SituacaoVotacao;
 import enums.StatusGovernista;
 import enums.TipoProjeto;
 
@@ -76,11 +75,6 @@ public interface PropostaLegislativa {
      * @return String contendo a situação atual da proposta legislativa no Congresso
      */
     String getSituacaoAtual();
-
-    /**
-     * Não possui retorno. Define como aprovada uma votação da proposta legislativa no Congresso.
-     */
-    void aprovaVotacao();
 
     /**
      * Retorna uma String com o dni do Autor da proposta legislativa.
