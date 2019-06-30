@@ -184,7 +184,7 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
     /**
      * Método que altera o resultado da votação no penúltimo local onde ela foi votada.
      */
-    public void alteraSituacaoDoLocalAnterior(SituacaoVotacao situacao) {
+    protected void alteraSituacaoDoLocalAnterior(SituacaoVotacao situacao) {
         if (this.getSituacaoAtual().equals("EM VOTACAO"))
             this.votacoes.get(this.votacoes.size() - 2)[1] = situacao.toString();
     }

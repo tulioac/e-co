@@ -78,14 +78,6 @@ public interface PropostaLegislativa {
     String getSituacaoAtual();
 
     /**
-     * Não possui retorno. Altera a situação de votação do local anterior, visto que já foi votado
-     * naquele local. Recebe a situação de votação a ser redefinida.
-     *
-     * @param situacao situação de votação a sobrepor a anterior
-     */
-    void alteraSituacaoDoLocalAnterior(SituacaoVotacao situacao);
-
-    /**
      * Não possui retorno. Define como encerrada uma votação da proposta legislativa no Congresso.
      */
     void encerraVotacao();
