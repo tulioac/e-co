@@ -1,11 +1,9 @@
 package interfaces;
 
 import entities.Pessoa;
-import enums.SituacaoVotacao;
 import enums.StatusGovernista;
 import enums.TipoProjeto;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,12 +16,6 @@ import java.util.List;
  * @author Guilherme de Melo Carneiro
  */
 public interface PropostaLegislativa {
-    /**
-     * Retorna a situação da proposta legislativa no Congresso.
-     *
-     * @return a situação da proposta legislativa no Congresso.
-     */
-    String exibeSituacaoAtual();
 
     /**
      * Retorna o código do projeto
@@ -83,24 +75,6 @@ public interface PropostaLegislativa {
      * @return String contendo a situação atual da proposta legislativa no Congresso
      */
     String getSituacaoAtual();
-
-    /**
-     * Não possui retorno. Altera a situação de votação do local anterior, visto que já foi votado
-     * naquele local. Recebe a situação de votação a ser redefinida.
-     *
-     * @param situacao situação de votação a sobrepor a anterior
-     */
-    void alteraSituacaoDoLocalAnterior(SituacaoVotacao situacao);
-
-    /**
-     * Não possui retorno. Define como encerrada uma votação da proposta legislativa no Congresso.
-     */
-    void encerraVotacao();
-
-    /**
-     * Não possui retorno. Define como aprovada uma votação da proposta legislativa no Congresso.
-     */
-    void aprovaVotacao();
 
     /**
      * Retorna uma String com o dni do Autor da proposta legislativa.

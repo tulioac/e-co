@@ -84,8 +84,8 @@ public class PLP extends Projeto implements Serializable {
     public void avaliaResultado(boolean resultado, Pessoa autorDaProposta) {
         if (this.getLocalDeVotacao().equals("Plenario - 1o turno")) {
             if (resultado) {
+                this.alteraSituacaoDoUltimoLocal(SituacaoVotacao.APROVADO);
                 this.setNovoLocalDeVotacao("Plenario - 2o turno");
-                this.alteraSituacaoDoLocalAnterior(SituacaoVotacao.APROVADO);
             } else {
                 this.encerraVotacao();
             }
