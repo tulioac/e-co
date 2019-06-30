@@ -7,7 +7,6 @@ import interfaces.PropostaLegislativa;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -112,7 +111,7 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      *
      * @return string no formato Situaçao do projeto seguida pelo local onde o projeto foi votado.
      */
-    public String exibeSituacaoAtual() {
+    protected String exibeSituacaoAtual() {
         if (this.getSituacaoAtual().equals(SituacaoVotacao.REJEITADO.toString()))
             return "REJEITADO";
 

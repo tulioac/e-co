@@ -5,7 +5,6 @@ import enums.SituacaoVotacao;
 import enums.StatusGovernista;
 import enums.TipoProjeto;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,12 +17,6 @@ import java.util.List;
  * @author Guilherme de Melo Carneiro
  */
 public interface PropostaLegislativa {
-    /**
-     * Retorna a situação da proposta legislativa no Congresso.
-     *
-     * @return a situação da proposta legislativa no Congresso.
-     */
-    String exibeSituacaoAtual();
 
     /**
      * Retorna o código do projeto
