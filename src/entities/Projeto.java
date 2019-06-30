@@ -7,7 +7,6 @@ import interfaces.PropostaLegislativa;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -112,7 +111,7 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
      *
      * @return string no formato Situaçao do projeto seguida pelo local onde o projeto foi votado.
      */
-    public String exibeSituacaoAtual() {
+    protected String exibeSituacaoAtual() {
         if (this.getSituacaoAtual().equals(SituacaoVotacao.REJEITADO.toString()))
             return "REJEITADO";
 
@@ -183,14 +182,6 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
     }
 
     /**
-     * Método que altera o resultado da votação no penúltimo local onde ela foi votada.
-     */
-    public void alteraSituacaoDoLocalAnterior(SituacaoVotacao situacao) {
-        if (this.getSituacaoAtual().equals("EM VOTACAO"))
-            this.votacoes.get(this.votacoes.size() - 2)[1] = situacao.toString();
-    }
-
-    /**
      * Método que altera o resultado da votação no último local onde ela foi votada.
      */
     public void alteraSituacaoDoUltimoLocal(SituacaoVotacao situacao) {
@@ -209,7 +200,7 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
     /**
      * Altera o estado da votação para rejeitado.
      */
-    public void encerraVotacao() {
+    protected void encerraVotacao() {
         if (this.getSituacaoAtual().equals("EM VOTACAO"))
             this.alteraSituacaoDoUltimoLocal(SituacaoVotacao.REJEITADO);
     }
@@ -217,7 +208,7 @@ public abstract class Projeto implements PropostaLegislativa, Serializable {
     /**
      * Altera o estado da votação para aprovado.
      */
-    public void aprovaVotacao() {
+    protected void aprovaVotacao() {
         if (this.getSituacaoAtual().equals("EM VOTACAO"))
             this.alteraSituacaoDoUltimoLocal(SituacaoVotacao.APROVADO);
     }
