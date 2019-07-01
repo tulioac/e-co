@@ -1,14 +1,15 @@
 # E-CO (E-Camara Organizada)
 
-Projeto desenvolvido para a disciplina Laboratório de Programação 2
-
-
-![In Progress](https://i.imgur.com/j7hopjV.gif)
-
+Projeto desenvolvido para a disciplina LaboratÃ³rio de ProgramaÃ§Ã£o 2
 
 ### Authors:
 
-- @guimcarneiro - Guilherme Carneiro
-- @tuliocunha - Túlio Cunha
-- @mqlyra - Mirella Lyra
-- @jonathantvrs - Jonathan Tavares
+- [Guilherme Carneiro](https://www.github.com/guimcarneiro/)
+- [TÃºlio Cunha](https://www.github.com/tulioac/)
+- [Mirella Lyra](https://www.github.com/mqlyra/)
+- [Jonathan Tavares](https://www.github.com/jonathantvrs/)
+
+# EstatÃ­sticas do Projeto:
+
+- Testes de AceitaÃ§Ã£o 100% (393/393)
+- Testes de Unidade (Cobertura de 65%)
